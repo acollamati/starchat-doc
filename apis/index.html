@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>APIs - StarChat Documentation</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+	
+	<script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="..">StarChat Documentation</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                    <li class="active">
+                        <a href="./">APIs</a>
+                    </li>
+                    <li >
+                        <a href="../about/">About</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="..">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../about/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#apis">APIs</a></li>
+            <li><a href="#post-get_next_response">POST /get_next_response</a></li>
+            <li><a href="#get-decisiontable">GET /decisiontable</a></li>
+            <li><a href="#put-decisiontable">PUT /decisiontable</a></li>
+            <li><a href="#post-decisiontable">POST /decisiontable</a></li>
+            <li><a href="#delete-decisiontable">DELETE /decisiontable</a></li>
+            <li><a href="#post-decisiontable_search">POST /decisiontable_search</a></li>
+            <li><a href="#get-decisiontable_analyzer">GET /decisiontable_analyzer</a></li>
+            <li><a href="#post-decisiontable_analyzer">POST /decisiontable_analyzer</a></li>
+            <li><a href="#get-knowledgebase">GET /knowledgebase</a></li>
+            <li><a href="#post-knowledgebase">POST /knowledgebase</a></li>
+            <li><a href="#delete-knowledgebase">DELETE /knowledgebase</a></li>
+            <li><a href="#put-knowledgebase">PUT /knowledgebase</a></li>
+            <li><a href="#post-knowledgebase_search">POST /knowledgebase_search</a></li>
+            <li><a href="#post-language_guesser">POST /language_guesser</a></li>
+            <li><a href="#get-language_guesser">GET /language_guesser</a></li>
+            <li><a href="#post-index_managementcreate">POST /index_management/create</a></li>
+            <li><a href="#post-index_managementrefresh">POST /index_management/refresh</a></li>
+            <li><a href="#get-index_management">GET /index_management</a></li>
+            <li><a href="#put-index_management">PUT /index_management</a></li>
+            <li><a href="#delete-index_management">DELETE /index_management</a></li>
+            <li><a href="#post-termindex">POST /term/index</a></li>
+            <li><a href="#post-termget">POST /term/get</a></li>
+            <li><a href="#delete-term">DELETE /term</a></li>
+            <li><a href="#put-term">PUT /term</a></li>
+            <li><a href="#get-termterm">GET /term/term</a></li>
+            <li><a href="#get-termtext">GET /term/text</a></li>
+            <li><a href="#get-tokenizers">GET /tokenizers</a></li>
+            <li><a href="#post-tokenizers">POST /tokenizers</a></li>
+            <li><a href="#post-analyzers_playground">POST /analyzers_playground</a></li>
+            <li><a href="#post-spellcheckterms">POST /spellcheck/terms</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="apis">APIs</h1>
+<h2 id="post-get_next_response"><code>POST /get_next_response</code></h2>
+<p>Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction 
+about the next state.</p>
+<p>Data to post:</p>
+<pre><code class="json">{
+    &quot;conversation_id&quot;: &quot;1234&quot;,
+    &quot;user_input&quot;: &quot;(Optional)&quot;,
+    &quot;text&quot; : &quot;the text typed by the user (Optional)&quot;,
+    &quot;img&quot;: &quot;(e.g.) image attached by the user (Optional)&quot;,
+l
+    &quot;return_value&quot;: &quot;the value either in success_value or in failure_value (Optional)&quot;,
+    &quot;data&quot;: &quot;all the variables, e.g. for the STRING TEMPLATEs (Optional)&quot;
+}
+</code></pre>
+
+<h3 id="return-codes">Return codes</h3>
+<h4 id="200">200</h4>
+<p>Similar Json, see examples below</p>
+<h5 id="example-1">Example 1</h5>
+<p>User input is "I forgot my password":</p>
+<pre><code class="bash">curl  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/get_next_response -d '{   
+&quot;conversation_id&quot;: &quot;1234&quot;,   
+&quot;user_input&quot;: { &quot;text&quot;: &quot;I forgot my password&quot; },   
+&quot;values&quot;: {
+    &quot;return_value&quot;: &quot;&quot;, 
+    &quot;data&quot;: {}   
+    }
+}'
+</code></pre>
+
+<p>returns:</p>
+<pre><code class="json">{
+    &quot;action&quot;: &quot;input_form&quot;,
+    &quot;action_input&quot;: {
+        &quot;email&quot;: &quot;email&quot;
+    },
+    &quot;bubble&quot;: &quot;We can reset your password by sending you a message to your registered e-mail address. Please tell me your address so I may send you the new password generation link.&quot;,
+    &quot;conversation_id&quot;: &quot;1234&quot;,
+    &quot;data&quot;: {},
+    &quot;failure_value&quot;: &quot;\&quot;dont_understand\&quot;&quot;,
+    &quot;max_state_count&quot;: 0,
+    &quot;analyzer&quot;: &quot;&quot;,
+    &quot;state&quot;: &quot;forgot_password&quot;,
+    &quot;state_data&quot;: {
+        &quot;verification&quot;: &quot;did you mean you forgot the password?&quot;
+    },
+    &quot;success_value&quot;: &quot;\&quot;send_password_generation_link\&quot;&quot;
+}
+</code></pre>
+
+<h5 id="example-2">Example 2</h5>
+<p>User inserts their email after having been in <code>forgot_password</code>. 
+The client sends:</p>
+<pre><code class="bash">curl  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/get_next_response -d '
+{
+    &quot;conversation_id&quot;: &quot;1234&quot;,
+    &quot;user_input&quot;: { &quot;text&quot;: &quot;&quot; },
+    &quot;values&quot;: {
+        &quot;return_value&quot;: &quot;send_password_generation_link&quot;,
+        &quot;data&quot;: { &quot;email&quot;: &quot;john@example.com&quot; }
+    }
+}'
+</code></pre>
+
+<p>and gets:</p>
+<pre><code class="json">{
+    &quot;action&quot;: &quot;send_password_generation_link&quot;,
+    &quot;action_input&quot;: {
+        &quot;email&quot;: &quot;john@example.com&quot;,
+        &quot;template&quot;: &quot;somebody requested to reset your password, if you requested the password reset follow the link: %link%&quot;
+    },
+    &quot;bubble&quot;: &quot;Thank you. An e-mail will be sent to this address: a@b.com with your account details and the necessary steps for you to reset your password.&quot;,
+    &quot;conversation_id&quot;: &quot;1234&quot;,
+    &quot;data&quot;: {
+        &quot;email&quot;: &quot;john@example.com&quot;
+    },
+    &quot;failure_value&quot;: &quot;call_operator&quot;,
+    &quot;max_state_count&quot;: 0,
+    &quot;analyzer&quot;: &quot;&quot;,
+    &quot;state&quot;: &quot;send_password_generation_link&quot;,
+    &quot;state_data&quot;: {},
+    &quot;success_value&quot;: &quot;\&quot;any_further\&quot;&quot;
+}
+
+</code></pre>
+
+<h4 id="204">204</h4>
+<p>No response was found</p>
+<h4 id="500-error">500 (error)</h4>
+<p>Internal server error</p>
+<h4 id="400-error">400 (error)</h4>
+<p>Bad request: </p>
+<ul>
+<li>meaning: the input data structure is not valid</li>
+<li>output data: no data returned</li>
+</ul>
+<h4 id="422-error">422 (error)</h4>
+<ul>
+<li>meaning: bad request data, the input data is formally valid but there is some issue with data interpretation</li>
+<li>output data: the output data structure is a json dictionary with two fields: code and message. The following code are supported:</li>
+<li>code: 100</li>
+<li>message: "error evaluating the template strings, bad values"</li>
+</ul>
+<h4 id="404-error">404 (error)</h4>
+<ul>
+<li>meaning: not found</li>
+<li>output data: no data returned</li>
+</ul>
+<h2 id="get-decisiontable"><code>GET /decisiontable</code></h2>
+<p>Get a document by ID</p>
+<p>Output JSON</p>
+<h3 id="return-codes_1">Return codes</h3>
+<h4 id="200_1">200</h4>
+<p>Sample call</p>
+<pre><code class="bash"># retrieve one or more entries with given ids; ids can be specified multiple times
+curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:8888/decisiontable?ids=further_details_access_question&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+  &quot;total&quot;: 1,
+  &quot;max_score&quot;: 0,
+  &quot;hits&quot;: [
+    {
+      &quot;score&quot;: 0,
+      &quot;document&quot;: {
+        &quot;analyzer&quot;: &quot;((forgot).*(password))&quot;,
+        &quot;queries&quot;: [
+          &quot;cannot access account&quot;,
+          &quot;problem access account&quot;
+        ],
+        &quot;state&quot;: &quot;further_details_access_question&quot;,
+        &quot;state_data&quot;: {
+          &quot;verification&quot;: &quot;did you mean you can't access to your account?&quot;
+        },
+        &quot;success_value&quot;: &quot;eval(show_buttons)&quot;,
+        &quot;failure_value&quot;: &quot;\&quot;dont_understand\&quot;&quot;,
+        &quot;bubble&quot;: &quot;Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?&quot;,
+        &quot;action_input&quot;: {
+          &quot;Specify your problem&quot;: &quot;specify_problem&quot;,
+          &quot;I want to call an operator&quot;: &quot;call_operator&quot;,
+          &quot;None of the above&quot;: &quot;start&quot;,
+          &quot;Forgot Password&quot;: &quot;forgot_password&quot;,
+          &quot;Account locked&quot;: &quot;account_locked&quot;
+        },
+        &quot;max_state_count&quot;: 0,
+        &quot;action&quot;: &quot;show_buttons&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+
+<h2 id="put-decisiontable"><code>PUT /decisiontable</code></h2>
+<p>Output JSON</p>
+<h3 id="return-codes_2">Return codes</h3>
+<h4 id="201">201</h4>
+<p>Sample call</p>
+<pre><code class="bash"># update the &quot;further_details_access_question&quot; entry in the DT
+curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:8888/decisiontable/further_details_access_question -d '{
+  &quot;queries&quot;: [&quot;cannot access account&quot;, &quot;problem access account&quot;, &quot;unable to access to my account&quot;]
+}'
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+    &quot;created&quot;: false,
+    &quot;dtype&quot;: &quot;state&quot;,
+    &quot;id&quot;: &quot;further_details_access_question&quot;,
+    &quot;index&quot;: &quot;jenny-en-0&quot;,
+    &quot;version&quot;: 2
+}
+</code></pre>
+
+<h2 id="post-decisiontable"><code>POST /decisiontable</code></h2>
+<p>Insert a new document.</p>
+<p>Output JSON</p>
+<h3 id="return-codes_3">Return codes</h3>
+<h4 id="201_1">201</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/decisiontable -d '{
+  &quot;state&quot;: &quot;further_details_access_question&quot;,
+  &quot;max_state_count&quot;: 0,
+  &quot;analyzer&quot;: &quot;&quot;,
+  &quot;queries&quot;: [&quot;cannot access account&quot;, &quot;problem access account&quot;],
+  &quot;bubble&quot;: &quot;What seems to be the problem exactly?&quot;,
+  &quot;action&quot;: &quot;show_buttons&quot;,
+  &quot;action_input&quot;: {&quot;Forgot Password&quot;: &quot;forgot_password&quot;, &quot;Account locked&quot;: &quot;account_locked&quot;, &quot;Payment problem&quot;: &quot;payment_problem&quot;, &quot;Specify your problem&quot;: &quot;specify_problem&quot;, &quot;I want to call an operator&quot;: &quot;call_operator&quot;, &quot;None of the above&quot;: &quot;start&quot;},
+  &quot;success_value&quot;: &quot;eval(show_buttons)&quot;,
+  &quot;failure_value&quot;: &quot;dont_understand&quot;
+}'
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+    &quot;created&quot;: true,
+    &quot;dtype&quot;: &quot;state&quot;,
+    &quot;id&quot;: &quot;further_details_access_question&quot;,
+    &quot;index&quot;: &quot;jenny-en-0&quot;,
+    &quot;version&quot;: 1
+}
+</code></pre>
+
+<h2 id="delete-decisiontable"><code>DELETE /decisiontable</code></h2>
+<p>Delete a document by ID</p>
+<p>Output JSON</p>
+<h3 id="return-codes_4">Return codes</h3>
+<h4 id="200_2">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/decisiontable/further_details_access_question
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+    &quot;dtype&quot;: &quot;state&quot;,
+    &quot;found&quot;: true,
+    &quot;id&quot;: &quot;further_details_access_question&quot;,
+    &quot;index&quot;: &quot;jenny-en-0&quot;,
+    &quot;version&quot;: 3
+}
+</code></pre>
+
+<h2 id="post-decisiontable_search"><code>POST /decisiontable_search</code></h2>
+<p>Update a document</p>
+<p>Output JSON</p>
+<h3 id="return-codes_5">Return codes</h3>
+<h4 id="200_3">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/decisiontable_search -d '{
+  &quot;queries&quot;: &quot;cannot access my account&quot;,
+  &quot;min_score&quot;: 0.1,
+  &quot;boost_exact_match_factor&quot;: 2.0
+}'
+</code></pre>
+
+<h2 id="get-decisiontable_analyzer"><code>GET /decisiontable_analyzer</code></h2>
+<p>(WORK IN PROGRESS, PARTIALLY IMPLEMENTED)</p>
+<p>Get and return the map of analyzer for each state</p>
+<p>Output JSON</p>
+<h3 id="return-codes_6">Return codes</h3>
+<h4 id="200_4">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:8888/decisiontable_analyzer&quot;
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{
+  &quot;analyzer_map&quot;: {
+    &quot;further_details_access_question&quot;: &quot;((forgot).*(password))&quot;
+  }
+}
+</code></pre>
+
+<h2 id="post-decisiontable_analyzer"><code>POST /decisiontable_analyzer</code></h2>
+<p>Load/reload the map of analyzer from ES</p>
+<p>Output JSON</p>
+<h3 id="return-codes_7">Return codes</h3>
+<h4 id="200_5">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/decisiontable_analyzer&quot;
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{&quot;num_of_entries&quot;:1}
+</code></pre>
+
+<h2 id="get-knowledgebase"><code>GET /knowledgebase</code></h2>
+<p>Return a document by ID</p>
+<p>Output JSON</p>
+<h3 id="return-codes_8">Return codes</h3>
+<h4 id="200_6">200</h4>
+<p>Sample call</p>
+<pre><code class="bash"># retrieve one or more entries with given ids; ids can be specified multiple times
+curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:8888/knowledgebase?ids=0&quot;
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{
+    &quot;hits&quot;: [
+        {
+            &quot;document&quot;: {
+                &quot;answer&quot;: &quot;you are welcome!&quot;,
+                &quot;conversation&quot;: &quot;832&quot;,
+                &quot;doctype&quot;: &quot;normal&quot;,
+                &quot;id&quot;: &quot;0&quot;,
+                &quot;index_in_conversation&quot;: 11,
+                &quot;question&quot;: &quot;thank you&quot;,
+                &quot;state&quot;: &quot;&quot;,
+                &quot;status&quot;: 0,
+                &quot;topics&quot;: &quot;&quot;,
+                &quot;verified&quot;: false
+            },
+            &quot;score&quot;: 0.0
+        }
+    ],
+    &quot;max_score&quot;: 0.0,
+    &quot;total&quot;: 1
+}
+</code></pre>
+
+<h2 id="post-knowledgebase"><code>POST /knowledgebase</code></h2>
+<p>Insert a new document</p>
+<h3 id="return-codes_9">Return codes</h3>
+<h4 id="201_2">201</h4>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/starchat-en/knowledgebase -d '{
+    &quot;answer&quot;: &quot;you are welcome!&quot;,
+    &quot;conversation&quot;: &quot;832&quot;,
+    &quot;doctype&quot;: &quot;normal&quot;,
+    &quot;id&quot;: &quot;0&quot;,
+    &quot;index_in_conversation&quot;: 11,
+    &quot;question&quot;: &quot;thank you&quot;,
+    &quot;state&quot;: &quot;&quot;,
+    &quot;status&quot;: 0,
+    &quot;topics&quot;: &quot;&quot;,
+    &quot;verified&quot;: true
+}'
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{
+    &quot;hits&quot;: [
+        {
+            &quot;document&quot;: {
+                &quot;answer&quot;: &quot;you are welcome!&quot;,
+                &quot;conversation&quot;: &quot;832&quot;,
+                &quot;doctype&quot;: &quot;normal&quot;,
+                &quot;id&quot;: &quot;0&quot;,
+                &quot;index_in_conversation&quot;: 11,
+                &quot;question&quot;: &quot;thank you&quot;,
+                &quot;state&quot;: &quot;&quot;,
+                &quot;status&quot;: 0,
+                &quot;topics&quot;: &quot;&quot;,
+                &quot;verified&quot;: true
+            },
+            &quot;score&quot;: 0.0
+        }
+    ],
+    &quot;max_score&quot;: 0.0,
+    &quot;total&quot;: 1
+}
+</code></pre>
+
+<h2 id="delete-knowledgebase"><code>DELETE /knowledgebase</code></h2>
+<p>Delete a document by ID</p>
+<p>Output JSON</p>
+<h3 id="return-codes_10">Return codes</h3>
+<h4 id="200_7">200</h4>
+<p>Sample call</p>
+<p>curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/knowledgebase/0</p>
+<p>Sample output</p>
+<pre><code class="bash">{
+    &quot;dtype&quot;: &quot;question&quot;,
+    &quot;found&quot;: false,
+    &quot;id&quot;: &quot;0&quot;,
+    &quot;index&quot;: &quot;jenny-en-0&quot;,
+    &quot;version&quot;: 5
+}
+</code></pre>
+
+<h2 id="put-knowledgebase"><code>PUT /knowledgebase</code></h2>
+<p>Update an existing document</p>
+<p>Output JSON</p>
+<h3 id="return-codes_11">Return codes</h3>
+<h4 id="200_8">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:8888/starchat-en/knowledgebase/                                                   e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297 -d '{
+    &quot;answer&quot;: &quot;you are welcome!&quot;,
+    &quot;conversation&quot;: &quot;832&quot;,
+    &quot;doctype&quot;: &quot;normal&quot;,
+    &quot;index_in_conversation&quot;: 11,
+    &quot;question&quot;: &quot;thank yoy&quot;,
+    &quot;state&quot;: &quot;&quot;,
+    &quot;status&quot;: 0,
+    &quot;topics&quot;: &quot;&quot;,
+    &quot;verified&quot;: false
+}'
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{
+    &quot;created&quot;: false,
+    &quot;dtype&quot;: &quot;question&quot;,
+    &quot;id&quot;: &quot;e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297&quot;,
+    &quot;index&quot;: &quot;jenny-en-0&quot;,
+    &quot;version&quot;: 3
+}
+</code></pre>
+
+<h2 id="post-knowledgebase_search"><code>POST /knowledgebase_search</code></h2>
+<p>Output JSON</p>
+<h3 id="return-codes_12">Return codes</h3>
+<h4 id="200_9">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/knowledgebase_search -d '{
+  &quot;question&quot;: &quot;thank you&quot;,
+  &quot;verified&quot;: true,
+  &quot;doctype&quot;: &quot;normal&quot;
+}'
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+    &quot;hits&quot;: [
+        {
+            &quot;document&quot;: {
+                &quot;answer&quot;: &quot;you are welcome&quot;,
+                &quot;conversation&quot;: &quot;4346&quot;,
+                &quot;doctype&quot;: &quot;normal&quot;,
+                &quot;id&quot;: &quot;10&quot;,
+                &quot;index_in_conversation&quot;: 6,
+                &quot;question&quot;: &quot;thank you&quot;,
+                &quot;state&quot;: &quot;&quot;,
+                &quot;status&quot;: 0,
+                &quot;topics&quot;: &quot;&quot;,
+                &quot;verified&quot;: true
+            },
+            &quot;score&quot;: 3.5618982315063477
+        }
+    ],
+    &quot;max_score&quot;: 3.5618982315063477,
+    &quot;total&quot;: 1
+}
+</code></pre>
+
+<h2 id="post-language_guesser"><code>POST /language_guesser</code></h2>
+<p>Output JSON</p>
+<h3 id="return-codes_13">Return codes</h3>
+<h4 id="200_10">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/language_guesser&quot; -d &quot;
+{
+    \&quot;input_text\&quot;: \&quot;good morning, may I ask you a question?\&quot;
+    }
+    &quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;enhough_text&quot; : false,
+   &quot;language&quot; : &quot;en&quot;,
+   &quot;confidence&quot; : &quot;MEDIUM&quot;,
+   &quot;score&quot; : 0.571426689624786
+}
+</code></pre>
+
+<h2 id="get-language_guesser"><code>GET /language_guesser</code></h2>
+<p>Output JSON</p>
+<h3 id="return-codes_14">Return codes</h3>
+<h4 id="200_11">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:8888/language_guesser/en&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{&quot;message&quot;:&quot;updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)&quot;}
+
+</code></pre>
+
+<h2 id="post-index_managementcreate"><code>POST /index_management/create</code></h2>
+<p>Output JSON</p>
+<h3 id="return-codes_15">Return codes</h3>
+<h4 id="200_12">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/index_management&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{&quot;message&quot;:&quot;create index: jenny-en-0 create_index_ack(true)&quot;}
+</code></pre>
+
+<h2 id="post-index_managementrefresh"><code>POST /index_management/refresh</code></h2>
+<p>Output JSON</p>
+<h3 id="return-codes_16">Return codes</h3>
+<h4 id="200_13">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/index_management/refresh&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;failed_shards_n&quot; : 0,
+   &quot;total_shards_n&quot; : 10,
+   &quot;failed_shards&quot; : [],
+   &quot;successful_shards_n&quot; : 5
+}
+</code></pre>
+
+<h2 id="get-index_management"><code>GET /index_management</code></h2>
+<p>Output JSON</p>
+<h3 id="return-codes_17">Return codes</h3>
+<h4 id="200_14">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:8888/index_management&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{&quot;message&quot;:&quot;settings index: jenny-en-0 dt_type_check(state:true) kb_type_check(question:true) term_type_name(term:true)&quot;}
+</code></pre>
+
+<h2 id="put-index_management"><code>PUT /index_management</code></h2>
+<p>Output JSON</p>
+<h3 id="return-codes_18">Return codes</h3>
+<h4 id="200_15">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X PUT &quot;http://localhost:8888/index_management&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{&quot;message&quot;:&quot;updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)&quot;}
+</code></pre>
+
+<h2 id="delete-index_management"><code>DELETE /index_management</code></h2>
+<p>Output JSON</p>
+<h3 id="return-codes_19">Return codes</h3>
+<h4 id="200_16">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE &quot;http://localhost:8888/language_guesser/en&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{&quot;message&quot;:&quot;removed index: jenny-en-0 index_ack(true)&quot;}
+</code></pre>
+
+<h2 id="post-termindex"><code>POST /term/index</code></h2>
+<p>Index the term as indicated in the JSON. </p>
+<h3 id="return-codes_20">Return codes</h3>
+<h4 id="200_17">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/term/index -d '{
+     &quot;terms&quot;: [
+         {
+            &quot;term&quot;: &quot;मराठी&quot;,
+            &quot;frequency_base&quot;: 1.0,
+            &quot;frequency_stem&quot;: 1.0,
+            &quot;vector&quot;: [1.0, 2.0, 3.0],
+            &quot;synonyms&quot;:
+            {
+                &quot;bla1&quot;: 0.1,
+                &quot;bla2&quot;: 0.2
+            },
+            &quot;antonyms&quot;:
+            {
+                &quot;bla3&quot;: 0.1,
+                &quot;bla4&quot;: 0.2
+            },
+            &quot;tags&quot;: &quot;tag1 tag2&quot;,
+            &quot;features&quot;:
+            {
+                &quot;NUM&quot;: &quot;S&quot;,
+                &quot;GEN&quot;: &quot;M&quot;
+            }
+            },
+            {
+            &quot;term&quot;: &quot;term2&quot;,
+            &quot;frequency_base&quot;: 1.0,
+            &quot;frequency_stem&quot;: 1.0,
+            &quot;vector&quot;: [1.0, 2.0, 3.0],
+            &quot;synonyms&quot;:
+            {
+                &quot;bla1&quot;: 0.1,
+                &quot;bla2&quot;: 0.2
+            },
+            &quot;antonyms&quot;:
+            {
+                &quot;bla3&quot;: 0.1,
+                &quot;bla4&quot;: 0.2
+            },
+            &quot;tags&quot;: &quot;tag1 tag2&quot;,
+            &quot;features&quot;:
+            {
+                &quot;NUM&quot;: &quot;P&quot;,
+                &quot;GEN&quot;: &quot;F&quot;
+            }
+            }
+   ]
+}'
+
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;data&quot; : [
+      {
+         &quot;version&quot; : 1,
+         &quot;created&quot; : true,
+         &quot;dtype&quot; : &quot;term&quot;,
+         &quot;index&quot; : &quot;jenny-en-0&quot;,
+         &quot;id&quot; : &quot;मराठी&quot;
+      },
+      {
+         &quot;dtype&quot; : &quot;term&quot;,
+         &quot;created&quot; : true,
+         &quot;version&quot; : 1,
+         &quot;id&quot; : &quot;term2&quot;,
+         &quot;index&quot; : &quot;jenny-en-0&quot;
+      }
+   ]
+}
+</code></pre>
+
+<h2 id="post-termget"><code>POST /term/get</code></h2>
+<p>Get one or more terms entry.</p>
+<h3 id="return-codes_21">Return codes</h3>
+<h4 id="200_18">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/term/get -d '{
+     &quot;ids&quot;: [&quot;मराठी&quot;, &quot;term2&quot;]
+}'
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;terms&quot; : [
+      {
+         &quot;vector&quot; : [
+            1,
+            2,
+            3
+         ],
+        &quot;frequency_base&quot;: 1.0,
+        &quot;frequency_stem&quot;: 1.0,
+         &quot;term&quot; : &quot;मराठी&quot;,
+         &quot;antonyms&quot; : {
+            &quot;bla4&quot; : 0.2,
+            &quot;bla3&quot; : 0.1
+         },
+         &quot;features&quot; : {
+            &quot;NUM&quot; : &quot;S&quot;,
+            &quot;GEN&quot; : &quot;M&quot;
+         },
+         &quot;synonyms&quot; : {
+            &quot;bla2&quot; : 0.2,
+            &quot;bla1&quot; : 0.1
+         },
+         &quot;tags&quot; : &quot;tag1 tag2&quot;
+      },
+      {
+         &quot;antonyms&quot; : {
+            &quot;bla3&quot; : 0.1,
+            &quot;bla4&quot; : 0.2
+         },
+         &quot;features&quot; : {
+            &quot;NUM&quot; : &quot;P&quot;,
+            &quot;GEN&quot; : &quot;F&quot;
+         },
+         &quot;term&quot; : &quot;term2&quot;,
+         &quot;frequency_base&quot;: 1.0,
+         &quot;frequency_stem&quot;: 1.0,
+         &quot;vector&quot; : [
+            1,
+            2,
+            3
+         ],
+         &quot;synonyms&quot; : {
+            &quot;bla1&quot; : 0.1,
+            &quot;bla2&quot; : 0.2
+         },
+         &quot;tags&quot; : &quot;tag1 tag2&quot;
+      }
+   ]
+}
+
+</code></pre>
+
+<h2 id="delete-term"><code>DELETE /term</code></h2>
+<p>Delete the term.</p>
+<h3 id="return-codes_22">Return codes</h3>
+<h4 id="200_19">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/term -d '{
+     &quot;ids&quot;: [&quot;मराठी&quot;, &quot;term2&quot;]
+}'
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;data&quot; : [
+      {
+         &quot;dtype&quot; : &quot;term&quot;,
+         &quot;version&quot; : 2,
+         &quot;id&quot; : &quot;मराठी&quot;,
+         &quot;index&quot; : &quot;jenny-en-0&quot;,
+         &quot;found&quot; : true
+      },
+      {
+         &quot;dtype&quot; : &quot;term&quot;,
+         &quot;id&quot; : &quot;term2&quot;,
+         &quot;version&quot; : 2,
+         &quot;found&quot; : true,
+         &quot;index&quot; : &quot;jenny-en-0&quot;
+      }
+   ]
+}
+
+</code></pre>
+
+<h2 id="put-term"><code>PUT /term</code></h2>
+<p>Update the entry.</p>
+<h3 id="return-codes_23">Return codes</h3>
+<h4 id="200_20">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:8888/term -d '{
+     &quot;terms&quot;: [
+         {
+            &quot;term&quot;: &quot;मराठी&quot;,
+            &quot;frequency_base&quot;: 1.0,
+            &quot;frequency_stem&quot;: 1.0,
+            &quot;vector&quot;: [1.0, 2.0, 3.0, 4.0],
+            &quot;synonyms&quot;:
+            {
+                &quot;bla1&quot;: 0.1,
+                &quot;bla2&quot;: 0.2
+            },
+            &quot;antonyms&quot;:
+            {
+                &quot;term2&quot;: 0.1,
+                &quot;bla4&quot;: 0.2
+            },
+            &quot;tags&quot;: &quot;tag1 tag2&quot;,
+            &quot;features&quot;:
+            {
+                &quot;FEATURE_NEW1&quot;: &quot;V&quot;,
+                &quot;GEN&quot;: &quot;M&quot;
+            }
+            },
+            {
+            &quot;term&quot;: &quot;term2&quot;,
+            &quot;frequency_base&quot;: 1.0,
+            &quot;frequency_stem&quot;: 1.0,
+            &quot;vector&quot;: [1.0, 2.0, 3.0, 5.0],
+            &quot;synonyms&quot;:
+            {
+                &quot;bla1&quot;: 0.1,
+                &quot;bla2&quot;: 0.2
+            },
+            &quot;antonyms&quot;:
+            {
+                &quot;bla3&quot;: 0.1,
+                &quot;bla4&quot;: 0.2
+            },
+            &quot;tags&quot;: &quot;tag1 tag2&quot;,
+            &quot;features&quot;:
+            {
+                &quot;FEATURE_NEW1&quot;: &quot;N&quot;,
+                &quot;GEN&quot;: &quot;F&quot;
+            }
+            }
+   ]
+}'
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;data&quot; : [
+      {
+         &quot;version&quot; : 2,
+         &quot;id&quot; : &quot;मराठी&quot;,
+         &quot;index&quot; : &quot;jenny-en-0&quot;,
+         &quot;created&quot; : false,
+         &quot;dtype&quot; : &quot;term&quot;
+      },
+      {
+         &quot;index&quot; : &quot;jenny-en-0&quot;,
+         &quot;id&quot; : &quot;term2&quot;,
+         &quot;version&quot; : 2,
+         &quot;dtype&quot; : &quot;term&quot;,
+         &quot;created&quot; : false
+      }
+   ]
+}
+
+</code></pre>
+
+<h2 id="get-termterm"><code>GET /term/term</code></h2>
+<p>Search for term (using Elasticsearch).</p>
+<h3 id="return-codes_24">Return codes</h3>
+<h4 id="200_21">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET http://localhost:8888/term/term -d '{
+    &quot;term&quot;: &quot;मराठी&quot;
+}'
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;hits&quot; : {
+      &quot;terms&quot; : [
+         {
+            &quot;vector&quot; : [
+               1.2,
+               2.3,
+               3.4,
+               4.5
+            ],
+            &quot;antonyms&quot; : {
+               &quot;bla4&quot; : 0.2,
+               &quot;term2&quot; : 0.1
+            },
+            &quot;frequency_base&quot;: 1.0,
+            &quot;frequency_stem&quot;: 1.0,
+            &quot;features&quot; : {
+               &quot;FEATURE_NEW1&quot; : &quot;V&quot;,
+               &quot;GEN&quot; : &quot;M&quot;
+            },
+            &quot;score&quot; : 0.6931471824646,
+            &quot;tags&quot; : &quot;tag1 tag2&quot;,
+            &quot;term&quot; : &quot;मराठी&quot;,
+            &quot;synonyms&quot; : {
+               &quot;bla2&quot; : 0.2,
+               &quot;bla1&quot; : 0.1
+            }
+         }
+      ]
+   },
+   &quot;total&quot; : 1,
+   &quot;max_score&quot; : 0.6931471824646
+}
+</code></pre>
+
+<h2 id="get-termtext"><code>GET /term/text</code></h2>
+<p>Search for all the terms in the text and return the entries.</p>
+<h3 id="return-codes_25">Return codes</h3>
+<h4 id="200_22">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET http://localhost:8888/term/text -d 'term2 मराठी'
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;max_score&quot; : 0.6931471824646,
+   &quot;hits&quot; : {
+      &quot;terms&quot; : [
+         {
+            &quot;term&quot; : &quot;मराठी&quot;,
+            &quot;score&quot; : 0.6931471824646,
+            &quot;tags&quot; : &quot;tag1 tag2&quot;,
+            &quot;vector&quot; : [
+               1.2,
+               2.3,
+               3.4,
+               4.5
+            ],
+            &quot;features&quot; : {
+               &quot;GEN&quot; : &quot;M&quot;,
+               &quot;FEATURE_NEW1&quot; : &quot;V&quot;
+            },
+            &quot;antonyms&quot; : {
+               &quot;bla4&quot; : 0.2,
+               &quot;term2&quot; : 0.1
+            },
+            &quot;synonyms&quot; : {
+               &quot;bla2&quot; : 0.2,
+               &quot;bla1&quot; : 0.1
+            },
+            &quot;frequency_base&quot;: 1.0,
+            &quot;frequency_stem&quot;: 1.0
+         },
+         {
+            &quot;term&quot; : &quot;term2&quot;,
+            &quot;tags&quot; : &quot;tag1 tag2&quot;,
+            &quot;score&quot; : 0.6931471824646,
+            &quot;features&quot; : {
+               &quot;FEATURE_NEW1&quot; : &quot;N&quot;,
+               &quot;GEN&quot; : &quot;F&quot;
+            },
+            &quot;vector&quot; : [
+               1.6,
+               2.7,
+               3.8,
+               5.9
+            ],
+            &quot;antonyms&quot; : {
+               &quot;bla3&quot; : 0.1,
+               &quot;bla4&quot; : 0.2
+            },
+            &quot;frequency_base&quot;: 1.0,
+            &quot;frequency_stem&quot;: 1.0,
+            &quot;synonyms&quot; : {
+               &quot;bla1&quot; : 0.1,
+               &quot;bla2&quot; : 0.2
+            }
+         }
+      ]
+   },
+   &quot;total&quot; : 2
+}
+</code></pre>
+
+<h2 id="get-tokenizers"><code>GET /tokenizers</code></h2>
+<p>Show a list of supported methods for tokenization and stemming</p>
+<h3 id="return-codes_26">Return codes</h3>
+<h4 id="200_23">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:8888/tokenizers&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;shingles2&quot; : &quot;2 words shingles&quot;,
+   &quot;shingles3&quot; : &quot;3 words shingles&quot;,
+   &quot;shingles2_10&quot; : &quot;from 2 to 10 shingles&quot;,
+   &quot;base_stem&quot; : &quot;lowercase + stemming&quot;,
+   &quot;base&quot; : &quot;lowercase&quot;,
+   &quot;stop&quot; : &quot;lowercase + stopwords elimination&quot;,
+   &quot;shingles4&quot; : &quot;4 words shingles&quot;,
+   &quot;stop_stem&quot; : &quot;lowercase + stopwords elimination + stemming&quot;
+}
+</code></pre>
+
+<h2 id="post-tokenizers"><code>POST /tokenizers</code></h2>
+<p>get a list of token using the selected analyzer</p>
+<h3 id="return-codes_27">Return codes</h3>
+<h4 id="200_24">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/tokenizers&quot; -d &quot;
+{
+    \&quot;text\&quot;: \&quot;good morning, may I ask you a question?\&quot;,
+          \&quot;tokenizer\&quot;: \&quot;stop\&quot;
+          }&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;tokens&quot; : [
+      {
+         &quot;start_offset&quot; : 0,
+         &quot;end_offset&quot; : 4,
+         &quot;token_type&quot; : &quot;word&quot;,
+         &quot;token&quot; : &quot;good&quot;,
+         &quot;position&quot; : 0
+      },
+      {
+         &quot;token&quot; : &quot;morning&quot;,
+         &quot;position&quot; : 1,
+         &quot;token_type&quot; : &quot;word&quot;,
+         &quot;end_offset&quot; : 12,
+         &quot;start_offset&quot; : 5
+      },
+      {
+         &quot;start_offset&quot; : 14,
+         &quot;end_offset&quot; : 17,
+         &quot;token_type&quot; : &quot;word&quot;,
+         &quot;token&quot; : &quot;may&quot;,
+         &quot;position&quot; : 2
+      },
+      {
+         &quot;token_type&quot; : &quot;word&quot;,
+         &quot;token&quot; : &quot;i&quot;,
+         &quot;position&quot; : 3,
+         &quot;start_offset&quot; : 18,
+         &quot;end_offset&quot; : 19
+      },
+      {
+         &quot;end_offset&quot; : 23,
+         &quot;start_offset&quot; : 20,
+         &quot;position&quot; : 4,
+         &quot;token&quot; : &quot;ask&quot;,
+         &quot;token_type&quot; : &quot;word&quot;
+      },
+      {
+         &quot;end_offset&quot; : 27,
+         &quot;start_offset&quot; : 24,
+         &quot;position&quot; : 5,
+         &quot;token&quot; : &quot;you&quot;,
+         &quot;token_type&quot; : &quot;word&quot;
+      },
+      {
+         &quot;end_offset&quot; : 38,
+         &quot;start_offset&quot; : 30,
+         &quot;token&quot; : &quot;question&quot;,
+         &quot;position&quot; : 7,
+         &quot;token_type&quot; : &quot;word&quot;
+      }
+   ]
+}
+</code></pre>
+
+<h2 id="post-analyzers_playground"><code>POST /analyzers_playground</code></h2>
+<p>used to test analyzers on the fly</p>
+<h3 id="return-codes_28">Return codes</h3>
+<h4 id="200_25">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">ANALYZER=&quot;keyword(\\\&quot;test\\\&quot;)&quot;
+QUERY=&quot;this is a test&quot;
+curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/analyzers_playground&quot; -d &quot;
+{
+        \&quot;analyzer\&quot;: \&quot;${ANALYZER}\&quot;,
+            \&quot;query\&quot;: \&quot;${QUERY}\&quot;
+        }&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;value&quot; : 0.25,
+   &quot;build_message&quot; : &quot;success&quot;,
+   &quot;build&quot; : true
+}
+</code></pre>
+
+<h2 id="post-spellcheckterms"><code>POST /spellcheck/terms</code></h2>
+<p>terms spellchecker based on knowledgebase text </p>
+<h3 id="return-codes_29">Return codes</h3>
+<h4 id="200_26">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">QUERY=${1:-&quot;this is a tes for splellchecker&quot;}
+curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/spellcheck/terms -d &quot;{
+  \&quot;text\&quot;: \&quot;${QUERY}\&quot;,
+    \&quot;prefix_length\&quot;: 3,
+      \&quot;min_doc_freq\&quot;: 1
+      }&quot;
+</code></pre>
+
+<pre><code class="json">{
+   &quot;tokens&quot; : [
+      {
+         &quot;offset&quot; : 0,
+         &quot;options&quot; : [
+            {
+               &quot;freq&quot; : 1284,
+               &quot;score&quot; : 0.800000011920929,
+               &quot;text&quot; : &quot;hello&quot;
+            },
+            {
+               &quot;text&quot; : &quot;hella&quot;,
+               &quot;score&quot; : 0.800000011920929,
+               &quot;freq&quot; : 2
+            },
+            {
+               &quot;freq&quot; : 2,
+               &quot;score&quot; : 0.800000011920929,
+               &quot;text&quot; : &quot;helle&quot;
+            },
+            {
+               &quot;text&quot; : &quot;help&quot;,
+               &quot;score&quot; : 0.75,
+               &quot;freq&quot; : 35395
+            },
+            {
+               &quot;score&quot; : 0.75,
+               &quot;freq&quot; : 5,
+               &quot;text&quot; : &quot;hell&quot;
+            }
+         ],
+         &quot;length&quot; : 5,
+         &quot;text&quot; : &quot;hellp&quot;
+      },
+      {
+         &quot;length&quot; : 4,
+         &quot;options&quot; : [],
+         &quot;offset&quot; : 7,
+         &quot;text&quot; : &quot;this&quot;
+      },
+      {
+         &quot;length&quot; : 2,
+         &quot;options&quot; : [],
+         &quot;offset&quot; : 12,
+         &quot;text&quot; : &quot;is&quot;
+      },
+      {
+         &quot;length&quot; : 1,
+         &quot;offset&quot; : 15,
+         &quot;options&quot; : [],
+         &quot;text&quot; : &quot;a&quot;
+      },
+      {
+         &quot;length&quot; : 4,
+         &quot;offset&quot; : 17,
+         &quot;options&quot; : [
+            {
+               &quot;text&quot; : &quot;test&quot;,
+               &quot;score&quot; : 0.75,
+               &quot;freq&quot; : 191
+            },
+            {
+               &quot;freq&quot; : 10,
+               &quot;score&quot; : 0.5,
+               &quot;text&quot; : &quot;tessa&quot;
+            },
+            {
+               &quot;text&quot; : &quot;tesco&quot;,
+               &quot;score&quot; : 0.5,
+               &quot;freq&quot; : 9
+            },
+            {
+               &quot;text&quot; : &quot;tesia&quot;,
+               &quot;score&quot; : 0.5,
+               &quot;freq&quot; : 2
+            },
+            {
+               &quot;freq&quot; : 2,
+               &quot;score&quot; : 0.5,
+               &quot;text&quot; : &quot;tester&quot;
+            }
+         ],
+         &quot;text&quot; : &quot;tesr&quot;
+      }
+   ]
+}
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '..';</script>
+        <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../js/base.js"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

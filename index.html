@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="./img/favicon.ico">
+        <title>StarChat Documentation</title>
+        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="./css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/highlight.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+	
+	<script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script> 
+    </head>
+
+    <body class="homepage">
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href=".">StarChat Documentation</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href=".">Home</a>
+                    </li>
+                    <li >
+                        <a href="apis/">APIs</a>
+                    </li>
+                    <li >
+                        <a href="about/">About</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li class="disabled">
+                        <a rel="next" >
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="apis/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#welcome">Welcome!</a></li>
+        <li class="main "><a href="#how-to-contribute">How to contribute</a></li>
+        <li class="main "><a href="#quick-start">Quick Start</a></li>
+            <li><a href="#requirements">Requirements</a></li>
+            <li><a href="#setup-with-docker-recommended">Setup with Docker (recommended)</a></li>
+            <li><a href="#install-without-docker">Install without Docker</a></li>
+            <li><a href="#test-the-installation">Test the installation</a></li>
+            <li><a href="#starchat-configuration">StarChat configuration</a></li>
+        <li class="main "><a href="#technology">Technology</a></li>
+            <li><a href="#how-does-starchat-work">How does StarChat work?</a></li>
+            <li><a href="#configuration-of-the-decisiontable">Configuration of the DecisionTable</a></li>
+            <li><a href="#client-functions">Client functions</a></li>
+            <li><a href="#mechanics">Mechanics</a></li>
+            <li><a href="#scalability">Scalability</a></li>
+            <li><a href="#security">Security</a></li>
+        <li class="main "><a href="#indexing-terms-on-term-table">Indexing terms on term table</a></li>
+        <li class="main "><a href="#test">Test</a></li>
+        <li class="main "><a href="#troubleshooting">Troubleshooting</a></li>
+            <li><a href="#docker-start-from-scratch">Docker: start from scratch</a></li>
+            <li><a href="#docker-size-of-virtual-memory">Docker: Size of virtual memory</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="welcome">Welcome!</h1>
+<p>This is the official repository for the StarChat, a scalable conversational engine for B2B applications.</p>
+<h1 id="how-to-contribute">How to contribute</h1>
+<p>To contribute to StarChat, please send us a <a href="https://help.github.com/articles/using-pull-requests/#fork--pull">pull request</a>  from your fork of this repository.</p>
+<p>Our concise <a href="https://github.com/GetJenny/starchat/blob/master/CONTRIBUTING.md">contribution guideline</a> contains the bare
+minumum requirements of the code contributions.</p>
+<p>Before contributing (or opening issues), you might want send us an email at starchat@getjenny.com.</p>
+<h1 id="quick-start">Quick Start</h1>
+<h2 id="requirements">Requirements</h2>
+<p>The easiest way is to install StarChat using two docker images. You only need:</p>
+<ul>
+<li><a href="http://www.scala-sbt.org">sbt</a></li>
+<li><a href="https://docs.docker.com/engine/installation/">docker</a></li>
+<li><a href="https://docs.docker.com/compose/install/">docker compose</a></li>
+</ul>
+<p>In this way, you will put all the indices in the Elasticsearch (version 5.3) image, and StarChat itself in the Java (8) image.</p>
+<p><em>If you do not use docker</em> you therefore need on your machine:</p>
+<ol>
+<li><a href="http://scala-lang.org">Scala 12.2</a></li>
+<li><a href="http://elastic.co">Elasticsearch 5.3</a></li>
+</ol>
+<h2 id="setup-with-docker-recommended">Setup with Docker (recommended)</h2>
+<h3 id="1-launch-docker-compose">1. Launch docker-compose</h3>
+<p>Generate a packet distribution:</p>
+<pre><code class="bash">sbt dist
+</code></pre>
+
+<p>Enter the directory docker-starchat:</p>
+<pre><code class="bash">cd  docker-starchat
+</code></pre>
+
+<p>Extract the packet into the docker-starchat folder:</p>
+<pre><code class="bash">unzip ../target/universal/data/WORK/GetJenny/starchat/target/universal/starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT.zip
+ln -s starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT starchat
+</code></pre>
+
+<p>The zip packet contains:</p>
+<ul>
+<li>a set of scripts to test the endpoints and as a complement for the documentation: <code>starchat-adf23af60508d50b0db61172a101d78339043fc4-SNAPSHOT/scripts/api_test/</code></li>
+<li>a set of command line programs <code>starchat-adf23af60508d50b0db61172a101d78339043fc4-SNAPSHOT/bin</code> to run starchat and other tools.</li>
+<li>delete-decision-table: delete items from the decision table</li>
+<li>index-corpus-on-knowledge-base: index a corpus on knowledge base as hidden (to improve the language model)</li>
+<li>index-decision-table: index data on the decision table from a csv</li>
+<li>index-knowledge-base: index data into the knowledge base</li>
+<li>index-terms: index terms vectors</li>
+<li>starchat: start starchat</li>
+</ul>
+<p>Review the configuration files <code>starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT/config/application.conf</code> and configure the language if needed (by default you have <code>index_language = "english"</code>)</p>
+<p>(If you are re-installing StarChat, and want to start from scratch see <a href="#docker-start-from-scratch">start from scratch</a>.)</p>
+<p>Start both startchat and elasticsearch:</p>
+<pre><code class="bash">docker-compose up -d
+</code></pre>
+
+<p>(Problems like <code>elastisearch exited with code 78</code>? have a look at <a href="#troubleshooting">troubleshooting</a>!)</p>
+<h3 id="2-create-elasticsearch-indices">2. Create Elasticsearch indices</h3>
+<p>Run from a terminal:</p>
+<pre><code class="bash"># create the indices in Elasticsearch
+curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/index_management&quot;
+</code></pre>
+
+<h3 id="3-load-the-configuration-file">3. Load the configuration file</h3>
+<p>Now you have to load the configuration file for the actual chat, aka <a href="#services">decision table</a>. We have provided an example csv in English, therefore:</p>
+<pre><code class="bash">sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1&quot;
+</code></pre>
+
+<p>Every time you load the configuration file you need to index the analyzer:</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/decisiontable_analyzer&quot;
+</code></pre>
+
+<p>Items on decision table can be removed using the following command:</p>
+<pre><code class="bash">sbt &quot;run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/sample_state_machine_specification.csv&quot;
+</code></pre>
+
+<h3 id="4-load-external-corpus-optional">4. Load external corpus (optional)</h3>
+<p>To have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the <a href="#post-knowledgebase">POST /knowledgebase</a> endpoint with <code>doctype: "hidden"</code>.</p>
+<h3 id="5-index-the-faqs-optional">5. Index the FAQs (optional)</h3>
+<p>You might want to activate the <a href="#services">knowledge base</a> for simple Question and Anwer.</p>
+<h2 id="install-without-docker">Install without Docker</h2>
+<p>Note: we do not support this installation.
+<em> Clone the repository and enter the starchat directory.
+</em> Initialize the Elasticsearch instance (see above for Docker)
+* Run the service: <code>sbt compile run</code></p>
+<p>The service binds on the port 8888 by default.</p>
+<h2 id="test-the-installation">Test the installation</h2>
+<p>Is the service working?</p>
+<p><code>curl -X GET localhost:8888 | python -mjson.tool</code></p>
+<p>Get the <code>test_state</code></p>
+<pre><code class="bash">curl  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/get_next_response -d '{
+ &quot;conversation_id&quot;: &quot;1234&quot;,
+  &quot;user_input&quot;: { &quot;text&quot;: &quot;Please send me the test state&quot; },
+  &quot;values&quot;: {
+      &quot;return_value&quot;: &quot;&quot;,
+      &quot;data&quot;: {}
+       }
+  }'
+</code></pre>
+
+<p>You should get:</p>
+<pre><code class="json">{
+    &quot;action&quot;: &quot;&quot;,
+    &quot;action_input&quot;: {},
+    &quot;analyzer&quot;: &quot;and(keyword(\&quot;test\&quot;), or(keyword(\&quot;send\&quot;), keyword(\&quot;get\&quot;)))&quot;,
+    &quot;bubble&quot;: &quot;This is the test state&quot;,
+    &quot;conversation_id&quot;: &quot;1234&quot;,
+    &quot;data&quot;: {},
+    &quot;failure_value&quot;: &quot;&quot;,
+    &quot;max_state_count&quot;: 0,
+    &quot;score&quot;: 1.0,
+    &quot;state&quot;: &quot;test_state&quot;,
+    &quot;state_data&quot;: {},
+    &quot;success_value&quot;: &quot;&quot;
+}
+</code></pre>
+
+<p>If you look at the <code>"analyzer"</code> field, you'll see that this state is triggered when
+the user types the <em>test</em> and either <em>get</em> or <em>send</em>. Try with <code>"text": "Please dont send me the test state"</code>
+ and StarChat will send an empty message.</p>
+<h2 id="starchat-configuration">StarChat configuration</h2>
+<p>With StarChat you can easily implement workflow-based chatbots. After the installation (see above)
+you only have to configure a conversation flow and eventually a front-end client.</p>
+<p>In practice, StarChat:</p>
+<ul>
+<li>analyze user's query and identifies a test where such user should be sent to</li>
+<li>creation of dynamic content using variables inferred from the conversation (e.g. "Please write your email so that I can send you a message")</li>
+</ul>
+<h3 id="simple-nlp-processing">Simple NLP processing</h3>
+<p><em>Work in progress</em></p>
+<ul>
+<li>Elasticsearch and the "queries" field</li>
+<li>The analyzer: atomic expressions and operators</li>
+</ul>
+<h1 id="technology">Technology</h1>
+<p>StarChat was design with the following goals in mind:</p>
+<ol>
+<li>easy deployment</li>
+<li>horizontally scalability without any service interruption.</li>
+<li>modularity</li>
+<li>statelessness</li>
+</ol>
+<h2 id="how-does-starchat-work">How does StarChat work?</h2>
+<h3 id="workflow">Workflow</h3>
+<p><img alt="alt tag" src="https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgc2ltcGxpZmllZCBSZXN0QVBJQ2FsbGluZ01lY2hhbmlzbSBpbiAqQ2hhdAoKVXNlciAtPiBTdGFyY2hhdFJlc291cmNlOiByZXN0IGFwaSBjYWxsIChpbiBqc29uKQoAGhAAKBZqc29uIGRlc2VyaWFsaXphdGlvbiBpbnRvIGVudGl0eQAqHVNlcnZpY2U6AHYFaW5nIGZ1bmMAPQUoaW4AOgcAgH8KACcHACwVADAJZXhlY3V0aW9uABscAIFzCgBoCXJlc3VsdCAob3V0AGgRAIFkHgCBbQ5vZgCBcgcAgX8GamVzAIEACwCCPwxVc2VyAIJyC3Jlc3BvbnNlAHwGAIJ8BgoK&amp;s=napkin" /></p>
+<h3 id="components">Components</h3>
+<p>StarChat uses Elasticsearch as NoSQL database and, as said above, NLP preprocessor, for
+indexing, sentence cleansing, and tokenization.</p>
+<h3 id="services">Services</h3>
+<p>StarChat consists of two different services: the "KnowledBase" and the "DecisionTable"</p>
+<h4 id="knowledgebase">KnowledgeBase</h4>
+<p>For quick setup based on real Q&amp;A logs. It stores question and answers pairs. Given a text as input
+ it proposes the pair with the closest match on the question field.
+  At the moment the KnowledBase supports only Analyzers implemented on Elasticsearch.</p>
+<h4 id="decisiontable">DecisionTable</h4>
+<p>The conversational engine itself. For the usage, see below.</p>
+<h2 id="configuration-of-the-decisiontable">Configuration of the DecisionTable</h2>
+<p>You configure the DecisionTable through CSV file. Please have a look at the one provided in <code>doc/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>state</th>
+<th>max_state_count</th>
+<th>analyzer</th>
+<th>queries</th>
+<th>bubble</th>
+<th>action</th>
+<th>action_input</th>
+<th>state_data</th>
+<th>success_value</th>
+<th>failure_value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td>"How may I help you?"</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>further_details_access_question</td>
+<td>0</td>
+<td></td>
+<td>"[""cannot access account"", ""problem access account""]"</td>
+<td></td>
+<td>show_buttons</td>
+<td>"{""Forgot Password"": ""forgot_password"", ""Account locked"": ""account_locked"", ""None of the above"": ""start""}"</td>
+<td></td>
+<td>eval(show_buttons)</td>
+<td>"""dont_understand"""</td>
+</tr>
+<tr>
+<td>forgot_password</td>
+<td>0</td>
+<td></td>
+<td>"[""Forgot password""]"</td>
+<td>"I will send you a new password generation link, enter your email."</td>
+<td>input_form</td>
+<td>"{""email"": ""email""}"</td>
+<td></td>
+<td>"""send_password_generation_link"""</td>
+<td>"""dont_understand"""</td>
+</tr>
+<tr>
+<td>send_password_generation_link</td>
+<td>0</td>
+<td></td>
+<td></td>
+<td>"Sending message to %email% with instructions."</td>
+<td>send_password_generation_link</td>
+<td>"{ ""template"": "If you requested a password reset, follow this link: %link%"", ""email"": ""%email%"" }"</td>
+<td></td>
+<td>"""any_further"""</td>
+<td>call_operator</td>
+</tr>
+</tbody>
+</table>
+<p>Fields in the configuration file are of three types:</p>
+<ul>
+<li><strong>(R)</strong>: Return value: the field is returned by the API</li>
+<li><strong>(T)</strong>: Triggers to the state: when should we enter this state? </li>
+<li><strong>(I)</strong>: Internal: a field not exposed to the API</li>
+</ul>
+<p>And the fields are:</p>
+<ul>
+<li><strong>state</strong>: a unique name of the state (e.g. <code>forgot_password</code>)</li>
+<li><strong>max_state_count</strong>: defines how many times StarChat can repropose the state during a conversation.</li>
+<li><strong>analyzer</strong>: specify an analyzer expression which triggers the state</li>
+<li><strong>query (T,I)</strong>: list of sentences whose meaning identify the state</li>
+<li><strong>bubble (R)</strong>: content, if any, to be shown to the user. It may contain variables like %email% or %link%.</li>
+<li><strong>action (R)</strong>: a function to be called on the client side. StarChat developer must provide types of input and output (like an abstract method), and the GUI developer is responsible for the actual implementation (e.g. <code>show_button</code>)</li>
+<li><strong>action_input (R)</strong>: input passed to <strong>action</strong>'s function (e.g., for <code>show_buttons</code> can be a list of pairs <code>("text to be shown on button", state_to_go_when_clicked)</code> </li>
+<li><strong>state_data (R)</strong>: a dictionary of strings with arbitrary data to pass along</li>
+<li><strong>success_value (R)</strong>: output to return in case of success</li>
+<li><strong>failure_value (R)</strong>: output to return in case of failure</li>
+</ul>
+<h2 id="client-functions">Client functions</h2>
+<p>In StarChat configuration, the developer can specify which function the front-end should
+execute when a certain state is triggered, together with input parameters.
+<strong>Any function implemented on the front-end can be called.</strong></p>
+<h3 id="example-show-button">Example show button</h3>
+<ul>
+<li>Action: <code>show_buttons</code></li>
+<li>Action input: <code>{"buttons": [("Forgot Password", "forgot_password"), ("Account locked", "account_locked")]}</code></li>
+<li>The frontend will call function: <code>show_buttons(buttons={"Forgot Password": "forgot_password","Account locked": "account_locked")</code></li>
+</ul>
+<p>Example "buttons": the front-end implements the function show_buttons and uses "action input" to call it. It will show two buttons, where the first returns forgot_password and the second account_locked.</p>
+<h3 id="example-send-email">Example send email</h3>
+<ul>
+<li>Action: <code>send_password_link</code></li>
+<li>Action input: <code>{ "template": "Reset your password here: example.com","email": "%email%","subject": "New password" }</code></li>
+<li>The frontend will call function: <code>send_password_link(template="Reset your password here: example.com.",email= "john@foo.com", subject="New password")</code></li>
+</ul>
+<p>Example "send email": the front-end implements the function send_password_link and uses "action input" to call it.
+The variable %email% is automatically substituted by the variable email if available in the JSON passed to the
+StarchatResource.</p>
+<h3 id="functions-for-the-sample-csv">functions for the sample csv</h3>
+<p>For the CSV in the example above, the client will have to implement the following set of functions:</p>
+<ul>
+<li>show_buttons: tell the client to render a multiple choice button</li>
+<li>input: a key/value pair with the key indicating the text to be shown in the button, and the value indicating the state to follow e.g.: {"Forgot Password": "forgot_password", "Account locked": "account_locked", "Specify your problem": "specify_problem", "I want to call an operator": "call_operator", "None of the above": "start"}</li>
+<li>output: the choice related to the button clicked by the user e.g.: "account_locked"</li>
+<li>input_form: render an input form or collect the input following a specific format</li>
+<li>input: a dictionary with the list of fields and the type of fields, at least "email" must be supported: e.g.: { "email": "email" } where the key is the name and the value is the type</li>
+<li>output: a dictionary with the input values e.g.: { "email": "foo@example.com" }</li>
+<li>send_password_generation_link: send an email with instructions to regenerate the password</li>
+<li>input: a valid email address e.g.: "foo@example.com"</li>
+<li>output: a dictionary with the response fields e.g.: { "user_id": "123", "current_state": "forgot_password", "status": "true" }</li>
+</ul>
+<p>Ref: <a href="https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv">sample_state_machine_specification.csv</a>.</p>
+<h2 id="mechanics">Mechanics</h2>
+<ul>
+<li>The client implements the functions which appear in the action field of the spreadsheet. 
+We will provide interfaces.</li>
+<li>The client call the rest API "decisiontable" endpoint communicating a state if any, 
+the user input data and other state variables</li>
+<li>The client receive a response with guidance on what to return to the user and what 
+are the possible next steps</li>
+<li>The client render the message to the user and eventually collect the input, then 
+call again the system to get instructions on what to do next</li>
+<li>When the "decisiontable" functions does not return any result the user can call the "knowledgebase" endpoint which contains all the conversations. </li>
+</ul>
+<h2 id="scalability">Scalability</h2>
+<p>StarChat consists of two different services: StarChat itself and an Elasticsearch cluster. </p>
+<h3 id="scaling-starchat-instances">Scaling StarChat instances</h3>
+<p>StarChat can scale horizontally by simple replication. Because StarChat is stateless, instances looking 
+at the same Elasticsearch index will behave identically. New instances can then be added together
+with a load balancing service.</p>
+<p>In the diagram below, a load balancer forward requests coming from the front-end to StarChat instances 
+1, 2 or 3. These instances, as said, behave identically because they all refer to <code>Index 0</code> in the 
+Elasticsearch cluster.</p>
+<p><img alt="Image" src="./doc/readme_images/scalability_diagram_starchat.png?raw=true" /></p>
+<h3 id="scaling-elasticsearch">Scaling Elasticsearch</h3>
+<p>Similarly, Elasticsearch can easily scale horizontally adding new nodes to the cluster, as explained
+ in <a href="https://www.elastic.co/guide/en/elasticsearch/guide/master/_scale_horizontally.html">Elasticsearch Documentation</a>.</p>
+<h2 id="security">Security</h2>
+<p>StarChat is a backend service and <em>should never</em> be exposed to the internet,
+it should be placed behind a firewall.
+One of the most effective and flexible method to add an access control layer is to use 
+<a href="https://getkong.org">Kong</a> in front of StarChat as a gateway, in this way
+StarChat can be shield by unwanted accesses.</p>
+<p>In addition StarChat support TLS connections, the configuration file allow to
+choose if the service should expose an https connection or an http connection
+or both.
+In order to use the https connection the user must do the following things:</p>
+<ul>
+<li>obtain a pkcs12 server certificate from a certification authority or <a href="http://typesafehub.github.io/ssl-config/CertificateGeneration.html">create a self signed certificate</a></li>
+<li>save the certificate inside the folder <code>config/tls/certs/</code> e.g. <code>config/tls/certs/server.p12</code></li>
+<li>set the password for the certificate inside the configuration file</li>
+<li>enable the https connection setting to true the https.enable property of the configuration file</li>
+<li>optionally disable the http connection setting to false the http.enable property of the configuration file</li>
+</ul>
+<p>Follows the block of the configuration file which is to be modified as described above in
+ order to use https:</p>
+<pre><code class="yaml">https {
+  host = &quot;0.0.0.0&quot;
+  host = ${?HOST}
+  port = 8443
+  port = ${?PORT}
+  certificate = &quot;server.p12&quot;
+  password = &quot;uma7KnKwvh&quot;
+  enable = false
+}
+
+http {
+  host = &quot;0.0.0.0&quot;
+  host = ${?HOST}
+  port = 8888
+  port = ${?PORT}
+  enable = true
+}
+</code></pre>
+
+<p>StarChat come with a default self-signed certificate for testing,
+using it for production or sensitive environment is highly discouraged
+as well as useless from a security point of view.</p>
+<h1 id="indexing-terms-on-term-table">Indexing terms on term table</h1>
+<p>The following program index term vectors on the vector table:</p>
+<pre><code class="bash">sbt &quot;run-main com.getjenny.command.IndexTerms --inputfile terms.txt --vecsize 300&quot;
+</code></pre>
+
+<p>The format for each row of an input file with 5 dimension vectors is:
+<code>hello 1.0 2.0 3.0 4.0 0.0</code></p>
+<h1 id="test">Test</h1>
+<ul>
+<li>Unit tests are available with <code>sbt test</code> command</li>
+<li>A set of test script is present inside scripts/api_test</li>
+</ul>
+<h1 id="troubleshooting">Troubleshooting</h1>
+<h2 id="docker-start-from-scratch">Docker: start from scratch</h2>
+<p>You might want to start from scratch, and delete all docker images. </p>
+<p>If you do so (<code>docker images</code> and then <code>docker rmi -f &lt;java/elasticsearch ids&gt;</code>) remember that all data for the 
+Elasticsearch docker are local, and mounted only when the container is up. Therefore you need to:</p>
+<pre><code class="bash">cd docker-starchat
+rm -rf elasticsearch/data/nodes/
+</code></pre>
+
+<h2 id="docker-size-of-virtual-memory">Docker: Size of virtual memory</h2>
+<p>If elasticsearch complain about the size of the virtual memory:</p>
+<pre><code>max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+elastisearch exited with code 78
+</code></pre>
+
+<p>run:</p>
+<pre><code class="bash">sysctl -w vm.max_map_count=262144
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '.';</script>
+        <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
+        <script src="./js/base.js"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 0.16.3
+Build Date UTC : 2017-05-30 15:11:51
+-->
