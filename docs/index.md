@@ -1,5 +1,5 @@
 # Welcome!
-This is the official repository for StarChat, a scalable conversational engine for B2B applications.
+This is the official repository for [StarChat](https://git.io/*chat), a scalable conversational engine for B2B applications.
 
 # How to contribute
 
