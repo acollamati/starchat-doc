@@ -74,7 +74,7 @@ Run from a terminal:
 
 ```bash
 # create the indices in Elasticsearch
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/index_management"
+curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/index_management/create"
 ```
 
 ### 3. Load the configuration file
