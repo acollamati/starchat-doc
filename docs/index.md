@@ -86,7 +86,7 @@ cd $STARCHAT_DIR  # or cd ..
 sbt "run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1"
 ```
 
-Every time you load the configuration file you need to index the analyzer:
+and then (you need to index the analyzer):
 
 ```bash
 curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/decisiontable_analyzer"
@@ -104,7 +104,7 @@ To have a good words' statistics, and consequent improved matching, you might wa
 
 ### 5. Index the FAQs (optional)
 
-You might want to activate the [knowledge base](#services) for simple Question and Anwer.
+TODO: You might want to activate the [knowledge base](#configuration-of-the-answer-recommender-knowledge-base) for simple Question and Anwer. 
 
 ## Install without Docker
 
