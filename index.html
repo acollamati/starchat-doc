@@ -137,15 +137,15 @@ minumum requirements of the code contributions.</p>
 <pre><code class="bash">cd  docker-starchat
 </code></pre>
 
-<p>Extract the packet into the docker-starchat folder:</p>
-<pre><code class="bash">unzip ../target/universal/data/WORK/GetJenny/starchat/target/universal/starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT.zip
-ln -s starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT starchat
+<p>You will get a message like <code>Your package is ready in ...../target/universal/starchat-4ee.... .zip</code>.  Extract the packet into the docker-starchat folder:</p>
+<pre><code class="bash">unzip ../target/universal/starchat-4eee....-SNAPSHOT.zip
+ln -s starchat-4ee-SNAPSHOT starchat
 </code></pre>
 
 <p>The zip packet contains:</p>
 <ul>
-<li>a set of scripts to test the endpoints and as a complement for the documentation: <code>starchat-adf23af60508d50b0db61172a101d78339043fc4-SNAPSHOT/scripts/api_test/</code></li>
-<li>a set of command line programs <code>starchat-adf23af60508d50b0db61172a101d78339043fc4-SNAPSHOT/bin</code> to run starchat and other tools.</li>
+<li>a set of scripts to test the endpoints and as a complement for the documentation: <code>starchat/scripts/api_test/</code></li>
+<li>a set of command line programs <code>starchat/bin</code> to run starchat and other tools.</li>
 <li>delete-decision-table: delete items from the decision table</li>
 <li>index-corpus-on-knowledge-base: index a corpus on knowledge base as hidden (to improve the language model)</li>
 <li>index-decision-table: index data on the decision table from a csv</li>
@@ -153,7 +153,7 @@ ln -s starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT starchat
 <li>index-terms: index terms vectors</li>
 <li>starchat: start starchat</li>
 </ul>
-<p>Review the configuration files <code>starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT/config/application.conf</code> and configure the language if needed (by default you have <code>index_language = "english"</code>)</p>
+<p>Review the configuration files <code>starchat/config/application.conf</code> and configure the language if needed (by default you have <code>index_language = "english"</code>)</p>
 <p>(If you are re-installing StarChat, and want to start from scratch see <a href="#docker-start-from-scratch">start from scratch</a>.)</p>
 <p>Start both startchat and elasticsearch:</p>
 <pre><code class="bash">docker-compose up -d
@@ -263,6 +263,7 @@ you only have to configure a conversation flow and eventually a front-end client
 <li><code>val rx</code>: the name of the atom, as it should be used in the <code>analyzer</code> field.</li>
 </ol>
 <h2 id="configuration-of-the-answer-recommender-knowledge-base">Configuration of the answer recommender (Knowledge Base)</h2>
+<p>TODO</p>
 <h1 id="technology">Technology</h1>
 <p>StarChat was design with the following goals in mind:</p>
 <ol>
@@ -474,5 +475,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-06-06 07:47:36
+Build Date UTC : 2017-06-06 10:39:16
 -->
