@@ -42,8 +42,8 @@ cd  docker-starchat
 ```
 You will get a message like `Your package is ready in ...../target/universal/starchat-4ee.... .zip`.  Extract the packet into the docker-starchat folder:
 ```bash
-unzip ../target/universal/starchat-4eee....-SNAPSHOT.zip
-ln -s starchat-4ee-SNAPSHOT starchat
+unzip ../target/universal/starchat-4eee.....zip
+ln -s starchat-4ee..../  starchat
 ```
 
 The zip packet contains:
