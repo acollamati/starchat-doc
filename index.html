@@ -172,7 +172,7 @@ curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://local
 sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1&quot;
 </code></pre>
 
-<p>Every time you load the configuration file you need to index the analyzer:</p>
+<p>and then (you need to index the analyzer):</p>
 <pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/decisiontable_analyzer&quot;
 </code></pre>
 
@@ -183,7 +183,7 @@ sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sampl
 <h3 id="4-load-external-corpus-optional">4. Load external corpus (optional)</h3>
 <p>To have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the <a href="#post-knowledgebase">POST /knowledgebase</a> endpoint with <code>doctype: "hidden"</code>.</p>
 <h3 id="5-index-the-faqs-optional">5. Index the FAQs (optional)</h3>
-<p>You might want to activate the <a href="#services">knowledge base</a> for simple Question and Anwer.</p>
+<p>TODO: You might want to activate the <a href="#configuration-of-the-answer-recommender-knowledge-base">knowledge base</a> for simple Question and Anwer. </p>
 <h2 id="install-without-docker">Install without Docker</h2>
 <p>Note: we do not support this installation.
 <em> Clone the repository and enter the starchat directory.
@@ -476,5 +476,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-06-06 12:28:54
+Build Date UTC : 2017-06-06 13:50:12
 -->
