@@ -40,16 +40,16 @@ Enter the directory docker-starchat:
 ```bash
 cd  docker-starchat
 ```
-Extract the packet into the docker-starchat folder:
+You will get a message like `Your package is ready in ...../target/universal/starchat-4ee.... .zip`.  Extract the packet into the docker-starchat folder:
 ```bash
-unzip ../target/universal/data/WORK/GetJenny/starchat/target/universal/starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT.zip
-ln -s starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT starchat
+unzip ../target/universal/starchat-4eee....-SNAPSHOT.zip
+ln -s starchat-4ee-SNAPSHOT starchat
 ```
 
 The zip packet contains:
 
-* a set of scripts to test the endpoints and as a complement for the documentation: ```starchat-adf23af60508d50b0db61172a101d78339043fc4-SNAPSHOT/scripts/api_test/```
-* a set of command line programs ```starchat-adf23af60508d50b0db61172a101d78339043fc4-SNAPSHOT/bin``` to run starchat and other tools.
+* a set of scripts to test the endpoints and as a complement for the documentation: ```starchat/scripts/api_test/```
+* a set of command line programs ```starchat/bin``` to run starchat and other tools.
 * delete-decision-table: delete items from the decision table
 * index-corpus-on-knowledge-base: index a corpus on knowledge base as hidden (to improve the language model)
 * index-decision-table: index data on the decision table from a csv
@@ -57,7 +57,7 @@ The zip packet contains:
 * index-terms: index terms vectors
 * starchat: start starchat
 
-Review the configuration files `starchat-581e3255e5141185bb66fa8ffce0257f055596c2-SNAPSHOT/config/application.conf` and configure the language if needed (by default you have `index_language = "english"`)
+Review the configuration files `starchat/config/application.conf` and configure the language if needed (by default you have `index_language = "english"`)
 
 (If you are re-installing StarChat, and want to start from scratch see [start from scratch](#docker-start-from-scratch).)
 
@@ -211,6 +211,7 @@ Operators evaluate the output of one or more expression and return a value. Curr
 
 ## Configuration of the answer recommender (Knowledge Base)
 
+TODO
 
 # Technology
 
