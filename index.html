@@ -168,7 +168,8 @@ curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://local
 
 <h3 id="3-load-the-configuration-file">3. Load the configuration file</h3>
 <p>Now you have to load the configuration file for the actual chat, aka <a href="#services">decision table</a>. We have provided an example csv in English, therefore:</p>
-<pre><code class="bash">sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1&quot;
+<pre><code class="bash">cd $STARCHAT_DIR  # or cd .. 
+sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1&quot;
 </code></pre>
 
 <p>Every time you load the configuration file you need to index the analyzer:</p>
@@ -475,5 +476,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-06-06 12:23:52
+Build Date UTC : 2017-06-06 12:28:54
 -->
