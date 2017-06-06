@@ -87,7 +87,9 @@
             <li><a href="#setup-with-docker-recommended">Setup with Docker (recommended)</a></li>
             <li><a href="#install-without-docker">Install without Docker</a></li>
             <li><a href="#test-the-installation">Test the installation</a></li>
-            <li><a href="#starchat-configuration">StarChat configuration</a></li>
+            <li><a href="#configuration-of-the-chatbot-decision-table">Configuration of the chatbot (Decision Table)</a></li>
+            <li><a href="#nlp-processing">NLP processing</a></li>
+            <li><a href="#configuration-of-the-answer-recommender-knowledge-base">Configuration of the answer recommender (Knowledge Base)</a></li>
         <li class="main "><a href="#technology">Technology</a></li>
             <li><a href="#how-does-starchat-work">How does StarChat work?</a></li>
             <li><a href="#configuration-of-the-decisiontable">Configuration of the DecisionTable</a></li>
@@ -105,7 +107,7 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="welcome">Welcome!</h1>
-<p>This is the official repository for <a href="https://git.io/*chat">StarChat</a>, a scalable conversational engine for B2B applications.</p>
+<p>This is the official repository for StarChat, a scalable conversational engine for B2B applications.</p>
 <h1 id="how-to-contribute">How to contribute</h1>
 <p>To contribute to StarChat, please send us a <a href="https://help.github.com/articles/using-pull-requests/#fork--pull">pull request</a>  from your fork of this repository.</p>
 <p>Our concise <a href="https://github.com/GetJenny/starchat/blob/master/CONTRIBUTING.md">contribution guideline</a> contains the bare
@@ -221,20 +223,46 @@ curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://local
 <p>If you look at the <code>"analyzer"</code> field, you'll see that this state is triggered when
 the user types the <em>test</em> and either <em>get</em> or <em>send</em>. Try with <code>"text": "Please dont send me the test state"</code>
  and StarChat will send an empty message.</p>
-<h2 id="starchat-configuration">StarChat configuration</h2>
-<p>With StarChat you can easily implement workflow-based chatbots. After the installation (see above)
+<h2 id="configuration-of-the-chatbot-decision-table">Configuration of the chatbot (Decision Table)</h2>
+<p>With StarChat's Decision Table you can easily implement workflow-based chatbots. After the installation (see above)
 you only have to configure a conversation flow and eventually a front-end client.</p>
-<p>In practice, StarChat:</p>
+<h2 id="nlp-processing">NLP processing</h2>
+<p>NLP processing is of course the core of any chatbot. As you have noted in the  <a href="https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv">CSV provided in the doc/ directory</a> there are two fields defining when StarChat should trigger a state -<code>analyzer</code> and <code>queries</code>.</p>
+<h3 id="queries">Queries</h3>
+<p>If the <code>analyzer</code> field is empty, StarChat will query Elasticsearch for the state containing the most similar sentence in the field <code>queries</code>. We have carefully configured Elasticsearch in order to provide good answers (e.g. boosting results where the same words appear etc), and results are... acceptable. But you are encouraged to use the <code>analyzer</code> field, documented below.</p>
+<h3 id="analyzer">Analyzer</h3>
+<p>Through the <code>analyzer</code>s, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the  <a href="https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv">CSV provided in the doc/ directory</a> for the state <code>forgot_passord</code>:</p>
+<p><code>and(or(keyword("reset"),keyword("forgot")),keyword("password"))</code></p>
+<p>The <em>expression</em> <code>and</code> and <code>or</code> are called the <em>operators</em>, while <code>keyword</code> is an <em>atom</em> </p>
+<h4 id="expressions-atoms">Expressions: Atoms</h4>
+<p>Presently, the <code>keyword("reset")</code> in the example provides a very simple score: occurrence of the word <em>reset</em> in the user's query divided by the total number of words. If evaluated agains the sentence "Want to reset my password", <code>keyword("reset")</code> will currently return 0.2.  <em>NB</em> This is just a temporary score used while our NLP library <a href="https://github.com/GetJenny/manaus">manaus</a> is not integrated into StarChat.</p>
+<p>These are currently the expression you can use to evaluate the goodness of a query (see <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/DefaultFactoryAtomic.scala">DefaultFactoryAtomic</a> and <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/starchat/analyzer/atoms/StarchatFactoryAtomic.scala">StarchatFactoryAtomic</a>:</p>
 <ul>
-<li>analyze user's query and identifies a test where such user should be sent to</li>
-<li>creation of dynamic content using variables inferred from the conversation (e.g. "Please write your email so that I can send you a message")</li>
+<li><em>keyword("word")</em>: as explained above, normalized</li>
+<li><em>regex</em>: evaluate a regular expression, not normalized</li>
+<li><em>search(state_name)</em>: takes a state name as argument, queries elastic search and returns the score of the most similar query in the field  <code>queries</code> of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g. <code>search("lost_password_state")</code> </li>
+<li><em>synonym("word")</em>: gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this <a href="http://bionlp-www.utu.fi/wv_demo/">word2vec demo</a> by <a href="http://bionlp.utu.fi/">Turku University</a></li>
+<li><em>similar("a whole sentence")</em>:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)</li>
+<li><em>similarState(state_name)</em>:  same as above, but for the sentences in the field "queries" of the state in the argument.</li>
 </ul>
-<h3 id="simple-nlp-processing">Simple NLP processing</h3>
-<p><em>Work in progress</em></p>
+<h4 id="expressions-operators">Expressions: Operators</h4>
+<p>Operators evaluate the output of one or more expression and return a value. Currently, the following operators are implemented (the the <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/operators/DefaultFactoryOperator.scala">source code</a>):</p>
 <ul>
-<li>Elasticsearch and the "queries" field</li>
-<li>The analyzer: atomic expressions and operators</li>
+<li><em>boolean or</em>:   calles matches of all the exprassions it contains and returns true or false. It can be called using <code>bor</code></li>
+<li><em>boolean and</em>:  as above, it's called with <code>band</code></li>
+<li><em>boolean not</em>:  ditto, <code>bnot</code></li>
+<li><em>conjunction</em>:  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true (<code>P(A)*P(B)</code>)</li>
+<li><em>disjunction</em>:  as above, the probability that at least one is true (<code>1-(1-P(A))*(1-P(B))</code>)</li>
 </ul>
+<h4 id="technical-corner-expressions">Technical corner: <code>expressions</code></h4>
+<p><a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/expressions/Expression.scala">Expressions</a>, like <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/KeywordAtomic.scala#L18">keywords</a> in the example, are called <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/AbstractAtomic.scala">atoms</a>, and have the following methods/members:</p>
+<ol>
+<li><code>def evaluate(query: String): Double</code>: produce a score. It might be normalized to 1 or not (set <code>val isEvaluateNormalized: Boolean</code> accordingly)</li>
+<li><code>val match_threshold</code> This is the threshold above which the expression is considered true when <code>matches</code> is called. NB The default value is 0.0, which is normally not ideal.</li>
+<li><code>def matches(query: String): Boolean</code>: calles evaluate and check agains the threshold...</li>
+<li><code>val rx</code>: the name of the atom, as it should be used in the <code>analyzer</code> field.</li>
+</ol>
+<h2 id="configuration-of-the-answer-recommender-knowledge-base">Configuration of the answer recommender (Knowledge Base)</h2>
 <h1 id="technology">Technology</h1>
 <p>StarChat was design with the following goals in mind:</p>
 <ol>
@@ -258,73 +286,7 @@ indexing, sentence cleansing, and tokenization.</p>
 <h4 id="decisiontable">DecisionTable</h4>
 <p>The conversational engine itself. For the usage, see below.</p>
 <h2 id="configuration-of-the-decisiontable">Configuration of the DecisionTable</h2>
-<p>You configure the DecisionTable through CSV file. Please have a look at the one provided in <code>doc/</code>:</p>
-<table>
-<thead>
-<tr>
-<th>state</th>
-<th>max_state_count</th>
-<th>analyzer</th>
-<th>queries</th>
-<th>bubble</th>
-<th>action</th>
-<th>action_input</th>
-<th>state_data</th>
-<th>success_value</th>
-<th>failure_value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>start</td>
-<td>0</td>
-<td></td>
-<td></td>
-<td>"How may I help you?"</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>further_details_access_question</td>
-<td>0</td>
-<td></td>
-<td>"[""cannot access account"", ""problem access account""]"</td>
-<td></td>
-<td>show_buttons</td>
-<td>"{""Forgot Password"": ""forgot_password"", ""Account locked"": ""account_locked"", ""None of the above"": ""start""}"</td>
-<td></td>
-<td>eval(show_buttons)</td>
-<td>"""dont_understand"""</td>
-</tr>
-<tr>
-<td>forgot_password</td>
-<td>0</td>
-<td></td>
-<td>"[""Forgot password""]"</td>
-<td>"I will send you a new password generation link, enter your email."</td>
-<td>input_form</td>
-<td>"{""email"": ""email""}"</td>
-<td></td>
-<td>"""send_password_generation_link"""</td>
-<td>"""dont_understand"""</td>
-</tr>
-<tr>
-<td>send_password_generation_link</td>
-<td>0</td>
-<td></td>
-<td></td>
-<td>"Sending message to %email% with instructions."</td>
-<td>send_password_generation_link</td>
-<td>"{ ""template"": "If you requested a password reset, follow this link: %link%"", ""email"": ""%email%"" }"</td>
-<td></td>
-<td>"""any_further"""</td>
-<td>call_operator</td>
-</tr>
-</tbody>
-</table>
+<p>You configure the DecisionTable through CSV file. Please have a look at the <a href="https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv">CSV provided in the doc/ directory</a>.</p>
 <p>Fields in the configuration file are of three types:</p>
 <ul>
 <li><strong>(R)</strong>: Return value: the field is returned by the API</li>
@@ -335,7 +297,7 @@ indexing, sentence cleansing, and tokenization.</p>
 <ul>
 <li><strong>state</strong>: a unique name of the state (e.g. <code>forgot_password</code>)</li>
 <li><strong>max_state_count</strong>: defines how many times StarChat can repropose the state during a conversation.</li>
-<li><strong>analyzer</strong>: specify an analyzer expression which triggers the state</li>
+<li><strong>analyzer (T,I)</strong>: specify an analyzer expression which triggers the state</li>
 <li><strong>query (T,I)</strong>: list of sentences whose meaning identify the state</li>
 <li><strong>bubble (R)</strong>: content, if any, to be shown to the user. It may contain variables like %email% or %link%.</li>
 <li><strong>action (R)</strong>: a function to be called on the client side. StarChat developer must provide types of input and output (like an abstract method), and the GUI developer is responsible for the actual implementation (e.g. <code>show_button</code>)</li>
@@ -512,5 +474,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-05-31 07:02:21
+Build Date UTC : 2017-06-06 07:47:36
 -->
