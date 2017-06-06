@@ -82,6 +82,7 @@ curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/index
 Now you have to load the configuration file for the actual chat, aka [decision table](#services). We have provided an example csv in English, therefore:
 
 ```bash
+cd $STARCHAT_DIR  # or cd .. 
 sbt "run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1"
 ```
 
