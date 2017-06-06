@@ -1,5 +1,5 @@
 # Welcome!
-This is the official repository for [StarChat](https://git.io/*chat), a scalable conversational engine for B2B applications.
+This is the official repository for StarChat, a scalable conversational engine for B2B applications.
 
 # How to contribute
 
@@ -156,22 +156,61 @@ If you look at the `"analyzer"` field, you'll see that this state is triggered w
 the user types the *test* and either *get* or *send*. Try with `"text": "Please dont send me the test state"`
  and StarChat will send an empty message.
 
-## StarChat configuration
+## Configuration of the chatbot (Decision Table)
 
-With StarChat you can easily implement workflow-based chatbots. After the installation (see above)
+With StarChat's Decision Table you can easily implement workflow-based chatbots. After the installation (see above)
 you only have to configure a conversation flow and eventually a front-end client.
 
-In practice, StarChat:
+## NLP processing
 
-* analyze user's query and identifies a test where such user should be sent to
-* creation of dynamic content using variables inferred from the conversation (e.g. "Please write your email so that I can send you a message")
+NLP processing is of course the core of any chatbot. As you have noted in the  [CSV provided in the doc/ directory](https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv) there are two fields defining when StarChat should trigger a state -`analyzer` and `queries`.
 
-### Simple NLP processing
+### Queries
 
-*Work in progress*
+If the `analyzer` field is empty, StarChat will query Elasticsearch for the state containing the most similar sentence in the field `queries`. We have carefully configured Elasticsearch in order to provide good answers (e.g. boosting results where the same words appear etc), and results are... acceptable. But you are encouraged to use the `analyzer` field, documented below.
 
-* Elasticsearch and the "queries" field
-* The analyzer: atomic expressions and operators
+### Analyzer
+
+Through the `analyzer`s, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the  [CSV provided in the doc/ directory](https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv) for the state `forgot_passord`:
+
+`and(or(keyword("reset"),keyword("forgot")),keyword("password"))`
+
+The *expression* `and` and `or` are called the *operators*, while `keyword` is an *atom* 
+
+#### Expressions: Atoms
+
+Presently, the `keyword("reset")` in the example provides a very simple score: occurrence of the word *reset* in the user's query divided by the total number of words. If evaluated agains the sentence "Want to reset my password", `keyword("reset")` will currently return 0.2.  _NB_ This is just a temporary score used while our NLP library [manaus](https://github.com/GetJenny/manaus) is not integrated into StarChat.
+
+These are currently the expression you can use to evaluate the goodness of a query (see [DefaultFactoryAtomic](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/DefaultFactoryAtomic.scala) and [StarchatFactoryAtomic](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/starchat/analyzer/atoms/StarchatFactoryAtomic.scala):
+
+* _keyword("word")_: as explained above, normalized
+* _regex_: evaluate a regular expression, not normalized
+*  _search(state_name)_: takes a state name as argument, queries elastic search and returns the score of the most similar query in the field  `queries` of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g. `search("lost_password_state")` 
+* _synonym("word")_: gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this [word2vec demo](http://bionlp-www.utu.fi/wv_demo/) by [Turku University](http://bionlp.utu.fi/)
+* _similar("a whole sentence")_:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)
+* _similarState(state_name)_:  same as above, but for the sentences in the field "queries" of the state in the argument.
+
+#### Expressions: Operators
+
+Operators evaluate the output of one or more expression and return a value. Currently, the following operators are implemented (the the [source code](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/operators/DefaultFactoryOperator.scala)):
+
+* _boolean or_:   calles matches of all the exprassions it contains and returns true or false. It can be called using `bor`
+* _boolean and_:  as above, it's called with `band`
+* _boolean not_:  ditto, `bnot`
+* _conjunction_:  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true (`P(A)*P(B)`)
+* _disjunction_:  as above, the probability that at least one is true (`1-(1-P(A))*(1-P(B))`)
+
+#### Technical corner: `expressions`
+
+[Expressions](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/expressions/Expression.scala), like [keywords](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/KeywordAtomic.scala#L18) in the example, are called [atoms](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/AbstractAtomic.scala), and have the following methods/members:
+
+1. `def evaluate(query: String): Double`: produce a score. It might be normalized to 1 or not (set `val isEvaluateNormalized: Boolean` accordingly)
+2. ` val match_threshold` This is the threshold above which the expression is considered true when `matches` is called. NB The default value is 0.0, which is normally not ideal.
+3. `def matches(query: String): Boolean`: calles evaluate and check agains the threshold...
+4. `val rx`: the name of the atom, as it should be used in the `analyzer` field.
+
+## Configuration of the answer recommender (Knowledge Base)
+
 
 # Technology
 
@@ -209,15 +248,7 @@ The conversational engine itself. For the usage, see below.
 
 ## Configuration of the DecisionTable
 
-You configure the DecisionTable through CSV file. Please have a look at the one provided in `doc/`:
-
-|state|max_state_count|analyzer|queries |bubble|action|action_input|state_data|success_value |failure_value|
-|-----|---------------|-----|--------|------|------|------------|----------|--------------|-------------|
-|start|0              |     |      |"How may I help you?"||||||
-|further_details_access_question|0||"[""cannot access account"", ""problem access account""]"||show_buttons|"{""Forgot Password"": ""forgot_password"", ""Account locked"": ""account_locked"", ""None of the above"": ""start""}"||eval(show_buttons)|"""dont_understand"""|
-|forgot_password|0||"[""Forgot password""]"|"I will send you a new password generation link, enter your email."|input_form|"{""email"": ""email""}"||"""send_password_generation_link"""|"""dont_understand"""|
-|send_password_generation_link|0|||"Sending message to %email% with instructions."|send_password_generation_link|"{ ""template"": "If you requested a password reset, follow this link: %link%"", ""email"": ""%email%"" }"||"""any_further"""|call_operator|
-
+You configure the DecisionTable through CSV file. Please have a look at the [CSV provided in the doc/ directory](https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv).
 
 Fields in the configuration file are of three types:
 
@@ -229,7 +260,7 @@ And the fields are:
 
 * **state**: a unique name of the state (e.g. `forgot_password`)
 * **max_state_count**: defines how many times StarChat can repropose the state during a conversation.
-* **analyzer**: specify an analyzer expression which triggers the state
+* **analyzer (T,I)**: specify an analyzer expression which triggers the state
 * **query (T,I)**: list of sentences whose meaning identify the state
 * **bubble (R)**: content, if any, to be shown to the user. It may contain variables like %email% or %link%.
 * **action (R)**: a function to be called on the client side. StarChat developer must provide types of input and output (like an abstract method), and the GUI developer is responsible for the actual implementation (e.g. `show_button`)
