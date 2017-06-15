@@ -92,11 +92,13 @@ and then (you need to index the analyzer):
 curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/decisiontable_analyzer"
 ```
 
-Items on decision table can be removed using the following command:
+This command deletes all the states it finds on the first column:
 
 ```bash
 sbt "run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/sample_state_machine_specification.csv"
 ```
+
+NB This means that if you create a state in the CSV file, index it, then delete it in the CSV and run `DeleteDecisionTable`, it won't be deleted!
 
 ### 4. Load external corpus (optional)
 
