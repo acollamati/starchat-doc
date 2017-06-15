@@ -424,7 +424,7 @@ cd docker-starchat
 rm -rf elasticsearch/data/nodes/
 ```
 
-## Docker: previously stored Analyzers are not loaded on startup with with docker-compose 
+## docker-compose: Analyzers are not loaded
 
 StarChat is started immediately after elasticsearch and it is possible that elasticsearch is
  not ready to respond to REST calls from StarChat (i.e. an index not found error could be
