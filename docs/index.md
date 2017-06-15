@@ -422,6 +422,21 @@ cd docker-starchat
 rm -rf elasticsearch/data/nodes/
 ```
 
+## Docker: previously stored Analyzers are not loaded on startup with with docker-compose 
+
+StarChat is started immediately after elasticsearch and it is possible that elasticsearch is
+ not ready to respond to REST calls from StarChat (i.e. an index not found error could be
+ raised in this case).
+In order to avoid this problem you can call the services one by one:
+```bash
+docker-compose up elasticsearch # here wait elasticsearch is up and running
+docker-compose up starchat # starchat will retrieve the Analyzers from elasticsearch
+```
+In alternative is possible to call the command to load/refresh the Analyzers after the docker-compose command: 
+```bash
+curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/decisiontable_analyzer"
+```
+
 ## Docker: Size of virtual memory
 
 If elasticsearch complain about the size of the virtual memory:
