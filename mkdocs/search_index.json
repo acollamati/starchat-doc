@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/",
-            "text": "Welcome!\n\n\nThis is the official repository for StarChat, a scalable conversational engine for B2B applications.\n\n\nHow to contribute\n\n\nTo contribute to StarChat, please send us a \npull request\n  from your fork of this repository.\n\n\nOur concise \ncontribution guideline\n contains the bare\nminumum requirements of the code contributions.\n\n\nBefore contributing (or opening issues), you might want send us an email at starchat@getjenny.com.\n\n\nQuick Start\n\n\nRequirements\n\n\nThe easiest way is to install StarChat using two docker images. You only need:\n\n\n\n\nsbt\n\n\ndocker\n\n\ndocker compose\n\n\n\n\nIn this way, you will put all the indices in the Elasticsearch (version 5.3) image, and StarChat itself in the Java (8) image.\n\n\nIf you do not use docker\n you therefore need on your machine:\n\n\n\n\nScala 12.2\n\n\nElasticsearch 5.3\n\n\n\n\nSetup with Docker (recommended)\n\n\n1. Launch docker-compose\n\n\nGenerate a packet distribution:\n\n\nsbt dist\n\n\n\n\nEnter the directory docker-starchat:\n\n\ncd  docker-starchat\n\n\n\n\nYou will get a message like \nYour package is ready in ...../target/universal/starchat-4ee.... .zip\n.  Extract the packet into the docker-starchat folder:\n\n\nunzip ../target/universal/starchat-4eee.....zip\nln -s starchat-4ee..../  starchat\n\n\n\n\nThe zip packet contains:\n\n\n\n\na set of scripts to test the endpoints and as a complement for the documentation: \nstarchat/scripts/api_test/\n\n\na set of command line programs \nstarchat/bin\n to run starchat and other tools.\n\n\ndelete-decision-table: delete items from the decision table\n\n\nindex-corpus-on-knowledge-base: index a corpus on knowledge base as hidden (to improve the language model)\n\n\nindex-decision-table: index data on the decision table from a csv\n\n\nindex-knowledge-base: index data into the knowledge base\n\n\nindex-terms: index terms vectors\n\n\nstarchat: start starchat\n\n\n\n\nReview the configuration files \nstarchat/config/application.conf\n and configure the language if needed (by default you have \nindex_language = \"english\"\n)\n\n\n(If you are re-installing StarChat, and want to start from scratch see \nstart from scratch\n.)\n\n\nStart both startchat and elasticsearch:\n\n\ndocker-compose up -d\n\n\n\n\n(Problems like \nelastisearch exited with code 78\n? have a look at \ntroubleshooting\n!)\n\n\n2. Create Elasticsearch indices\n\n\nRun from a terminal:\n\n\n# create the indices in Elasticsearch\ncurl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/index_management/create\"\n\n\n\n\n3. Load the configuration file\n\n\nNow you have to load the configuration file for the actual chat, aka \ndecision table\n. We have provided an example csv in English, therefore:\n\n\ncd $STARCHAT_DIR  # or cd .. \nsbt \"run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1\"\n\n\n\n\nand then (you need to index the analyzer):\n\n\ncurl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/decisiontable_analyzer\"\n\n\n\n\nItems on decision table can be removed using the following command:\n\n\nsbt \"run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/sample_state_machine_specification.csv\"\n\n\n\n\n4. Load external corpus (optional)\n\n\nTo have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the \nPOST /knowledgebase\n endpoint with \ndoctype: \"hidden\"\n.\n\n\n5. Index the FAQs (optional)\n\n\nTODO: You might want to activate the \nknowledge base\n for simple Question and Anwer. \n\n\nInstall without Docker\n\n\nNote: we do not support this installation.\n\n Clone the repository and enter the starchat directory.\n\n Initialize the Elasticsearch instance (see above for Docker)\n* Run the service: \nsbt compile run\n\n\nThe service binds on the port 8888 by default.\n\n\nTest the installation\n\n\nIs the service working?\n\n\ncurl -X GET localhost:8888 | python -mjson.tool\n\n\nGet the \ntest_state\n\n\ncurl  -H \"Content-Type: application/json\" -X POST http://localhost:8888/get_next_response -d '{\n \"conversation_id\": \"1234\",\n  \"user_input\": { \"text\": \"Please send me the test state\" },\n  \"values\": {\n      \"return_value\": \"\",\n      \"data\": {}\n       }\n  }'\n\n\n\n\nYou should get:\n\n\n{\n    \"action\": \"\",\n    \"action_input\": {},\n    \"analyzer\": \"and(keyword(\\\"test\\\"), or(keyword(\\\"send\\\"), keyword(\\\"get\\\")))\",\n    \"bubble\": \"This is the test state\",\n    \"conversation_id\": \"1234\",\n    \"data\": {},\n    \"failure_value\": \"\",\n    \"max_state_count\": 0,\n    \"score\": 1.0,\n    \"state\": \"test_state\",\n    \"state_data\": {},\n    \"success_value\": \"\"\n}\n\n\n\n\nIf you look at the \n\"analyzer\"\n field, you'll see that this state is triggered when\nthe user types the \ntest\n and either \nget\n or \nsend\n. Try with \n\"text\": \"Please dont send me the test state\"\n\n and StarChat will send an empty message.\n\n\nConfiguration of the chatbot (Decision Table)\n\n\nWith StarChat's Decision Table you can easily implement workflow-based chatbots. After the installation (see above)\nyou only have to configure a conversation flow and eventually a front-end client.\n\n\nNLP processing\n\n\nNLP processing is of course the core of any chatbot. As you have noted in the  \nCSV provided in the doc/ directory\n there are two fields defining when StarChat should trigger a state -\nanalyzer\n and \nqueries\n.\n\n\nQueries\n\n\nIf the \nanalyzer\n field is empty, StarChat will query Elasticsearch for the state containing the most similar sentence in the field \nqueries\n. We have carefully configured Elasticsearch in order to provide good answers (e.g. boosting results where the same words appear etc), and results are... acceptable. But you are encouraged to use the \nanalyzer\n field, documented below.\n\n\nAnalyzer\n\n\nThrough the \nanalyzer\ns, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the  \nCSV provided in the doc/ directory\n for the state \nforgot_passord\n:\n\n\nand(or(keyword(\"reset\"),keyword(\"forgot\")),keyword(\"password\"))\n\n\nThe \nexpression\n \nand\n and \nor\n are called the \noperators\n, while \nkeyword\n is an \natom\n \n\n\nExpressions: Atoms\n\n\nPresently, the \nkeyword(\"reset\")\n in the example provides a very simple score: occurrence of the word \nreset\n in the user's query divided by the total number of words. If evaluated agains the sentence \"Want to reset my password\", \nkeyword(\"reset\")\n will currently return 0.2.  \nNB\n This is just a temporary score used while our NLP library \nmanaus\n is not integrated into StarChat.\n\n\nThese are currently the expression you can use to evaluate the goodness of a query (see \nDefaultFactoryAtomic\n and \nStarchatFactoryAtomic\n:\n\n\n\n\nkeyword(\"word\")\n: as explained above, normalized\n\n\nregex\n: evaluate a regular expression, not normalized\n\n\nsearch(state_name)\n: takes a state name as argument, queries elastic search and returns the score of the most similar query in the field  \nqueries\n of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g. \nsearch(\"lost_password_state\")\n \n\n\nsynonym(\"word\")\n: gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this \nword2vec demo\n by \nTurku University\n\n\nsimilar(\"a whole sentence\")\n:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)\n\n\nsimilarState(state_name)\n:  same as above, but for the sentences in the field \"queries\" of the state in the argument.\n\n\n\n\nExpressions: Operators\n\n\nOperators evaluate the output of one or more expression and return a value. Currently, the following operators are implemented (the the \nsource code\n):\n\n\n\n\nboolean or\n:   calles matches of all the exprassions it contains and returns true or false. It can be called using \nbor\n\n\nboolean and\n:  as above, it's called with \nband\n\n\nboolean not\n:  ditto, \nbnot\n\n\nconjunction\n:  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true (\nP(A)*P(B)\n)\n\n\ndisjunction\n:  as above, the probability that at least one is true (\n1-(1-P(A))*(1-P(B))\n)\n\n\n\n\nTechnical corner: \nexpressions\n\n\nExpressions\n, like \nkeywords\n in the example, are called \natoms\n, and have the following methods/members:\n\n\n\n\ndef evaluate(query: String): Double\n: produce a score. It might be normalized to 1 or not (set \nval isEvaluateNormalized: Boolean\n accordingly)\n\n\nval match_threshold\n This is the threshold above which the expression is considered true when \nmatches\n is called. NB The default value is 0.0, which is normally not ideal.\n\n\ndef matches(query: String): Boolean\n: calles evaluate and check agains the threshold...\n\n\nval rx\n: the name of the atom, as it should be used in the \nanalyzer\n field.\n\n\n\n\nConfiguration of the answer recommender (Knowledge Base)\n\n\nTODO\n\n\nTechnology\n\n\nStarChat was design with the following goals in mind:\n\n\n\n\neasy deployment\n\n\nhorizontally scalability without any service interruption.\n\n\nmodularity\n\n\nstatelessness\n\n\n\n\nHow does StarChat work?\n\n\nWorkflow\n\n\n\n\nComponents\n\n\nStarChat uses Elasticsearch as NoSQL database and, as said above, NLP preprocessor, for\nindexing, sentence cleansing, and tokenization.\n\n\nServices\n\n\nStarChat consists of two different services: the \"KnowledBase\" and the \"DecisionTable\"\n\n\nKnowledgeBase\n\n\nFor quick setup based on real Q&A logs. It stores question and answers pairs. Given a text as input\n it proposes the pair with the closest match on the question field.\n  At the moment the KnowledBase supports only Analyzers implemented on Elasticsearch.\n\n\nDecisionTable\n\n\nThe conversational engine itself. For the usage, see below.\n\n\nConfiguration of the DecisionTable\n\n\nYou configure the DecisionTable through CSV file. Please have a look at the \nCSV provided in the doc/ directory\n.\n\n\nFields in the configuration file are of three types:\n\n\n\n\n(R)\n: Return value: the field is returned by the API\n\n\n(T)\n: Triggers to the state: when should we enter this state? \n\n\n(I)\n: Internal: a field not exposed to the API\n\n\n\n\nAnd the fields are:\n\n\n\n\nstate\n: a unique name of the state (e.g. \nforgot_password\n)\n\n\nmax_state_count\n: defines how many times StarChat can repropose the state during a conversation.\n\n\nanalyzer (T,I)\n: specify an analyzer expression which triggers the state\n\n\nquery (T,I)\n: list of sentences whose meaning identify the state\n\n\nbubble (R)\n: content, if any, to be shown to the user. It may contain variables like %email% or %link%.\n\n\naction (R)\n: a function to be called on the client side. StarChat developer must provide types of input and output (like an abstract method), and the GUI developer is responsible for the actual implementation (e.g. \nshow_button\n)\n\n\naction_input (R)\n: input passed to \naction\n's function (e.g., for \nshow_buttons\n can be a list of pairs \n(\"text to be shown on button\", state_to_go_when_clicked)\n \n\n\nstate_data (R)\n: a dictionary of strings with arbitrary data to pass along\n\n\nsuccess_value (R)\n: output to return in case of success\n\n\nfailure_value (R)\n: output to return in case of failure\n\n\n\n\nClient functions\n\n\nIn StarChat configuration, the developer can specify which function the front-end should\nexecute when a certain state is triggered, together with input parameters.\n\nAny function implemented on the front-end can be called.\n\n\nExample show button\n\n\n\n\nAction: \nshow_buttons\n\n\nAction input: \n{\"buttons\": [(\"Forgot Password\", \"forgot_password\"), (\"Account locked\", \"account_locked\")]}\n\n\nThe frontend will call function: \nshow_buttons(buttons={\"Forgot Password\": \"forgot_password\",\"Account locked\": \"account_locked\")\n\n\n\n\nExample \"buttons\": the front-end implements the function show_buttons and uses \"action input\" to call it. It will show two buttons, where the first returns forgot_password and the second account_locked.\n\n\nExample send email\n\n\n\n\nAction: \nsend_password_link\n\n\nAction input: \n{ \"template\": \"Reset your password here: example.com\",\"email\": \"%email%\",\"subject\": \"New password\" }\n\n\nThe frontend will call function: \nsend_password_link(template=\"Reset your password here: example.com.\",email= \"john@foo.com\", subject=\"New password\")\n\n\n\n\nExample \"send email\": the front-end implements the function send_password_link and uses \"action input\" to call it.\nThe variable %email% is automatically substituted by the variable email if available in the JSON passed to the\nStarchatResource.\n\n\nfunctions for the sample csv\n\n\nFor the CSV in the example above, the client will have to implement the following set of functions:\n\n\n\n\nshow_buttons: tell the client to render a multiple choice button\n\n\ninput: a key/value pair with the key indicating the text to be shown in the button, and the value indicating the state to follow e.g.: {\"Forgot Password\": \"forgot_password\", \"Account locked\": \"account_locked\", \"Specify your problem\": \"specify_problem\", \"I want to call an operator\": \"call_operator\", \"None of the above\": \"start\"}\n\n\noutput: the choice related to the button clicked by the user e.g.: \"account_locked\"\n\n\ninput_form: render an input form or collect the input following a specific format\n\n\ninput: a dictionary with the list of fields and the type of fields, at least \"email\" must be supported: e.g.: { \"email\": \"email\" } where the key is the name and the value is the type\n\n\noutput: a dictionary with the input values e.g.: { \"email\": \"foo@example.com\" }\n\n\nsend_password_generation_link: send an email with instructions to regenerate the password\n\n\ninput: a valid email address e.g.: \"foo@example.com\"\n\n\noutput: a dictionary with the response fields e.g.: { \"user_id\": \"123\", \"current_state\": \"forgot_password\", \"status\": \"true\" }\n\n\n\n\nRef: \nsample_state_machine_specification.csv\n.\n\n\nMechanics\n\n\n\n\nThe client implements the functions which appear in the action field of the spreadsheet. \nWe will provide interfaces.\n\n\nThe client call the rest API \"decisiontable\" endpoint communicating a state if any, \nthe user input data and other state variables\n\n\nThe client receive a response with guidance on what to return to the user and what \nare the possible next steps\n\n\nThe client render the message to the user and eventually collect the input, then \ncall again the system to get instructions on what to do next\n\n\nWhen the \"decisiontable\" functions does not return any result the user can call the \"knowledgebase\" endpoint which contains all the conversations. \n\n\n\n\nScalability\n\n\nStarChat consists of two different services: StarChat itself and an Elasticsearch cluster. \n\n\nScaling StarChat instances\n\n\nStarChat can scale horizontally by simple replication. Because StarChat is stateless, instances looking \nat the same Elasticsearch index will behave identically. New instances can then be added together\nwith a load balancing service.\n\n\nIn the diagram below, a load balancer forward requests coming from the front-end to StarChat instances \n1, 2 or 3. These instances, as said, behave identically because they all refer to \nIndex 0\n in the \nElasticsearch cluster.\n\n\n\n\nScaling Elasticsearch\n\n\nSimilarly, Elasticsearch can easily scale horizontally adding new nodes to the cluster, as explained\n in \nElasticsearch Documentation\n.\n\n\nSecurity\n\n\nStarChat is a backend service and \nshould never\n be exposed to the internet,\nit should be placed behind a firewall.\nOne of the most effective and flexible method to add an access control layer is to use \n\nKong\n in front of StarChat as a gateway, in this way\nStarChat can be shield by unwanted accesses.\n\n\nIn addition StarChat support TLS connections, the configuration file allow to\nchoose if the service should expose an https connection or an http connection\nor both.\nIn order to use the https connection the user must do the following things:\n\n\n\n\nobtain a pkcs12 server certificate from a certification authority or \ncreate a self signed certificate\n\n\nsave the certificate inside the folder \nconfig/tls/certs/\n e.g. \nconfig/tls/certs/server.p12\n\n\nset the password for the certificate inside the configuration file\n\n\nenable the https connection setting to true the https.enable property of the configuration file\n\n\noptionally disable the http connection setting to false the http.enable property of the configuration file\n\n\n\n\nFollows the block of the configuration file which is to be modified as described above in\n order to use https:\n\n\nhttps {\n  host = \"0.0.0.0\"\n  host = ${?HOST}\n  port = 8443\n  port = ${?PORT}\n  certificate = \"server.p12\"\n  password = \"uma7KnKwvh\"\n  enable = false\n}\n\nhttp {\n  host = \"0.0.0.0\"\n  host = ${?HOST}\n  port = 8888\n  port = ${?PORT}\n  enable = true\n}\n\n\n\n\nStarChat come with a default self-signed certificate for testing,\nusing it for production or sensitive environment is highly discouraged\nas well as useless from a security point of view.\n\n\nIndexing terms on term table\n\n\nThe following program index term vectors on the vector table:\n\n\nsbt \"run-main com.getjenny.command.IndexTerms --inputfile terms.txt --vecsize 300\"\n\n\n\n\nThe format for each row of an input file with 5 dimension vectors is:\n\nhello 1.0 2.0 3.0 4.0 0.0\n\n\nTest\n\n\n\n\nUnit tests are available with \nsbt test\n command\n\n\nA set of test script is present inside scripts/api_test\n\n\n\n\nTroubleshooting\n\n\nDocker: start from scratch\n\n\nYou might want to start from scratch, and delete all docker images. \n\n\nIf you do so (\ndocker images\n and then \ndocker rmi -f <java/elasticsearch ids>\n) remember that all data for the \nElasticsearch docker are local, and mounted only when the container is up. Therefore you need to:\n\n\ncd docker-starchat\nrm -rf elasticsearch/data/nodes/\n\n\n\n\nDocker: Size of virtual memory\n\n\nIf elasticsearch complain about the size of the virtual memory:\n\n\nmax virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]\nelastisearch exited with code 78\n\n\n\n\nrun:\n\n\nsysctl -w vm.max_map_count=262144",
+            "text": "Welcome!\n\n\nThis is the official repository for StarChat, a scalable conversational engine for B2B applications.\n\n\nHow to contribute\n\n\nTo contribute to StarChat, please send us a \npull request\n  from your fork of this repository.\n\n\nOur concise \ncontribution guideline\n contains the bare\nminumum requirements of the code contributions.\n\n\nBefore contributing (or opening issues), you might want send us an email at starchat@getjenny.com.\n\n\nQuick Start\n\n\nRequirements\n\n\nThe easiest way is to install StarChat using two docker images. You only need:\n\n\n\n\nsbt\n\n\ndocker\n\n\ndocker compose\n\n\n\n\nIn this way, you will put all the indices in the Elasticsearch (version 5.3) image, and StarChat itself in the Java (8) image.\n\n\nIf you do not use docker\n you therefore need on your machine:\n\n\n\n\nScala 12.2\n\n\nElasticsearch 5.3\n\n\n\n\nSetup with Docker (recommended)\n\n\n1. Launch docker-compose\n\n\nGenerate a packet distribution:\n\n\nsbt dist\n\n\n\n\nEnter the directory docker-starchat:\n\n\ncd  docker-starchat\n\n\n\n\nYou will get a message like \nYour package is ready in ...../target/universal/starchat-4ee.... .zip\n.  Extract the packet into the docker-starchat folder:\n\n\nunzip ../target/universal/starchat-4eee.....zip\nln -s starchat-4ee..../  starchat\n\n\n\n\nThe zip packet contains:\n\n\n\n\na set of scripts to test the endpoints and as a complement for the documentation: \nstarchat/scripts/api_test/\n\n\na set of command line programs \nstarchat/bin\n to run starchat and other tools.\n\n\ndelete-decision-table: delete items from the decision table\n\n\nindex-corpus-on-knowledge-base: index a corpus on knowledge base as hidden (to improve the language model)\n\n\nindex-decision-table: index data on the decision table from a csv\n\n\nindex-knowledge-base: index data into the knowledge base\n\n\nindex-terms: index terms vectors\n\n\nstarchat: start starchat\n\n\n\n\nReview the configuration files \nstarchat/config/application.conf\n and configure the language if needed (by default you have \nindex_language = \"english\"\n)\n\n\n(If you are re-installing StarChat, and want to start from scratch see \nstart from scratch\n.)\n\n\nStart both startchat and elasticsearch:\n\n\ndocker-compose up -d\n\n\n\n\n(Problems like \nelastisearch exited with code 78\n? have a look at \ntroubleshooting\n!)\n\n\n2. Create Elasticsearch indices\n\n\nRun from a terminal:\n\n\n# create the indices in Elasticsearch\ncurl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/index_management/create\"\n\n\n\n\n3. Load the configuration file\n\n\nNow you have to load the configuration file for the actual chat, aka \ndecision table\n. We have provided an example csv in English, therefore:\n\n\ncd $STARCHAT_DIR  # or cd .. \nsbt \"run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1\"\n\n\n\n\nand then (you need to index the analyzer):\n\n\ncurl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/decisiontable_analyzer\"\n\n\n\n\nThis command deletes all the states it finds on the first column:\n\n\nsbt \"run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/sample_state_machine_specification.csv\"\n\n\n\n\nNB This means that if you create a state in the CSV file, index it, then delete it in the CSV and run \nDeleteDecisionTable\n, it won't be deleted!\n\n\n4. Load external corpus (optional)\n\n\nTo have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the \nPOST /knowledgebase\n endpoint with \ndoctype: \"hidden\"\n.\n\n\n5. Index the FAQs (optional)\n\n\nTODO: You might want to activate the \nknowledge base\n for simple Question and Anwer. \n\n\nInstall without Docker\n\n\nNote: we do not support this installation.\n\n Clone the repository and enter the starchat directory.\n\n Initialize the Elasticsearch instance (see above for Docker)\n* Run the service: \nsbt compile run\n\n\nThe service binds on the port 8888 by default.\n\n\nTest the installation\n\n\nIs the service working?\n\n\ncurl -X GET localhost:8888 | python -mjson.tool\n\n\nGet the \ntest_state\n\n\ncurl  -H \"Content-Type: application/json\" -X POST http://localhost:8888/get_next_response -d '{\n \"conversation_id\": \"1234\",\n  \"user_input\": { \"text\": \"Please send me the test state\" },\n  \"values\": {\n      \"return_value\": \"\",\n      \"data\": {}\n       }\n  }'\n\n\n\n\nYou should get:\n\n\n{\n    \"action\": \"\",\n    \"action_input\": {},\n    \"analyzer\": \"and(keyword(\\\"test\\\"), or(keyword(\\\"send\\\"), keyword(\\\"get\\\")))\",\n    \"bubble\": \"This is the test state\",\n    \"conversation_id\": \"1234\",\n    \"data\": {},\n    \"failure_value\": \"\",\n    \"max_state_count\": 0,\n    \"score\": 1.0,\n    \"state\": \"test_state\",\n    \"state_data\": {},\n    \"success_value\": \"\"\n}\n\n\n\n\nIf you look at the \n\"analyzer\"\n field, you'll see that this state is triggered when\nthe user types the \ntest\n and either \nget\n or \nsend\n. Try with \n\"text\": \"Please dont send me the test state\"\n\n and StarChat will send an empty message.\n\n\nConfiguration of the chatbot (Decision Table)\n\n\nWith StarChat's Decision Table you can easily implement workflow-based chatbots. After the installation (see above)\nyou only have to configure a conversation flow and eventually a front-end client.\n\n\nNLP processing\n\n\nNLP processing is of course the core of any chatbot. As you have noted in the  \nCSV provided in the doc/ directory\n there are two fields defining when StarChat should trigger a state -\nanalyzer\n and \nqueries\n.\n\n\nQueries\n\n\nIf the \nanalyzer\n field is empty, StarChat will query Elasticsearch for the state containing the most similar sentence in the field \nqueries\n. We have carefully configured Elasticsearch in order to provide good answers (e.g. boosting results where the same words appear etc), and results are... acceptable. But you are encouraged to use the \nanalyzer\n field, documented below.\n\n\nAnalyzer\n\n\nThrough the \nanalyzer\ns, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the  \nCSV provided in the doc/ directory\n for the state \nforgot_passord\n:\n\n\nand(or(keyword(\"reset\"),keyword(\"forgot\")),keyword(\"password\"))\n\n\nThe \nexpression\n \nand\n and \nor\n are called the \noperators\n, while \nkeyword\n is an \natom\n \n\n\nExpressions: Atoms\n\n\nPresently, the \nkeyword(\"reset\")\n in the example provides a very simple score: occurrence of the word \nreset\n in the user's query divided by the total number of words. If evaluated agains the sentence \"Want to reset my password\", \nkeyword(\"reset\")\n will currently return 0.2.  \nNB\n This is just a temporary score used while our NLP library \nmanaus\n is not integrated into StarChat.\n\n\nThese are currently the expression you can use to evaluate the goodness of a query (see \nDefaultFactoryAtomic\n and \nStarchatFactoryAtomic\n:\n\n\n\n\nkeyword(\"word\")\n: as explained above, normalized\n\n\nregex\n: evaluate a regular expression, not normalized\n\n\nsearch(state_name)\n: takes a state name as argument, queries elastic search and returns the score of the most similar query in the field  \nqueries\n of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g. \nsearch(\"lost_password_state\")\n \n\n\nsynonym(\"word\")\n: gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this \nword2vec demo\n by \nTurku University\n\n\nsimilar(\"a whole sentence\")\n:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)\n\n\nsimilarState(state_name)\n:  same as above, but for the sentences in the field \"queries\" of the state in the argument.\n\n\n\n\nExpressions: Operators\n\n\nOperators evaluate the output of one or more expression and return a value. Currently, the following operators are implemented (the the \nsource code\n):\n\n\n\n\nboolean or\n:   calles matches of all the exprassions it contains and returns true or false. It can be called using \nbor\n\n\nboolean and\n:  as above, it's called with \nband\n\n\nboolean not\n:  ditto, \nbnot\n\n\nconjunction\n:  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true (\nP(A)*P(B)\n)\n\n\ndisjunction\n:  as above, the probability that at least one is true (\n1-(1-P(A))*(1-P(B))\n)\n\n\n\n\nTechnical corner: \nexpressions\n\n\nExpressions\n, like \nkeywords\n in the example, are called \natoms\n, and have the following methods/members:\n\n\n\n\ndef evaluate(query: String): Double\n: produce a score. It might be normalized to 1 or not (set \nval isEvaluateNormalized: Boolean\n accordingly)\n\n\nval match_threshold\n This is the threshold above which the expression is considered true when \nmatches\n is called. NB The default value is 0.0, which is normally not ideal.\n\n\ndef matches(query: String): Boolean\n: calles evaluate and check agains the threshold...\n\n\nval rx\n: the name of the atom, as it should be used in the \nanalyzer\n field.\n\n\n\n\nConfiguration of the answer recommender (Knowledge Base)\n\n\nTODO\n\n\nTechnology\n\n\nStarChat was design with the following goals in mind:\n\n\n\n\neasy deployment\n\n\nhorizontally scalability without any service interruption.\n\n\nmodularity\n\n\nstatelessness\n\n\n\n\nHow does StarChat work?\n\n\nWorkflow\n\n\n\n\nComponents\n\n\nStarChat uses Elasticsearch as NoSQL database and, as said above, NLP preprocessor, for\nindexing, sentence cleansing, and tokenization.\n\n\nServices\n\n\nStarChat consists of two different services: the \"KnowledBase\" and the \"DecisionTable\"\n\n\nKnowledgeBase\n\n\nFor quick setup based on real Q&A logs. It stores question and answers pairs. Given a text as input\n it proposes the pair with the closest match on the question field.\n  At the moment the KnowledBase supports only Analyzers implemented on Elasticsearch.\n\n\nDecisionTable\n\n\nThe conversational engine itself. For the usage, see below.\n\n\nConfiguration of the DecisionTable\n\n\nYou configure the DecisionTable through CSV file. Please have a look at the \nCSV provided in the doc/ directory\n.\n\n\nFields in the configuration file are of three types:\n\n\n\n\n(R)\n: Return value: the field is returned by the API\n\n\n(T)\n: Triggers to the state: when should we enter this state? \n\n\n(I)\n: Internal: a field not exposed to the API\n\n\n\n\nAnd the fields are:\n\n\n\n\nstate\n: a unique name of the state (e.g. \nforgot_password\n)\n\n\nmax_state_count\n: defines how many times StarChat can repropose the state during a conversation.\n\n\nanalyzer (T,I)\n: specify an analyzer expression which triggers the state\n\n\nquery (T,I)\n: list of sentences whose meaning identify the state\n\n\nbubble (R)\n: content, if any, to be shown to the user. It may contain variables like %email% or %link%.\n\n\naction (R)\n: a function to be called on the client side. StarChat developer must provide types of input and output (like an abstract method), and the GUI developer is responsible for the actual implementation (e.g. \nshow_button\n)\n\n\naction_input (R)\n: input passed to \naction\n's function (e.g., for \nshow_buttons\n can be a list of pairs \n(\"text to be shown on button\", state_to_go_when_clicked)\n \n\n\nstate_data (R)\n: a dictionary of strings with arbitrary data to pass along\n\n\nsuccess_value (R)\n: output to return in case of success\n\n\nfailure_value (R)\n: output to return in case of failure\n\n\n\n\nClient functions\n\n\nIn StarChat configuration, the developer can specify which function the front-end should\nexecute when a certain state is triggered, together with input parameters.\n\nAny function implemented on the front-end can be called.\n\n\nExample show button\n\n\n\n\nAction: \nshow_buttons\n\n\nAction input: \n{\"buttons\": [(\"Forgot Password\", \"forgot_password\"), (\"Account locked\", \"account_locked\")]}\n\n\nThe frontend will call function: \nshow_buttons(buttons={\"Forgot Password\": \"forgot_password\",\"Account locked\": \"account_locked\")\n\n\n\n\nExample \"buttons\": the front-end implements the function show_buttons and uses \"action input\" to call it. It will show two buttons, where the first returns forgot_password and the second account_locked.\n\n\nExample send email\n\n\n\n\nAction: \nsend_password_link\n\n\nAction input: \n{ \"template\": \"Reset your password here: example.com\",\"email\": \"%email%\",\"subject\": \"New password\" }\n\n\nThe frontend will call function: \nsend_password_link(template=\"Reset your password here: example.com.\",email= \"john@foo.com\", subject=\"New password\")\n\n\n\n\nExample \"send email\": the front-end implements the function send_password_link and uses \"action input\" to call it.\nThe variable %email% is automatically substituted by the variable email if available in the JSON passed to the\nStarchatResource.\n\n\nfunctions for the sample csv\n\n\nFor the CSV in the example above, the client will have to implement the following set of functions:\n\n\n\n\nshow_buttons: tell the client to render a multiple choice button\n\n\ninput: a key/value pair with the key indicating the text to be shown in the button, and the value indicating the state to follow e.g.: {\"Forgot Password\": \"forgot_password\", \"Account locked\": \"account_locked\", \"Specify your problem\": \"specify_problem\", \"I want to call an operator\": \"call_operator\", \"None of the above\": \"start\"}\n\n\noutput: the choice related to the button clicked by the user e.g.: \"account_locked\"\n\n\ninput_form: render an input form or collect the input following a specific format\n\n\ninput: a dictionary with the list of fields and the type of fields, at least \"email\" must be supported: e.g.: { \"email\": \"email\" } where the key is the name and the value is the type\n\n\noutput: a dictionary with the input values e.g.: { \"email\": \"foo@example.com\" }\n\n\nsend_password_generation_link: send an email with instructions to regenerate the password\n\n\ninput: a valid email address e.g.: \"foo@example.com\"\n\n\noutput: a dictionary with the response fields e.g.: { \"user_id\": \"123\", \"current_state\": \"forgot_password\", \"status\": \"true\" }\n\n\n\n\nRef: \nsample_state_machine_specification.csv\n.\n\n\nMechanics\n\n\n\n\nThe client implements the functions which appear in the action field of the spreadsheet. \nWe will provide interfaces.\n\n\nThe client call the rest API \"decisiontable\" endpoint communicating a state if any, \nthe user input data and other state variables\n\n\nThe client receive a response with guidance on what to return to the user and what \nare the possible next steps\n\n\nThe client render the message to the user and eventually collect the input, then \ncall again the system to get instructions on what to do next\n\n\nWhen the \"decisiontable\" functions does not return any result the user can call the \"knowledgebase\" endpoint which contains all the conversations. \n\n\n\n\nScalability\n\n\nStarChat consists of two different services: StarChat itself and an Elasticsearch cluster. \n\n\nScaling StarChat instances\n\n\nStarChat can scale horizontally by simple replication. Because StarChat is stateless, instances looking \nat the same Elasticsearch index will behave identically. New instances can then be added together\nwith a load balancing service.\n\n\nIn the diagram below, a load balancer forward requests coming from the front-end to StarChat instances \n1, 2 or 3. These instances, as said, behave identically because they all refer to \nIndex 0\n in the \nElasticsearch cluster.\n\n\n\n\nScaling Elasticsearch\n\n\nSimilarly, Elasticsearch can easily scale horizontally adding new nodes to the cluster, as explained\n in \nElasticsearch Documentation\n.\n\n\nSecurity\n\n\nStarChat is a backend service and \nshould never\n be exposed to the internet,\nit should be placed behind a firewall.\nOne of the most effective and flexible method to add an access control layer is to use \n\nKong\n in front of StarChat as a gateway, in this way\nStarChat can be shield by unwanted accesses.\n\n\nIn addition StarChat support TLS connections, the configuration file allow to\nchoose if the service should expose an https connection or an http connection\nor both.\nIn order to use the https connection the user must do the following things:\n\n\n\n\nobtain a pkcs12 server certificate from a certification authority or \ncreate a self signed certificate\n\n\nsave the certificate inside the folder \nconfig/tls/certs/\n e.g. \nconfig/tls/certs/server.p12\n\n\nset the password for the certificate inside the configuration file\n\n\nenable the https connection setting to true the https.enable property of the configuration file\n\n\noptionally disable the http connection setting to false the http.enable property of the configuration file\n\n\n\n\nFollows the block of the configuration file which is to be modified as described above in\n order to use https:\n\n\nhttps {\n  host = \"0.0.0.0\"\n  host = ${?HOST}\n  port = 8443\n  port = ${?PORT}\n  certificate = \"server.p12\"\n  password = \"uma7KnKwvh\"\n  enable = false\n}\n\nhttp {\n  host = \"0.0.0.0\"\n  host = ${?HOST}\n  port = 8888\n  port = ${?PORT}\n  enable = true\n}\n\n\n\n\nStarChat come with a default self-signed certificate for testing,\nusing it for production or sensitive environment is highly discouraged\nas well as useless from a security point of view.\n\n\nIndexing terms on term table\n\n\nThe following program index term vectors on the vector table:\n\n\nsbt \"run-main com.getjenny.command.IndexTerms --inputfile terms.txt --vecsize 300\"\n\n\n\n\nThe format for each row of an input file with 5 dimension vectors is:\n\nhello 1.0 2.0 3.0 4.0 0.0\n\n\nTest\n\n\n\n\nUnit tests are available with \nsbt test\n command\n\n\nA set of test script is present inside scripts/api_test\n\n\n\n\nTroubleshooting\n\n\nDocker: start from scratch\n\n\nYou might want to start from scratch, and delete all docker images. \n\n\nIf you do so (\ndocker images\n and then \ndocker rmi -f <java/elasticsearch ids>\n) remember that all data for the \nElasticsearch docker are local, and mounted only when the container is up. Therefore you need to:\n\n\ncd docker-starchat\nrm -rf elasticsearch/data/nodes/\n\n\n\n\nDocker: previously stored Analyzers are not loaded on startup with with docker-compose\n\n\nStarChat is started immediately after elasticsearch and it is possible that elasticsearch is\n not ready to respond to REST calls from StarChat (i.e. an index not found error could be\n raised in this case).\nIn order to avoid this problem you can call the services one by one:\n\n\ndocker-compose up elasticsearch # here wait elasticsearch is up and running\ndocker-compose up starchat # starchat will retrieve the Analyzers from elasticsearch\n\n\n\n\nIn alternative is possible to call the command to load/refresh the Analyzers after the docker-compose command: \n\n\ncurl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/decisiontable_analyzer\"\n\n\n\n\nDocker: Size of virtual memory\n\n\nIf elasticsearch complain about the size of the virtual memory:\n\n\nmax virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]\nelastisearch exited with code 78\n\n\n\n\nrun:\n\n\nsysctl -w vm.max_map_count=262144",
             "title": "Home"
         },
         {
@@ -27,33 +27,8 @@
         },
         {
             "location": "/#setup-with-docker-recommended",
-            "text": "",
+            "text": "1. Launch docker-compose  Generate a packet distribution:  sbt dist  Enter the directory docker-starchat:  cd  docker-starchat  You will get a message like  Your package is ready in ...../target/universal/starchat-4ee.... .zip .  Extract the packet into the docker-starchat folder:  unzip ../target/universal/starchat-4eee.....zip\nln -s starchat-4ee..../  starchat  The zip packet contains:   a set of scripts to test the endpoints and as a complement for the documentation:  starchat/scripts/api_test/  a set of command line programs  starchat/bin  to run starchat and other tools.  delete-decision-table: delete items from the decision table  index-corpus-on-knowledge-base: index a corpus on knowledge base as hidden (to improve the language model)  index-decision-table: index data on the decision table from a csv  index-knowledge-base: index data into the knowledge base  index-terms: index terms vectors  starchat: start starchat   Review the configuration files  starchat/config/application.conf  and configure the language if needed (by default you have  index_language = \"english\" )  (If you are re-installing StarChat, and want to start from scratch see  start from scratch .)  Start both startchat and elasticsearch:  docker-compose up -d  (Problems like  elastisearch exited with code 78 ? have a look at  troubleshooting !)  2. Create Elasticsearch indices  Run from a terminal:  # create the indices in Elasticsearch\ncurl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/index_management/create\"  3. Load the configuration file  Now you have to load the configuration file for the actual chat, aka  decision table . We have provided an example csv in English, therefore:  cd $STARCHAT_DIR  # or cd .. \nsbt \"run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1\"  and then (you need to index the analyzer):  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/decisiontable_analyzer\"  This command deletes all the states it finds on the first column:  sbt \"run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/sample_state_machine_specification.csv\"  NB This means that if you create a state in the CSV file, index it, then delete it in the CSV and run  DeleteDecisionTable , it won't be deleted!  4. Load external corpus (optional)  To have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the  POST /knowledgebase  endpoint with  doctype: \"hidden\" .  5. Index the FAQs (optional)  TODO: You might want to activate the  knowledge base  for simple Question and Anwer.",
             "title": "Setup with Docker (recommended)"
-        },
-        {
-            "location": "/#1-launch-docker-compose",
-            "text": "Generate a packet distribution:  sbt dist  Enter the directory docker-starchat:  cd  docker-starchat  You will get a message like  Your package is ready in ...../target/universal/starchat-4ee.... .zip .  Extract the packet into the docker-starchat folder:  unzip ../target/universal/starchat-4eee.....zip\nln -s starchat-4ee..../  starchat  The zip packet contains:   a set of scripts to test the endpoints and as a complement for the documentation:  starchat/scripts/api_test/  a set of command line programs  starchat/bin  to run starchat and other tools.  delete-decision-table: delete items from the decision table  index-corpus-on-knowledge-base: index a corpus on knowledge base as hidden (to improve the language model)  index-decision-table: index data on the decision table from a csv  index-knowledge-base: index data into the knowledge base  index-terms: index terms vectors  starchat: start starchat   Review the configuration files  starchat/config/application.conf  and configure the language if needed (by default you have  index_language = \"english\" )  (If you are re-installing StarChat, and want to start from scratch see  start from scratch .)  Start both startchat and elasticsearch:  docker-compose up -d  (Problems like  elastisearch exited with code 78 ? have a look at  troubleshooting !)",
-            "title": "1. Launch docker-compose"
-        },
-        {
-            "location": "/#2-create-elasticsearch-indices",
-            "text": "Run from a terminal:  # create the indices in Elasticsearch\ncurl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/index_management/create\"",
-            "title": "2. Create Elasticsearch indices"
-        },
-        {
-            "location": "/#3-load-the-configuration-file",
-            "text": "Now you have to load the configuration file for the actual chat, aka  decision table . We have provided an example csv in English, therefore:  cd $STARCHAT_DIR  # or cd .. \nsbt \"run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1\"  and then (you need to index the analyzer):  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/decisiontable_analyzer\"  Items on decision table can be removed using the following command:  sbt \"run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/sample_state_machine_specification.csv\"",
-            "title": "3. Load the configuration file"
-        },
-        {
-            "location": "/#4-load-external-corpus-optional",
-            "text": "To have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the  POST /knowledgebase  endpoint with  doctype: \"hidden\" .",
-            "title": "4. Load external corpus (optional)"
-        },
-        {
-            "location": "/#5-index-the-faqs-optional",
-            "text": "TODO: You might want to activate the  knowledge base  for simple Question and Anwer.",
-            "title": "5. Index the FAQs (optional)"
         },
         {
             "location": "/#install-without-docker",
@@ -72,33 +47,8 @@
         },
         {
             "location": "/#nlp-processing",
-            "text": "NLP processing is of course the core of any chatbot. As you have noted in the   CSV provided in the doc/ directory  there are two fields defining when StarChat should trigger a state - analyzer  and  queries .",
+            "text": "NLP processing is of course the core of any chatbot. As you have noted in the   CSV provided in the doc/ directory  there are two fields defining when StarChat should trigger a state - analyzer  and  queries .  Queries  If the  analyzer  field is empty, StarChat will query Elasticsearch for the state containing the most similar sentence in the field  queries . We have carefully configured Elasticsearch in order to provide good answers (e.g. boosting results where the same words appear etc), and results are... acceptable. But you are encouraged to use the  analyzer  field, documented below.  Analyzer  Through the  analyzer s, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the   CSV provided in the doc/ directory  for the state  forgot_passord :  and(or(keyword(\"reset\"),keyword(\"forgot\")),keyword(\"password\"))  The  expression   and  and  or  are called the  operators , while  keyword  is an  atom    Expressions: Atoms  Presently, the  keyword(\"reset\")  in the example provides a very simple score: occurrence of the word  reset  in the user's query divided by the total number of words. If evaluated agains the sentence \"Want to reset my password\",  keyword(\"reset\")  will currently return 0.2.   NB  This is just a temporary score used while our NLP library  manaus  is not integrated into StarChat.  These are currently the expression you can use to evaluate the goodness of a query (see  DefaultFactoryAtomic  and  StarchatFactoryAtomic :   keyword(\"word\") : as explained above, normalized  regex : evaluate a regular expression, not normalized  search(state_name) : takes a state name as argument, queries elastic search and returns the score of the most similar query in the field   queries  of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g.  search(\"lost_password_state\")    synonym(\"word\") : gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this  word2vec demo  by  Turku University  similar(\"a whole sentence\") :  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)  similarState(state_name) :  same as above, but for the sentences in the field \"queries\" of the state in the argument.   Expressions: Operators  Operators evaluate the output of one or more expression and return a value. Currently, the following operators are implemented (the the  source code ):   boolean or :   calles matches of all the exprassions it contains and returns true or false. It can be called using  bor  boolean and :  as above, it's called with  band  boolean not :  ditto,  bnot  conjunction :  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true ( P(A)*P(B) )  disjunction :  as above, the probability that at least one is true ( 1-(1-P(A))*(1-P(B)) )   Technical corner:  expressions  Expressions , like  keywords  in the example, are called  atoms , and have the following methods/members:   def evaluate(query: String): Double : produce a score. It might be normalized to 1 or not (set  val isEvaluateNormalized: Boolean  accordingly)  val match_threshold  This is the threshold above which the expression is considered true when  matches  is called. NB The default value is 0.0, which is normally not ideal.  def matches(query: String): Boolean : calles evaluate and check agains the threshold...  val rx : the name of the atom, as it should be used in the  analyzer  field.",
             "title": "NLP processing"
-        },
-        {
-            "location": "/#queries",
-            "text": "If the  analyzer  field is empty, StarChat will query Elasticsearch for the state containing the most similar sentence in the field  queries . We have carefully configured Elasticsearch in order to provide good answers (e.g. boosting results where the same words appear etc), and results are... acceptable. But you are encouraged to use the  analyzer  field, documented below.",
-            "title": "Queries"
-        },
-        {
-            "location": "/#analyzer",
-            "text": "Through the  analyzer s, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the   CSV provided in the doc/ directory  for the state  forgot_passord :  and(or(keyword(\"reset\"),keyword(\"forgot\")),keyword(\"password\"))  The  expression   and  and  or  are called the  operators , while  keyword  is an  atom",
-            "title": "Analyzer"
-        },
-        {
-            "location": "/#expressions-atoms",
-            "text": "Presently, the  keyword(\"reset\")  in the example provides a very simple score: occurrence of the word  reset  in the user's query divided by the total number of words. If evaluated agains the sentence \"Want to reset my password\",  keyword(\"reset\")  will currently return 0.2.   NB  This is just a temporary score used while our NLP library  manaus  is not integrated into StarChat.  These are currently the expression you can use to evaluate the goodness of a query (see  DefaultFactoryAtomic  and  StarchatFactoryAtomic :   keyword(\"word\") : as explained above, normalized  regex : evaluate a regular expression, not normalized  search(state_name) : takes a state name as argument, queries elastic search and returns the score of the most similar query in the field   queries  of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g.  search(\"lost_password_state\")    synonym(\"word\") : gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this  word2vec demo  by  Turku University  similar(\"a whole sentence\") :  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)  similarState(state_name) :  same as above, but for the sentences in the field \"queries\" of the state in the argument.",
-            "title": "Expressions: Atoms"
-        },
-        {
-            "location": "/#expressions-operators",
-            "text": "Operators evaluate the output of one or more expression and return a value. Currently, the following operators are implemented (the the  source code ):   boolean or :   calles matches of all the exprassions it contains and returns true or false. It can be called using  bor  boolean and :  as above, it's called with  band  boolean not :  ditto,  bnot  conjunction :  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true ( P(A)*P(B) )  disjunction :  as above, the probability that at least one is true ( 1-(1-P(A))*(1-P(B)) )",
-            "title": "Expressions: Operators"
-        },
-        {
-            "location": "/#technical-corner-expressions",
-            "text": "Expressions , like  keywords  in the example, are called  atoms , and have the following methods/members:   def evaluate(query: String): Double : produce a score. It might be normalized to 1 or not (set  val isEvaluateNormalized: Boolean  accordingly)  val match_threshold  This is the threshold above which the expression is considered true when  matches  is called. NB The default value is 0.0, which is normally not ideal.  def matches(query: String): Boolean : calles evaluate and check agains the threshold...  val rx : the name of the atom, as it should be used in the  analyzer  field.",
-            "title": "Technical corner: expressions"
         },
         {
             "location": "/#configuration-of-the-answer-recommender-knowledge-base",
@@ -112,33 +62,8 @@
         },
         {
             "location": "/#how-does-starchat-work",
-            "text": "",
+            "text": "Workflow   Components  StarChat uses Elasticsearch as NoSQL database and, as said above, NLP preprocessor, for\nindexing, sentence cleansing, and tokenization.  Services  StarChat consists of two different services: the \"KnowledBase\" and the \"DecisionTable\"  KnowledgeBase  For quick setup based on real Q&A logs. It stores question and answers pairs. Given a text as input\n it proposes the pair with the closest match on the question field.\n  At the moment the KnowledBase supports only Analyzers implemented on Elasticsearch.  DecisionTable  The conversational engine itself. For the usage, see below.",
             "title": "How does StarChat work?"
-        },
-        {
-            "location": "/#workflow",
-            "text": "",
-            "title": "Workflow"
-        },
-        {
-            "location": "/#components",
-            "text": "StarChat uses Elasticsearch as NoSQL database and, as said above, NLP preprocessor, for\nindexing, sentence cleansing, and tokenization.",
-            "title": "Components"
-        },
-        {
-            "location": "/#services",
-            "text": "StarChat consists of two different services: the \"KnowledBase\" and the \"DecisionTable\"",
-            "title": "Services"
-        },
-        {
-            "location": "/#knowledgebase",
-            "text": "For quick setup based on real Q&A logs. It stores question and answers pairs. Given a text as input\n it proposes the pair with the closest match on the question field.\n  At the moment the KnowledBase supports only Analyzers implemented on Elasticsearch.",
-            "title": "KnowledgeBase"
-        },
-        {
-            "location": "/#decisiontable",
-            "text": "The conversational engine itself. For the usage, see below.",
-            "title": "DecisionTable"
         },
         {
             "location": "/#configuration-of-the-decisiontable",
@@ -147,23 +72,8 @@
         },
         {
             "location": "/#client-functions",
-            "text": "In StarChat configuration, the developer can specify which function the front-end should\nexecute when a certain state is triggered, together with input parameters. Any function implemented on the front-end can be called.",
+            "text": "In StarChat configuration, the developer can specify which function the front-end should\nexecute when a certain state is triggered, together with input parameters. Any function implemented on the front-end can be called.  Example show button   Action:  show_buttons  Action input:  {\"buttons\": [(\"Forgot Password\", \"forgot_password\"), (\"Account locked\", \"account_locked\")]}  The frontend will call function:  show_buttons(buttons={\"Forgot Password\": \"forgot_password\",\"Account locked\": \"account_locked\")   Example \"buttons\": the front-end implements the function show_buttons and uses \"action input\" to call it. It will show two buttons, where the first returns forgot_password and the second account_locked.  Example send email   Action:  send_password_link  Action input:  { \"template\": \"Reset your password here: example.com\",\"email\": \"%email%\",\"subject\": \"New password\" }  The frontend will call function:  send_password_link(template=\"Reset your password here: example.com.\",email= \"john@foo.com\", subject=\"New password\")   Example \"send email\": the front-end implements the function send_password_link and uses \"action input\" to call it.\nThe variable %email% is automatically substituted by the variable email if available in the JSON passed to the\nStarchatResource.  functions for the sample csv  For the CSV in the example above, the client will have to implement the following set of functions:   show_buttons: tell the client to render a multiple choice button  input: a key/value pair with the key indicating the text to be shown in the button, and the value indicating the state to follow e.g.: {\"Forgot Password\": \"forgot_password\", \"Account locked\": \"account_locked\", \"Specify your problem\": \"specify_problem\", \"I want to call an operator\": \"call_operator\", \"None of the above\": \"start\"}  output: the choice related to the button clicked by the user e.g.: \"account_locked\"  input_form: render an input form or collect the input following a specific format  input: a dictionary with the list of fields and the type of fields, at least \"email\" must be supported: e.g.: { \"email\": \"email\" } where the key is the name and the value is the type  output: a dictionary with the input values e.g.: { \"email\": \"foo@example.com\" }  send_password_generation_link: send an email with instructions to regenerate the password  input: a valid email address e.g.: \"foo@example.com\"  output: a dictionary with the response fields e.g.: { \"user_id\": \"123\", \"current_state\": \"forgot_password\", \"status\": \"true\" }   Ref:  sample_state_machine_specification.csv .",
             "title": "Client functions"
-        },
-        {
-            "location": "/#example-show-button",
-            "text": "Action:  show_buttons  Action input:  {\"buttons\": [(\"Forgot Password\", \"forgot_password\"), (\"Account locked\", \"account_locked\")]}  The frontend will call function:  show_buttons(buttons={\"Forgot Password\": \"forgot_password\",\"Account locked\": \"account_locked\")   Example \"buttons\": the front-end implements the function show_buttons and uses \"action input\" to call it. It will show two buttons, where the first returns forgot_password and the second account_locked.",
-            "title": "Example show button"
-        },
-        {
-            "location": "/#example-send-email",
-            "text": "Action:  send_password_link  Action input:  { \"template\": \"Reset your password here: example.com\",\"email\": \"%email%\",\"subject\": \"New password\" }  The frontend will call function:  send_password_link(template=\"Reset your password here: example.com.\",email= \"john@foo.com\", subject=\"New password\")   Example \"send email\": the front-end implements the function send_password_link and uses \"action input\" to call it.\nThe variable %email% is automatically substituted by the variable email if available in the JSON passed to the\nStarchatResource.",
-            "title": "Example send email"
-        },
-        {
-            "location": "/#functions-for-the-sample-csv",
-            "text": "For the CSV in the example above, the client will have to implement the following set of functions:   show_buttons: tell the client to render a multiple choice button  input: a key/value pair with the key indicating the text to be shown in the button, and the value indicating the state to follow e.g.: {\"Forgot Password\": \"forgot_password\", \"Account locked\": \"account_locked\", \"Specify your problem\": \"specify_problem\", \"I want to call an operator\": \"call_operator\", \"None of the above\": \"start\"}  output: the choice related to the button clicked by the user e.g.: \"account_locked\"  input_form: render an input form or collect the input following a specific format  input: a dictionary with the list of fields and the type of fields, at least \"email\" must be supported: e.g.: { \"email\": \"email\" } where the key is the name and the value is the type  output: a dictionary with the input values e.g.: { \"email\": \"foo@example.com\" }  send_password_generation_link: send an email with instructions to regenerate the password  input: a valid email address e.g.: \"foo@example.com\"  output: a dictionary with the response fields e.g.: { \"user_id\": \"123\", \"current_state\": \"forgot_password\", \"status\": \"true\" }   Ref:  sample_state_machine_specification.csv .",
-            "title": "functions for the sample csv"
         },
         {
             "location": "/#mechanics",
@@ -172,18 +82,8 @@
         },
         {
             "location": "/#scalability",
-            "text": "StarChat consists of two different services: StarChat itself and an Elasticsearch cluster.",
+            "text": "StarChat consists of two different services: StarChat itself and an Elasticsearch cluster.   Scaling StarChat instances  StarChat can scale horizontally by simple replication. Because StarChat is stateless, instances looking \nat the same Elasticsearch index will behave identically. New instances can then be added together\nwith a load balancing service.  In the diagram below, a load balancer forward requests coming from the front-end to StarChat instances \n1, 2 or 3. These instances, as said, behave identically because they all refer to  Index 0  in the \nElasticsearch cluster.   Scaling Elasticsearch  Similarly, Elasticsearch can easily scale horizontally adding new nodes to the cluster, as explained\n in  Elasticsearch Documentation .",
             "title": "Scalability"
-        },
-        {
-            "location": "/#scaling-starchat-instances",
-            "text": "StarChat can scale horizontally by simple replication. Because StarChat is stateless, instances looking \nat the same Elasticsearch index will behave identically. New instances can then be added together\nwith a load balancing service.  In the diagram below, a load balancer forward requests coming from the front-end to StarChat instances \n1, 2 or 3. These instances, as said, behave identically because they all refer to  Index 0  in the \nElasticsearch cluster.",
-            "title": "Scaling StarChat instances"
-        },
-        {
-            "location": "/#scaling-elasticsearch",
-            "text": "Similarly, Elasticsearch can easily scale horizontally adding new nodes to the cluster, as explained\n in  Elasticsearch Documentation .",
-            "title": "Scaling Elasticsearch"
         },
         {
             "location": "/#security",
@@ -211,6 +111,11 @@
             "title": "Docker: start from scratch"
         },
         {
+            "location": "/#docker-previously-stored-analyzers-are-not-loaded-on-startup-with-with-docker-compose",
+            "text": "StarChat is started immediately after elasticsearch and it is possible that elasticsearch is\n not ready to respond to REST calls from StarChat (i.e. an index not found error could be\n raised in this case).\nIn order to avoid this problem you can call the services one by one:  docker-compose up elasticsearch # here wait elasticsearch is up and running\ndocker-compose up starchat # starchat will retrieve the Analyzers from elasticsearch  In alternative is possible to call the command to load/refresh the Analyzers after the docker-compose command:   curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/decisiontable_analyzer\"",
+            "title": "Docker: previously stored Analyzers are not loaded on startup with with docker-compose"
+        },
+        {
             "location": "/#docker-size-of-virtual-memory",
             "text": "If elasticsearch complain about the size of the virtual memory:  max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]\nelastisearch exited with code 78  run:  sysctl -w vm.max_map_count=262144",
             "title": "Docker: Size of virtual memory"
@@ -227,488 +132,153 @@
         },
         {
             "location": "/apis/#post-get_next_response",
-            "text": "Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction \nabout the next state.  Data to post:  {\n    \"conversation_id\": \"1234\",\n    \"user_input\": \"(Optional)\",\n    \"text\" : \"the text typed by the user (Optional)\",\n    \"img\": \"(e.g.) image attached by the user (Optional)\",\nl\n    \"return_value\": \"the value either in success_value or in failure_value (Optional)\",\n    \"data\": \"all the variables, e.g. for the STRING TEMPLATEs (Optional)\"\n}",
+            "text": "Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction \nabout the next state.  Data to post:  {\n    \"conversation_id\": \"1234\",\n    \"user_input\": \"(Optional)\",\n    \"text\" : \"the text typed by the user (Optional)\",\n    \"img\": \"(e.g.) image attached by the user (Optional)\",\nl\n    \"return_value\": \"the value either in success_value or in failure_value (Optional)\",\n    \"data\": \"all the variables, e.g. for the STRING TEMPLATEs (Optional)\"\n}  Return codes  200  Similar Json, see examples below  Example 1  User input is \"I forgot my password\":  curl  -H \"Content-Type: application/json\" -X POST http://localhost:8888/get_next_response -d '{   \n\"conversation_id\": \"1234\",   \n\"user_input\": { \"text\": \"I forgot my password\" },   \n\"values\": {\n    \"return_value\": \"\", \n    \"data\": {}   \n    }\n}'  returns:  {\n    \"action\": \"input_form\",\n    \"action_input\": {\n        \"email\": \"email\"\n    },\n    \"bubble\": \"We can reset your password by sending you a message to your registered e-mail address. Please tell me your address so I may send you the new password generation link.\",\n    \"conversation_id\": \"1234\",\n    \"data\": {},\n    \"failure_value\": \"\\\"dont_understand\\\"\",\n    \"max_state_count\": 0,\n    \"analyzer\": \"\",\n    \"state\": \"forgot_password\",\n    \"state_data\": {\n        \"verification\": \"did you mean you forgot the password?\"\n    },\n    \"success_value\": \"\\\"send_password_generation_link\\\"\"\n}  Example 2  User inserts their email after having been in  forgot_password . \nThe client sends:  curl  -H \"Content-Type: application/json\" -X POST http://localhost:8888/get_next_response -d '\n{\n    \"conversation_id\": \"1234\",\n    \"user_input\": { \"text\": \"\" },\n    \"values\": {\n        \"return_value\": \"send_password_generation_link\",\n        \"data\": { \"email\": \"john@example.com\" }\n    }\n}'  and gets:  {\n    \"action\": \"send_password_generation_link\",\n    \"action_input\": {\n        \"email\": \"john@example.com\",\n        \"template\": \"somebody requested to reset your password, if you requested the password reset follow the link: %link%\"\n    },\n    \"bubble\": \"Thank you. An e-mail will be sent to this address: a@b.com with your account details and the necessary steps for you to reset your password.\",\n    \"conversation_id\": \"1234\",\n    \"data\": {\n        \"email\": \"john@example.com\"\n    },\n    \"failure_value\": \"call_operator\",\n    \"max_state_count\": 0,\n    \"analyzer\": \"\",\n    \"state\": \"send_password_generation_link\",\n    \"state_data\": {},\n    \"success_value\": \"\\\"any_further\\\"\"\n}  204  No response was found  500 (error)  Internal server error  400 (error)  Bad request:    meaning: the input data structure is not valid  output data: no data returned   422 (error)   meaning: bad request data, the input data is formally valid but there is some issue with data interpretation  output data: the output data structure is a json dictionary with two fields: code and message. The following code are supported:  code: 100  message: \"error evaluating the template strings, bad values\"   404 (error)   meaning: not found  output data: no data returned",
             "title": "POST /get_next_response"
         },
         {
-            "location": "/apis/#return-codes",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200",
-            "text": "Similar Json, see examples below",
-            "title": "200"
-        },
-        {
-            "location": "/apis/#example-1",
-            "text": "User input is \"I forgot my password\":  curl  -H \"Content-Type: application/json\" -X POST http://localhost:8888/get_next_response -d '{   \n\"conversation_id\": \"1234\",   \n\"user_input\": { \"text\": \"I forgot my password\" },   \n\"values\": {\n    \"return_value\": \"\", \n    \"data\": {}   \n    }\n}'  returns:  {\n    \"action\": \"input_form\",\n    \"action_input\": {\n        \"email\": \"email\"\n    },\n    \"bubble\": \"We can reset your password by sending you a message to your registered e-mail address. Please tell me your address so I may send you the new password generation link.\",\n    \"conversation_id\": \"1234\",\n    \"data\": {},\n    \"failure_value\": \"\\\"dont_understand\\\"\",\n    \"max_state_count\": 0,\n    \"analyzer\": \"\",\n    \"state\": \"forgot_password\",\n    \"state_data\": {\n        \"verification\": \"did you mean you forgot the password?\"\n    },\n    \"success_value\": \"\\\"send_password_generation_link\\\"\"\n}",
-            "title": "Example 1"
-        },
-        {
-            "location": "/apis/#example-2",
-            "text": "User inserts their email after having been in  forgot_password . \nThe client sends:  curl  -H \"Content-Type: application/json\" -X POST http://localhost:8888/get_next_response -d '\n{\n    \"conversation_id\": \"1234\",\n    \"user_input\": { \"text\": \"\" },\n    \"values\": {\n        \"return_value\": \"send_password_generation_link\",\n        \"data\": { \"email\": \"john@example.com\" }\n    }\n}'  and gets:  {\n    \"action\": \"send_password_generation_link\",\n    \"action_input\": {\n        \"email\": \"john@example.com\",\n        \"template\": \"somebody requested to reset your password, if you requested the password reset follow the link: %link%\"\n    },\n    \"bubble\": \"Thank you. An e-mail will be sent to this address: a@b.com with your account details and the necessary steps for you to reset your password.\",\n    \"conversation_id\": \"1234\",\n    \"data\": {\n        \"email\": \"john@example.com\"\n    },\n    \"failure_value\": \"call_operator\",\n    \"max_state_count\": 0,\n    \"analyzer\": \"\",\n    \"state\": \"send_password_generation_link\",\n    \"state_data\": {},\n    \"success_value\": \"\\\"any_further\\\"\"\n}",
-            "title": "Example 2"
-        },
-        {
-            "location": "/apis/#204",
-            "text": "No response was found",
-            "title": "204"
-        },
-        {
-            "location": "/apis/#500-error",
-            "text": "Internal server error",
-            "title": "500 (error)"
-        },
-        {
-            "location": "/apis/#400-error",
-            "text": "Bad request:    meaning: the input data structure is not valid  output data: no data returned",
-            "title": "400 (error)"
-        },
-        {
-            "location": "/apis/#422-error",
-            "text": "meaning: bad request data, the input data is formally valid but there is some issue with data interpretation  output data: the output data structure is a json dictionary with two fields: code and message. The following code are supported:  code: 100  message: \"error evaluating the template strings, bad values\"",
-            "title": "422 (error)"
-        },
-        {
-            "location": "/apis/#404-error",
-            "text": "meaning: not found  output data: no data returned",
-            "title": "404 (error)"
-        },
-        {
             "location": "/apis/#get-decisiontable",
-            "text": "Get a document by ID  Output JSON",
+            "text": "Get a document by ID  Output JSON  Return codes  200  Sample call  # retrieve one or more entries with given ids; ids can be specified multiple times\ncurl -v -H \"Content-Type: application/json\" \"http://localhost:8888/decisiontable?ids=further_details_access_question\"  Sample output  {\n  \"total\": 1,\n  \"max_score\": 0,\n  \"hits\": [\n    {\n      \"score\": 0,\n      \"document\": {\n        \"analyzer\": \"((forgot).*(password))\",\n        \"queries\": [\n          \"cannot access account\",\n          \"problem access account\"\n        ],\n        \"state\": \"further_details_access_question\",\n        \"state_data\": {\n          \"verification\": \"did you mean you can't access to your account?\"\n        },\n        \"success_value\": \"eval(show_buttons)\",\n        \"failure_value\": \"\\\"dont_understand\\\"\",\n        \"bubble\": \"Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?\",\n        \"action_input\": {\n          \"Specify your problem\": \"specify_problem\",\n          \"I want to call an operator\": \"call_operator\",\n          \"None of the above\": \"start\",\n          \"Forgot Password\": \"forgot_password\",\n          \"Account locked\": \"account_locked\"\n        },\n        \"max_state_count\": 0,\n        \"action\": \"show_buttons\"\n      }\n    }\n  ]\n}",
             "title": "GET /decisiontable"
         },
         {
-            "location": "/apis/#return-codes_1",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_1",
-            "text": "Sample call  # retrieve one or more entries with given ids; ids can be specified multiple times\ncurl -v -H \"Content-Type: application/json\" \"http://localhost:8888/decisiontable?ids=further_details_access_question\"  Sample output  {\n  \"total\": 1,\n  \"max_score\": 0,\n  \"hits\": [\n    {\n      \"score\": 0,\n      \"document\": {\n        \"analyzer\": \"((forgot).*(password))\",\n        \"queries\": [\n          \"cannot access account\",\n          \"problem access account\"\n        ],\n        \"state\": \"further_details_access_question\",\n        \"state_data\": {\n          \"verification\": \"did you mean you can't access to your account?\"\n        },\n        \"success_value\": \"eval(show_buttons)\",\n        \"failure_value\": \"\\\"dont_understand\\\"\",\n        \"bubble\": \"Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?\",\n        \"action_input\": {\n          \"Specify your problem\": \"specify_problem\",\n          \"I want to call an operator\": \"call_operator\",\n          \"None of the above\": \"start\",\n          \"Forgot Password\": \"forgot_password\",\n          \"Account locked\": \"account_locked\"\n        },\n        \"max_state_count\": 0,\n        \"action\": \"show_buttons\"\n      }\n    }\n  ]\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#put-decisiontable",
-            "text": "Output JSON",
+            "text": "Output JSON  Return codes  201  Sample call  # update the \"further_details_access_question\" entry in the DT\ncurl -v -H \"Content-Type: application/json\" -X PUT http://localhost:8888/decisiontable/further_details_access_question -d '{\n  \"queries\": [\"cannot access account\", \"problem access account\", \"unable to access to my account\"]\n}'  Sample output  {\n    \"created\": false,\n    \"dtype\": \"state\",\n    \"id\": \"further_details_access_question\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 2\n}",
             "title": "PUT /decisiontable"
         },
         {
-            "location": "/apis/#return-codes_2",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#201",
-            "text": "Sample call  # update the \"further_details_access_question\" entry in the DT\ncurl -v -H \"Content-Type: application/json\" -X PUT http://localhost:8888/decisiontable/further_details_access_question -d '{\n  \"queries\": [\"cannot access account\", \"problem access account\", \"unable to access to my account\"]\n}'  Sample output  {\n    \"created\": false,\n    \"dtype\": \"state\",\n    \"id\": \"further_details_access_question\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 2\n}",
-            "title": "201"
-        },
-        {
             "location": "/apis/#post-decisiontable",
-            "text": "Insert a new document.  Output JSON",
+            "text": "Insert a new document.  Output JSON  Return codes  201  Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/decisiontable -d '{\n  \"state\": \"further_details_access_question\",\n  \"max_state_count\": 0,\n  \"analyzer\": \"\",\n  \"queries\": [\"cannot access account\", \"problem access account\"],\n  \"bubble\": \"What seems to be the problem exactly?\",\n  \"action\": \"show_buttons\",\n  \"action_input\": {\"Forgot Password\": \"forgot_password\", \"Account locked\": \"account_locked\", \"Payment problem\": \"payment_problem\", \"Specify your problem\": \"specify_problem\", \"I want to call an operator\": \"call_operator\", \"None of the above\": \"start\"},\n  \"success_value\": \"eval(show_buttons)\",\n  \"failure_value\": \"dont_understand\"\n}'  Sample output  {\n    \"created\": true,\n    \"dtype\": \"state\",\n    \"id\": \"further_details_access_question\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 1\n}",
             "title": "POST /decisiontable"
         },
         {
-            "location": "/apis/#return-codes_3",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#201_1",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/decisiontable -d '{\n  \"state\": \"further_details_access_question\",\n  \"max_state_count\": 0,\n  \"analyzer\": \"\",\n  \"queries\": [\"cannot access account\", \"problem access account\"],\n  \"bubble\": \"What seems to be the problem exactly?\",\n  \"action\": \"show_buttons\",\n  \"action_input\": {\"Forgot Password\": \"forgot_password\", \"Account locked\": \"account_locked\", \"Payment problem\": \"payment_problem\", \"Specify your problem\": \"specify_problem\", \"I want to call an operator\": \"call_operator\", \"None of the above\": \"start\"},\n  \"success_value\": \"eval(show_buttons)\",\n  \"failure_value\": \"dont_understand\"\n}'  Sample output  {\n    \"created\": true,\n    \"dtype\": \"state\",\n    \"id\": \"further_details_access_question\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 1\n}",
-            "title": "201"
-        },
-        {
             "location": "/apis/#delete-decisiontable",
-            "text": "Delete a document by ID  Output JSON",
+            "text": "Delete a document by ID  Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X DELETE http://localhost:8888/decisiontable/further_details_access_question  Sample output  {\n    \"dtype\": \"state\",\n    \"found\": true,\n    \"id\": \"further_details_access_question\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 3\n}",
             "title": "DELETE /decisiontable"
         },
         {
-            "location": "/apis/#return-codes_4",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_2",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X DELETE http://localhost:8888/decisiontable/further_details_access_question  Sample output  {\n    \"dtype\": \"state\",\n    \"found\": true,\n    \"id\": \"further_details_access_question\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 3\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-decisiontable_search",
-            "text": "Update a document  Output JSON",
+            "text": "Update a document  Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/decisiontable_search -d '{\n  \"queries\": \"cannot access my account\",\n  \"min_score\": 0.1,\n  \"boost_exact_match_factor\": 2.0\n}'",
             "title": "POST /decisiontable_search"
         },
         {
-            "location": "/apis/#return-codes_5",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_3",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/decisiontable_search -d '{\n  \"queries\": \"cannot access my account\",\n  \"min_score\": 0.1,\n  \"boost_exact_match_factor\": 2.0\n}'",
-            "title": "200"
-        },
-        {
             "location": "/apis/#get-decisiontable_analyzer",
-            "text": "(WORK IN PROGRESS, PARTIALLY IMPLEMENTED)  Get and return the map of analyzer for each state  Output JSON",
+            "text": "(WORK IN PROGRESS, PARTIALLY IMPLEMENTED)  Get and return the map of analyzer for each state  Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X GET \"http://localhost:8888/decisiontable_analyzer\"  Sample response  {\n  \"analyzer_map\": {\n    \"further_details_access_question\": \"((forgot).*(password))\"\n  }\n}",
             "title": "GET /decisiontable_analyzer"
         },
         {
-            "location": "/apis/#return-codes_6",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_4",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X GET \"http://localhost:8888/decisiontable_analyzer\"  Sample response  {\n  \"analyzer_map\": {\n    \"further_details_access_question\": \"((forgot).*(password))\"\n  }\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-decisiontable_analyzer",
-            "text": "Load/reload the map of analyzer from ES  Output JSON",
+            "text": "Load/reload the map of analyzer from ES  Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/decisiontable_analyzer\"  Sample response  {\"num_of_entries\":1}",
             "title": "POST /decisiontable_analyzer"
         },
         {
-            "location": "/apis/#return-codes_7",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_5",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/decisiontable_analyzer\"  Sample response  {\"num_of_entries\":1}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#get-knowledgebase",
-            "text": "Return a document by ID  Output JSON",
+            "text": "Return a document by ID  Output JSON  Return codes  200  Sample call  # retrieve one or more entries with given ids; ids can be specified multiple times\ncurl -v -H \"Content-Type: application/json\" \"http://localhost:8888/knowledgebase?ids=0\"  Sample response  {\n    \"hits\": [\n        {\n            \"document\": {\n                \"answer\": \"you are welcome!\",\n                \"conversation\": \"832\",\n                \"doctype\": \"normal\",\n                \"id\": \"0\",\n                \"index_in_conversation\": 11,\n                \"question\": \"thank you\",\n                \"state\": \"\",\n                \"status\": 0,\n                \"topics\": \"\",\n                \"verified\": false\n            },\n            \"score\": 0.0\n        }\n    ],\n    \"max_score\": 0.0,\n    \"total\": 1\n}",
             "title": "GET /knowledgebase"
         },
         {
-            "location": "/apis/#return-codes_8",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_6",
-            "text": "Sample call  # retrieve one or more entries with given ids; ids can be specified multiple times\ncurl -v -H \"Content-Type: application/json\" \"http://localhost:8888/knowledgebase?ids=0\"  Sample response  {\n    \"hits\": [\n        {\n            \"document\": {\n                \"answer\": \"you are welcome!\",\n                \"conversation\": \"832\",\n                \"doctype\": \"normal\",\n                \"id\": \"0\",\n                \"index_in_conversation\": 11,\n                \"question\": \"thank you\",\n                \"state\": \"\",\n                \"status\": 0,\n                \"topics\": \"\",\n                \"verified\": false\n            },\n            \"score\": 0.0\n        }\n    ],\n    \"max_score\": 0.0,\n    \"total\": 1\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-knowledgebase",
-            "text": "Insert a new document",
+            "text": "Insert a new document  Return codes  201  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/starchat-en/knowledgebase -d '{\n    \"answer\": \"you are welcome!\",\n    \"conversation\": \"832\",\n    \"doctype\": \"normal\",\n    \"id\": \"0\",\n    \"index_in_conversation\": 11,\n    \"question\": \"thank you\",\n    \"state\": \"\",\n    \"status\": 0,\n    \"topics\": \"\",\n    \"verified\": true\n}'  Sample response  {\n    \"hits\": [\n        {\n            \"document\": {\n                \"answer\": \"you are welcome!\",\n                \"conversation\": \"832\",\n                \"doctype\": \"normal\",\n                \"id\": \"0\",\n                \"index_in_conversation\": 11,\n                \"question\": \"thank you\",\n                \"state\": \"\",\n                \"status\": 0,\n                \"topics\": \"\",\n                \"verified\": true\n            },\n            \"score\": 0.0\n        }\n    ],\n    \"max_score\": 0.0,\n    \"total\": 1\n}",
             "title": "POST /knowledgebase"
         },
         {
-            "location": "/apis/#return-codes_9",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#201_2",
-            "text": "curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/starchat-en/knowledgebase -d '{\n    \"answer\": \"you are welcome!\",\n    \"conversation\": \"832\",\n    \"doctype\": \"normal\",\n    \"id\": \"0\",\n    \"index_in_conversation\": 11,\n    \"question\": \"thank you\",\n    \"state\": \"\",\n    \"status\": 0,\n    \"topics\": \"\",\n    \"verified\": true\n}'  Sample response  {\n    \"hits\": [\n        {\n            \"document\": {\n                \"answer\": \"you are welcome!\",\n                \"conversation\": \"832\",\n                \"doctype\": \"normal\",\n                \"id\": \"0\",\n                \"index_in_conversation\": 11,\n                \"question\": \"thank you\",\n                \"state\": \"\",\n                \"status\": 0,\n                \"topics\": \"\",\n                \"verified\": true\n            },\n            \"score\": 0.0\n        }\n    ],\n    \"max_score\": 0.0,\n    \"total\": 1\n}",
-            "title": "201"
-        },
-        {
             "location": "/apis/#delete-knowledgebase",
-            "text": "Delete a document by ID  Output JSON",
+            "text": "Delete a document by ID  Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X DELETE http://localhost:8888/knowledgebase/0  Sample output  {\n    \"dtype\": \"question\",\n    \"found\": false,\n    \"id\": \"0\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 5\n}",
             "title": "DELETE /knowledgebase"
         },
         {
-            "location": "/apis/#return-codes_10",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_7",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X DELETE http://localhost:8888/knowledgebase/0  Sample output  {\n    \"dtype\": \"question\",\n    \"found\": false,\n    \"id\": \"0\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 5\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#put-knowledgebase",
-            "text": "Update an existing document  Output JSON",
+            "text": "Update an existing document  Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X PUT http://localhost:8888/starchat-en/knowledgebase/                                                   e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297 -d '{\n    \"answer\": \"you are welcome!\",\n    \"conversation\": \"832\",\n    \"doctype\": \"normal\",\n    \"index_in_conversation\": 11,\n    \"question\": \"thank yoy\",\n    \"state\": \"\",\n    \"status\": 0,\n    \"topics\": \"\",\n    \"verified\": false\n}'  Sample response  {\n    \"created\": false,\n    \"dtype\": \"question\",\n    \"id\": \"e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 3\n}",
             "title": "PUT /knowledgebase"
         },
         {
-            "location": "/apis/#return-codes_11",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_8",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X PUT http://localhost:8888/starchat-en/knowledgebase/                                                   e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297 -d '{\n    \"answer\": \"you are welcome!\",\n    \"conversation\": \"832\",\n    \"doctype\": \"normal\",\n    \"index_in_conversation\": 11,\n    \"question\": \"thank yoy\",\n    \"state\": \"\",\n    \"status\": 0,\n    \"topics\": \"\",\n    \"verified\": false\n}'  Sample response  {\n    \"created\": false,\n    \"dtype\": \"question\",\n    \"id\": \"e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297\",\n    \"index\": \"jenny-en-0\",\n    \"version\": 3\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-knowledgebase_search",
-            "text": "Output JSON",
+            "text": "Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/knowledgebase_search -d '{\n  \"question\": \"thank you\",\n  \"verified\": true,\n  \"doctype\": \"normal\"\n}'  Sample output  {\n    \"hits\": [\n        {\n            \"document\": {\n                \"answer\": \"you are welcome\",\n                \"conversation\": \"4346\",\n                \"doctype\": \"normal\",\n                \"id\": \"10\",\n                \"index_in_conversation\": 6,\n                \"question\": \"thank you\",\n                \"state\": \"\",\n                \"status\": 0,\n                \"topics\": \"\",\n                \"verified\": true\n            },\n            \"score\": 3.5618982315063477\n        }\n    ],\n    \"max_score\": 3.5618982315063477,\n    \"total\": 1\n}",
             "title": "POST /knowledgebase_search"
         },
         {
-            "location": "/apis/#return-codes_12",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_9",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/knowledgebase_search -d '{\n  \"question\": \"thank you\",\n  \"verified\": true,\n  \"doctype\": \"normal\"\n}'  Sample output  {\n    \"hits\": [\n        {\n            \"document\": {\n                \"answer\": \"you are welcome\",\n                \"conversation\": \"4346\",\n                \"doctype\": \"normal\",\n                \"id\": \"10\",\n                \"index_in_conversation\": 6,\n                \"question\": \"thank you\",\n                \"state\": \"\",\n                \"status\": 0,\n                \"topics\": \"\",\n                \"verified\": true\n            },\n            \"score\": 3.5618982315063477\n        }\n    ],\n    \"max_score\": 3.5618982315063477,\n    \"total\": 1\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-language_guesser",
-            "text": "Output JSON",
+            "text": "Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/language_guesser\" -d \"\n{\n    \\\"input_text\\\": \\\"good morning, may I ask you a question?\\\"\n    }\n    \"  Sample output  {\n   \"enhough_text\" : false,\n   \"language\" : \"en\",\n   \"confidence\" : \"MEDIUM\",\n   \"score\" : 0.571426689624786\n}",
             "title": "POST /language_guesser"
         },
         {
-            "location": "/apis/#return-codes_13",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_10",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/language_guesser\" -d \"\n{\n    \\\"input_text\\\": \\\"good morning, may I ask you a question?\\\"\n    }\n    \"  Sample output  {\n   \"enhough_text\" : false,\n   \"language\" : \"en\",\n   \"confidence\" : \"MEDIUM\",\n   \"score\" : 0.571426689624786\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#get-language_guesser",
-            "text": "Output JSON",
+            "text": "Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X GET \"http://localhost:8888/language_guesser/en\"  Sample output  {\"message\":\"updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)\"}",
             "title": "GET /language_guesser"
         },
         {
-            "location": "/apis/#return-codes_14",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_11",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X GET \"http://localhost:8888/language_guesser/en\"  Sample output  {\"message\":\"updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)\"}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-index_managementcreate",
-            "text": "Output JSON",
+            "text": "Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/index_management\"  Sample output  {\"message\":\"create index: jenny-en-0 create_index_ack(true)\"}",
             "title": "POST /index_management/create"
         },
         {
-            "location": "/apis/#return-codes_15",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_12",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/index_management\"  Sample output  {\"message\":\"create index: jenny-en-0 create_index_ack(true)\"}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-index_managementrefresh",
-            "text": "Output JSON",
+            "text": "Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/index_management/refresh\"  Sample output  {\n   \"failed_shards_n\" : 0,\n   \"total_shards_n\" : 10,\n   \"failed_shards\" : [],\n   \"successful_shards_n\" : 5\n}",
             "title": "POST /index_management/refresh"
         },
         {
-            "location": "/apis/#return-codes_16",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_13",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/index_management/refresh\"  Sample output  {\n   \"failed_shards_n\" : 0,\n   \"total_shards_n\" : 10,\n   \"failed_shards\" : [],\n   \"successful_shards_n\" : 5\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#get-index_management",
-            "text": "Output JSON",
+            "text": "Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X GET \"http://localhost:8888/index_management\"  Sample output  {\"message\":\"settings index: jenny-en-0 dt_type_check(state:true) kb_type_check(question:true) term_type_name(term:true)\"}",
             "title": "GET /index_management"
         },
         {
-            "location": "/apis/#return-codes_17",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_14",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X GET \"http://localhost:8888/index_management\"  Sample output  {\"message\":\"settings index: jenny-en-0 dt_type_check(state:true) kb_type_check(question:true) term_type_name(term:true)\"}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#put-index_management",
-            "text": "Output JSON",
+            "text": "Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X PUT \"http://localhost:8888/index_management\"  Sample output  {\"message\":\"updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)\"}",
             "title": "PUT /index_management"
         },
         {
-            "location": "/apis/#return-codes_18",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_15",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X PUT \"http://localhost:8888/index_management\"  Sample output  {\"message\":\"updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)\"}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#delete-index_management",
-            "text": "Output JSON",
+            "text": "Output JSON  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X DELETE \"http://localhost:8888/language_guesser/en\"  Sample output  {\"message\":\"removed index: jenny-en-0 index_ack(true)\"}",
             "title": "DELETE /index_management"
         },
         {
-            "location": "/apis/#return-codes_19",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_16",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X DELETE \"http://localhost:8888/language_guesser/en\"  Sample output  {\"message\":\"removed index: jenny-en-0 index_ack(true)\"}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-termindex",
-            "text": "Index the term as indicated in the JSON.",
+            "text": "Index the term as indicated in the JSON.   Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/term/index -d '{\n     \"terms\": [\n         {\n            \"term\": \"\u092e\u0930\u093e\u0920\u0940\",\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"vector\": [1.0, 2.0, 3.0],\n            \"synonyms\":\n            {\n                \"bla1\": 0.1,\n                \"bla2\": 0.2\n            },\n            \"antonyms\":\n            {\n                \"bla3\": 0.1,\n                \"bla4\": 0.2\n            },\n            \"tags\": \"tag1 tag2\",\n            \"features\":\n            {\n                \"NUM\": \"S\",\n                \"GEN\": \"M\"\n            }\n            },\n            {\n            \"term\": \"term2\",\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"vector\": [1.0, 2.0, 3.0],\n            \"synonyms\":\n            {\n                \"bla1\": 0.1,\n                \"bla2\": 0.2\n            },\n            \"antonyms\":\n            {\n                \"bla3\": 0.1,\n                \"bla4\": 0.2\n            },\n            \"tags\": \"tag1 tag2\",\n            \"features\":\n            {\n                \"NUM\": \"P\",\n                \"GEN\": \"F\"\n            }\n            }\n   ]\n}'  Sample output  {\n   \"data\" : [\n      {\n         \"version\" : 1,\n         \"created\" : true,\n         \"dtype\" : \"term\",\n         \"index\" : \"jenny-en-0\",\n         \"id\" : \"\u092e\u0930\u093e\u0920\u0940\"\n      },\n      {\n         \"dtype\" : \"term\",\n         \"created\" : true,\n         \"version\" : 1,\n         \"id\" : \"term2\",\n         \"index\" : \"jenny-en-0\"\n      }\n   ]\n}",
             "title": "POST /term/index"
         },
         {
-            "location": "/apis/#return-codes_20",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_17",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/term/index -d '{\n     \"terms\": [\n         {\n            \"term\": \"\u092e\u0930\u093e\u0920\u0940\",\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"vector\": [1.0, 2.0, 3.0],\n            \"synonyms\":\n            {\n                \"bla1\": 0.1,\n                \"bla2\": 0.2\n            },\n            \"antonyms\":\n            {\n                \"bla3\": 0.1,\n                \"bla4\": 0.2\n            },\n            \"tags\": \"tag1 tag2\",\n            \"features\":\n            {\n                \"NUM\": \"S\",\n                \"GEN\": \"M\"\n            }\n            },\n            {\n            \"term\": \"term2\",\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"vector\": [1.0, 2.0, 3.0],\n            \"synonyms\":\n            {\n                \"bla1\": 0.1,\n                \"bla2\": 0.2\n            },\n            \"antonyms\":\n            {\n                \"bla3\": 0.1,\n                \"bla4\": 0.2\n            },\n            \"tags\": \"tag1 tag2\",\n            \"features\":\n            {\n                \"NUM\": \"P\",\n                \"GEN\": \"F\"\n            }\n            }\n   ]\n}'  Sample output  {\n   \"data\" : [\n      {\n         \"version\" : 1,\n         \"created\" : true,\n         \"dtype\" : \"term\",\n         \"index\" : \"jenny-en-0\",\n         \"id\" : \"\u092e\u0930\u093e\u0920\u0940\"\n      },\n      {\n         \"dtype\" : \"term\",\n         \"created\" : true,\n         \"version\" : 1,\n         \"id\" : \"term2\",\n         \"index\" : \"jenny-en-0\"\n      }\n   ]\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-termget",
-            "text": "Get one or more terms entry.",
+            "text": "Get one or more terms entry.  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/term/get -d '{\n     \"ids\": [\"\u092e\u0930\u093e\u0920\u0940\", \"term2\"]\n}'  Sample output  {\n   \"terms\" : [\n      {\n         \"vector\" : [\n            1,\n            2,\n            3\n         ],\n        \"frequency_base\": 1.0,\n        \"frequency_stem\": 1.0,\n         \"term\" : \"\u092e\u0930\u093e\u0920\u0940\",\n         \"antonyms\" : {\n            \"bla4\" : 0.2,\n            \"bla3\" : 0.1\n         },\n         \"features\" : {\n            \"NUM\" : \"S\",\n            \"GEN\" : \"M\"\n         },\n         \"synonyms\" : {\n            \"bla2\" : 0.2,\n            \"bla1\" : 0.1\n         },\n         \"tags\" : \"tag1 tag2\"\n      },\n      {\n         \"antonyms\" : {\n            \"bla3\" : 0.1,\n            \"bla4\" : 0.2\n         },\n         \"features\" : {\n            \"NUM\" : \"P\",\n            \"GEN\" : \"F\"\n         },\n         \"term\" : \"term2\",\n         \"frequency_base\": 1.0,\n         \"frequency_stem\": 1.0,\n         \"vector\" : [\n            1,\n            2,\n            3\n         ],\n         \"synonyms\" : {\n            \"bla1\" : 0.1,\n            \"bla2\" : 0.2\n         },\n         \"tags\" : \"tag1 tag2\"\n      }\n   ]\n}",
             "title": "POST /term/get"
         },
         {
-            "location": "/apis/#return-codes_21",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_18",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/term/get -d '{\n     \"ids\": [\"\u092e\u0930\u093e\u0920\u0940\", \"term2\"]\n}'  Sample output  {\n   \"terms\" : [\n      {\n         \"vector\" : [\n            1,\n            2,\n            3\n         ],\n        \"frequency_base\": 1.0,\n        \"frequency_stem\": 1.0,\n         \"term\" : \"\u092e\u0930\u093e\u0920\u0940\",\n         \"antonyms\" : {\n            \"bla4\" : 0.2,\n            \"bla3\" : 0.1\n         },\n         \"features\" : {\n            \"NUM\" : \"S\",\n            \"GEN\" : \"M\"\n         },\n         \"synonyms\" : {\n            \"bla2\" : 0.2,\n            \"bla1\" : 0.1\n         },\n         \"tags\" : \"tag1 tag2\"\n      },\n      {\n         \"antonyms\" : {\n            \"bla3\" : 0.1,\n            \"bla4\" : 0.2\n         },\n         \"features\" : {\n            \"NUM\" : \"P\",\n            \"GEN\" : \"F\"\n         },\n         \"term\" : \"term2\",\n         \"frequency_base\": 1.0,\n         \"frequency_stem\": 1.0,\n         \"vector\" : [\n            1,\n            2,\n            3\n         ],\n         \"synonyms\" : {\n            \"bla1\" : 0.1,\n            \"bla2\" : 0.2\n         },\n         \"tags\" : \"tag1 tag2\"\n      }\n   ]\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#delete-term",
-            "text": "Delete the term.",
+            "text": "Delete the term.  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X DELETE http://localhost:8888/term -d '{\n     \"ids\": [\"\u092e\u0930\u093e\u0920\u0940\", \"term2\"]\n}'  Sample output  {\n   \"data\" : [\n      {\n         \"dtype\" : \"term\",\n         \"version\" : 2,\n         \"id\" : \"\u092e\u0930\u093e\u0920\u0940\",\n         \"index\" : \"jenny-en-0\",\n         \"found\" : true\n      },\n      {\n         \"dtype\" : \"term\",\n         \"id\" : \"term2\",\n         \"version\" : 2,\n         \"found\" : true,\n         \"index\" : \"jenny-en-0\"\n      }\n   ]\n}",
             "title": "DELETE /term"
         },
         {
-            "location": "/apis/#return-codes_22",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_19",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X DELETE http://localhost:8888/term -d '{\n     \"ids\": [\"\u092e\u0930\u093e\u0920\u0940\", \"term2\"]\n}'  Sample output  {\n   \"data\" : [\n      {\n         \"dtype\" : \"term\",\n         \"version\" : 2,\n         \"id\" : \"\u092e\u0930\u093e\u0920\u0940\",\n         \"index\" : \"jenny-en-0\",\n         \"found\" : true\n      },\n      {\n         \"dtype\" : \"term\",\n         \"id\" : \"term2\",\n         \"version\" : 2,\n         \"found\" : true,\n         \"index\" : \"jenny-en-0\"\n      }\n   ]\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#put-term",
-            "text": "Update the entry.",
+            "text": "Update the entry.  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X PUT http://localhost:8888/term -d '{\n     \"terms\": [\n         {\n            \"term\": \"\u092e\u0930\u093e\u0920\u0940\",\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"vector\": [1.0, 2.0, 3.0, 4.0],\n            \"synonyms\":\n            {\n                \"bla1\": 0.1,\n                \"bla2\": 0.2\n            },\n            \"antonyms\":\n            {\n                \"term2\": 0.1,\n                \"bla4\": 0.2\n            },\n            \"tags\": \"tag1 tag2\",\n            \"features\":\n            {\n                \"FEATURE_NEW1\": \"V\",\n                \"GEN\": \"M\"\n            }\n            },\n            {\n            \"term\": \"term2\",\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"vector\": [1.0, 2.0, 3.0, 5.0],\n            \"synonyms\":\n            {\n                \"bla1\": 0.1,\n                \"bla2\": 0.2\n            },\n            \"antonyms\":\n            {\n                \"bla3\": 0.1,\n                \"bla4\": 0.2\n            },\n            \"tags\": \"tag1 tag2\",\n            \"features\":\n            {\n                \"FEATURE_NEW1\": \"N\",\n                \"GEN\": \"F\"\n            }\n            }\n   ]\n}'  Sample output  {\n   \"data\" : [\n      {\n         \"version\" : 2,\n         \"id\" : \"\u092e\u0930\u093e\u0920\u0940\",\n         \"index\" : \"jenny-en-0\",\n         \"created\" : false,\n         \"dtype\" : \"term\"\n      },\n      {\n         \"index\" : \"jenny-en-0\",\n         \"id\" : \"term2\",\n         \"version\" : 2,\n         \"dtype\" : \"term\",\n         \"created\" : false\n      }\n   ]\n}",
             "title": "PUT /term"
         },
         {
-            "location": "/apis/#return-codes_23",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_20",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X PUT http://localhost:8888/term -d '{\n     \"terms\": [\n         {\n            \"term\": \"\u092e\u0930\u093e\u0920\u0940\",\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"vector\": [1.0, 2.0, 3.0, 4.0],\n            \"synonyms\":\n            {\n                \"bla1\": 0.1,\n                \"bla2\": 0.2\n            },\n            \"antonyms\":\n            {\n                \"term2\": 0.1,\n                \"bla4\": 0.2\n            },\n            \"tags\": \"tag1 tag2\",\n            \"features\":\n            {\n                \"FEATURE_NEW1\": \"V\",\n                \"GEN\": \"M\"\n            }\n            },\n            {\n            \"term\": \"term2\",\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"vector\": [1.0, 2.0, 3.0, 5.0],\n            \"synonyms\":\n            {\n                \"bla1\": 0.1,\n                \"bla2\": 0.2\n            },\n            \"antonyms\":\n            {\n                \"bla3\": 0.1,\n                \"bla4\": 0.2\n            },\n            \"tags\": \"tag1 tag2\",\n            \"features\":\n            {\n                \"FEATURE_NEW1\": \"N\",\n                \"GEN\": \"F\"\n            }\n            }\n   ]\n}'  Sample output  {\n   \"data\" : [\n      {\n         \"version\" : 2,\n         \"id\" : \"\u092e\u0930\u093e\u0920\u0940\",\n         \"index\" : \"jenny-en-0\",\n         \"created\" : false,\n         \"dtype\" : \"term\"\n      },\n      {\n         \"index\" : \"jenny-en-0\",\n         \"id\" : \"term2\",\n         \"version\" : 2,\n         \"dtype\" : \"term\",\n         \"created\" : false\n      }\n   ]\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#get-termterm",
-            "text": "Search for term (using Elasticsearch).",
+            "text": "Search for term (using Elasticsearch).  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X GET http://localhost:8888/term/term -d '{\n    \"term\": \"\u092e\u0930\u093e\u0920\u0940\"\n}'  Sample output  {\n   \"hits\" : {\n      \"terms\" : [\n         {\n            \"vector\" : [\n               1.2,\n               2.3,\n               3.4,\n               4.5\n            ],\n            \"antonyms\" : {\n               \"bla4\" : 0.2,\n               \"term2\" : 0.1\n            },\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"features\" : {\n               \"FEATURE_NEW1\" : \"V\",\n               \"GEN\" : \"M\"\n            },\n            \"score\" : 0.6931471824646,\n            \"tags\" : \"tag1 tag2\",\n            \"term\" : \"\u092e\u0930\u093e\u0920\u0940\",\n            \"synonyms\" : {\n               \"bla2\" : 0.2,\n               \"bla1\" : 0.1\n            }\n         }\n      ]\n   },\n   \"total\" : 1,\n   \"max_score\" : 0.6931471824646\n}",
             "title": "GET /term/term"
         },
         {
-            "location": "/apis/#return-codes_24",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_21",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X GET http://localhost:8888/term/term -d '{\n    \"term\": \"\u092e\u0930\u093e\u0920\u0940\"\n}'  Sample output  {\n   \"hits\" : {\n      \"terms\" : [\n         {\n            \"vector\" : [\n               1.2,\n               2.3,\n               3.4,\n               4.5\n            ],\n            \"antonyms\" : {\n               \"bla4\" : 0.2,\n               \"term2\" : 0.1\n            },\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"features\" : {\n               \"FEATURE_NEW1\" : \"V\",\n               \"GEN\" : \"M\"\n            },\n            \"score\" : 0.6931471824646,\n            \"tags\" : \"tag1 tag2\",\n            \"term\" : \"\u092e\u0930\u093e\u0920\u0940\",\n            \"synonyms\" : {\n               \"bla2\" : 0.2,\n               \"bla1\" : 0.1\n            }\n         }\n      ]\n   },\n   \"total\" : 1,\n   \"max_score\" : 0.6931471824646\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#get-termtext",
-            "text": "Search for all the terms in the text and return the entries.",
+            "text": "Search for all the terms in the text and return the entries.  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X GET http://localhost:8888/term/text -d 'term2 \u092e\u0930\u093e\u0920\u0940'  Sample output  {\n   \"max_score\" : 0.6931471824646,\n   \"hits\" : {\n      \"terms\" : [\n         {\n            \"term\" : \"\u092e\u0930\u093e\u0920\u0940\",\n            \"score\" : 0.6931471824646,\n            \"tags\" : \"tag1 tag2\",\n            \"vector\" : [\n               1.2,\n               2.3,\n               3.4,\n               4.5\n            ],\n            \"features\" : {\n               \"GEN\" : \"M\",\n               \"FEATURE_NEW1\" : \"V\"\n            },\n            \"antonyms\" : {\n               \"bla4\" : 0.2,\n               \"term2\" : 0.1\n            },\n            \"synonyms\" : {\n               \"bla2\" : 0.2,\n               \"bla1\" : 0.1\n            },\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0\n         },\n         {\n            \"term\" : \"term2\",\n            \"tags\" : \"tag1 tag2\",\n            \"score\" : 0.6931471824646,\n            \"features\" : {\n               \"FEATURE_NEW1\" : \"N\",\n               \"GEN\" : \"F\"\n            },\n            \"vector\" : [\n               1.6,\n               2.7,\n               3.8,\n               5.9\n            ],\n            \"antonyms\" : {\n               \"bla3\" : 0.1,\n               \"bla4\" : 0.2\n            },\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"synonyms\" : {\n               \"bla1\" : 0.1,\n               \"bla2\" : 0.2\n            }\n         }\n      ]\n   },\n   \"total\" : 2\n}",
             "title": "GET /term/text"
         },
         {
-            "location": "/apis/#return-codes_25",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_22",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X GET http://localhost:8888/term/text -d 'term2 \u092e\u0930\u093e\u0920\u0940'  Sample output  {\n   \"max_score\" : 0.6931471824646,\n   \"hits\" : {\n      \"terms\" : [\n         {\n            \"term\" : \"\u092e\u0930\u093e\u0920\u0940\",\n            \"score\" : 0.6931471824646,\n            \"tags\" : \"tag1 tag2\",\n            \"vector\" : [\n               1.2,\n               2.3,\n               3.4,\n               4.5\n            ],\n            \"features\" : {\n               \"GEN\" : \"M\",\n               \"FEATURE_NEW1\" : \"V\"\n            },\n            \"antonyms\" : {\n               \"bla4\" : 0.2,\n               \"term2\" : 0.1\n            },\n            \"synonyms\" : {\n               \"bla2\" : 0.2,\n               \"bla1\" : 0.1\n            },\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0\n         },\n         {\n            \"term\" : \"term2\",\n            \"tags\" : \"tag1 tag2\",\n            \"score\" : 0.6931471824646,\n            \"features\" : {\n               \"FEATURE_NEW1\" : \"N\",\n               \"GEN\" : \"F\"\n            },\n            \"vector\" : [\n               1.6,\n               2.7,\n               3.8,\n               5.9\n            ],\n            \"antonyms\" : {\n               \"bla3\" : 0.1,\n               \"bla4\" : 0.2\n            },\n            \"frequency_base\": 1.0,\n            \"frequency_stem\": 1.0,\n            \"synonyms\" : {\n               \"bla1\" : 0.1,\n               \"bla2\" : 0.2\n            }\n         }\n      ]\n   },\n   \"total\" : 2\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#get-tokenizers",
-            "text": "Show a list of supported methods for tokenization and stemming",
+            "text": "Show a list of supported methods for tokenization and stemming  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X GET \"http://localhost:8888/tokenizers\"  Sample output  {\n   \"shingles2\" : \"2 words shingles\",\n   \"shingles3\" : \"3 words shingles\",\n   \"shingles2_10\" : \"from 2 to 10 shingles\",\n   \"base_stem\" : \"lowercase + stemming\",\n   \"base\" : \"lowercase\",\n   \"stop\" : \"lowercase + stopwords elimination\",\n   \"shingles4\" : \"4 words shingles\",\n   \"stop_stem\" : \"lowercase + stopwords elimination + stemming\"\n}",
             "title": "GET /tokenizers"
         },
         {
-            "location": "/apis/#return-codes_26",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_23",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X GET \"http://localhost:8888/tokenizers\"  Sample output  {\n   \"shingles2\" : \"2 words shingles\",\n   \"shingles3\" : \"3 words shingles\",\n   \"shingles2_10\" : \"from 2 to 10 shingles\",\n   \"base_stem\" : \"lowercase + stemming\",\n   \"base\" : \"lowercase\",\n   \"stop\" : \"lowercase + stopwords elimination\",\n   \"shingles4\" : \"4 words shingles\",\n   \"stop_stem\" : \"lowercase + stopwords elimination + stemming\"\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-tokenizers",
-            "text": "get a list of token using the selected analyzer",
+            "text": "get a list of token using the selected analyzer  Return codes  200  Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/tokenizers\" -d \"\n{\n    \\\"text\\\": \\\"good morning, may I ask you a question?\\\",\n          \\\"tokenizer\\\": \\\"stop\\\"\n          }\"  Sample output  {\n   \"tokens\" : [\n      {\n         \"start_offset\" : 0,\n         \"end_offset\" : 4,\n         \"token_type\" : \"word\",\n         \"token\" : \"good\",\n         \"position\" : 0\n      },\n      {\n         \"token\" : \"morning\",\n         \"position\" : 1,\n         \"token_type\" : \"word\",\n         \"end_offset\" : 12,\n         \"start_offset\" : 5\n      },\n      {\n         \"start_offset\" : 14,\n         \"end_offset\" : 17,\n         \"token_type\" : \"word\",\n         \"token\" : \"may\",\n         \"position\" : 2\n      },\n      {\n         \"token_type\" : \"word\",\n         \"token\" : \"i\",\n         \"position\" : 3,\n         \"start_offset\" : 18,\n         \"end_offset\" : 19\n      },\n      {\n         \"end_offset\" : 23,\n         \"start_offset\" : 20,\n         \"position\" : 4,\n         \"token\" : \"ask\",\n         \"token_type\" : \"word\"\n      },\n      {\n         \"end_offset\" : 27,\n         \"start_offset\" : 24,\n         \"position\" : 5,\n         \"token\" : \"you\",\n         \"token_type\" : \"word\"\n      },\n      {\n         \"end_offset\" : 38,\n         \"start_offset\" : 30,\n         \"token\" : \"question\",\n         \"position\" : 7,\n         \"token_type\" : \"word\"\n      }\n   ]\n}",
             "title": "POST /tokenizers"
         },
         {
-            "location": "/apis/#return-codes_27",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_24",
-            "text": "Sample call  curl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/tokenizers\" -d \"\n{\n    \\\"text\\\": \\\"good morning, may I ask you a question?\\\",\n          \\\"tokenizer\\\": \\\"stop\\\"\n          }\"  Sample output  {\n   \"tokens\" : [\n      {\n         \"start_offset\" : 0,\n         \"end_offset\" : 4,\n         \"token_type\" : \"word\",\n         \"token\" : \"good\",\n         \"position\" : 0\n      },\n      {\n         \"token\" : \"morning\",\n         \"position\" : 1,\n         \"token_type\" : \"word\",\n         \"end_offset\" : 12,\n         \"start_offset\" : 5\n      },\n      {\n         \"start_offset\" : 14,\n         \"end_offset\" : 17,\n         \"token_type\" : \"word\",\n         \"token\" : \"may\",\n         \"position\" : 2\n      },\n      {\n         \"token_type\" : \"word\",\n         \"token\" : \"i\",\n         \"position\" : 3,\n         \"start_offset\" : 18,\n         \"end_offset\" : 19\n      },\n      {\n         \"end_offset\" : 23,\n         \"start_offset\" : 20,\n         \"position\" : 4,\n         \"token\" : \"ask\",\n         \"token_type\" : \"word\"\n      },\n      {\n         \"end_offset\" : 27,\n         \"start_offset\" : 24,\n         \"position\" : 5,\n         \"token\" : \"you\",\n         \"token_type\" : \"word\"\n      },\n      {\n         \"end_offset\" : 38,\n         \"start_offset\" : 30,\n         \"token\" : \"question\",\n         \"position\" : 7,\n         \"token_type\" : \"word\"\n      }\n   ]\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-analyzers_playground",
-            "text": "used to test analyzers on the fly",
+            "text": "used to test analyzers on the fly  Return codes  200  Sample call  ANALYZER=\"keyword(\\\\\\\"test\\\\\\\")\"\nQUERY=\"this is a test\"\ncurl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/analyzers_playground\" -d \"\n{\n        \\\"analyzer\\\": \\\"${ANALYZER}\\\",\n            \\\"query\\\": \\\"${QUERY}\\\"\n        }\"  Sample output  {\n   \"value\" : 0.25,\n   \"build_message\" : \"success\",\n   \"build\" : true\n}",
             "title": "POST /analyzers_playground"
         },
         {
-            "location": "/apis/#return-codes_28",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_25",
-            "text": "Sample call  ANALYZER=\"keyword(\\\\\\\"test\\\\\\\")\"\nQUERY=\"this is a test\"\ncurl -v -H \"Content-Type: application/json\" -X POST \"http://localhost:8888/analyzers_playground\" -d \"\n{\n        \\\"analyzer\\\": \\\"${ANALYZER}\\\",\n            \\\"query\\\": \\\"${QUERY}\\\"\n        }\"  Sample output  {\n   \"value\" : 0.25,\n   \"build_message\" : \"success\",\n   \"build\" : true\n}",
-            "title": "200"
-        },
-        {
             "location": "/apis/#post-spellcheckterms",
-            "text": "terms spellchecker based on knowledgebase text",
+            "text": "terms spellchecker based on knowledgebase text   Return codes  200  Sample call  QUERY=${1:-\"this is a tes for splellchecker\"}\ncurl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/spellcheck/terms -d \"{\n  \\\"text\\\": \\\"${QUERY}\\\",\n    \\\"prefix_length\\\": 3,\n      \\\"min_doc_freq\\\": 1\n      }\"  {\n   \"tokens\" : [\n      {\n         \"offset\" : 0,\n         \"options\" : [\n            {\n               \"freq\" : 1284,\n               \"score\" : 0.800000011920929,\n               \"text\" : \"hello\"\n            },\n            {\n               \"text\" : \"hella\",\n               \"score\" : 0.800000011920929,\n               \"freq\" : 2\n            },\n            {\n               \"freq\" : 2,\n               \"score\" : 0.800000011920929,\n               \"text\" : \"helle\"\n            },\n            {\n               \"text\" : \"help\",\n               \"score\" : 0.75,\n               \"freq\" : 35395\n            },\n            {\n               \"score\" : 0.75,\n               \"freq\" : 5,\n               \"text\" : \"hell\"\n            }\n         ],\n         \"length\" : 5,\n         \"text\" : \"hellp\"\n      },\n      {\n         \"length\" : 4,\n         \"options\" : [],\n         \"offset\" : 7,\n         \"text\" : \"this\"\n      },\n      {\n         \"length\" : 2,\n         \"options\" : [],\n         \"offset\" : 12,\n         \"text\" : \"is\"\n      },\n      {\n         \"length\" : 1,\n         \"offset\" : 15,\n         \"options\" : [],\n         \"text\" : \"a\"\n      },\n      {\n         \"length\" : 4,\n         \"offset\" : 17,\n         \"options\" : [\n            {\n               \"text\" : \"test\",\n               \"score\" : 0.75,\n               \"freq\" : 191\n            },\n            {\n               \"freq\" : 10,\n               \"score\" : 0.5,\n               \"text\" : \"tessa\"\n            },\n            {\n               \"text\" : \"tesco\",\n               \"score\" : 0.5,\n               \"freq\" : 9\n            },\n            {\n               \"text\" : \"tesia\",\n               \"score\" : 0.5,\n               \"freq\" : 2\n            },\n            {\n               \"freq\" : 2,\n               \"score\" : 0.5,\n               \"text\" : \"tester\"\n            }\n         ],\n         \"text\" : \"tesr\"\n      }\n   ]\n}",
             "title": "POST /spellcheck/terms"
-        },
-        {
-            "location": "/apis/#return-codes_29",
-            "text": "",
-            "title": "Return codes"
-        },
-        {
-            "location": "/apis/#200_26",
-            "text": "Sample call  QUERY=${1:-\"this is a tes for splellchecker\"}\ncurl -v -H \"Content-Type: application/json\" -X POST http://localhost:8888/spellcheck/terms -d \"{\n  \\\"text\\\": \\\"${QUERY}\\\",\n    \\\"prefix_length\\\": 3,\n      \\\"min_doc_freq\\\": 1\n      }\"  {\n   \"tokens\" : [\n      {\n         \"offset\" : 0,\n         \"options\" : [\n            {\n               \"freq\" : 1284,\n               \"score\" : 0.800000011920929,\n               \"text\" : \"hello\"\n            },\n            {\n               \"text\" : \"hella\",\n               \"score\" : 0.800000011920929,\n               \"freq\" : 2\n            },\n            {\n               \"freq\" : 2,\n               \"score\" : 0.800000011920929,\n               \"text\" : \"helle\"\n            },\n            {\n               \"text\" : \"help\",\n               \"score\" : 0.75,\n               \"freq\" : 35395\n            },\n            {\n               \"score\" : 0.75,\n               \"freq\" : 5,\n               \"text\" : \"hell\"\n            }\n         ],\n         \"length\" : 5,\n         \"text\" : \"hellp\"\n      },\n      {\n         \"length\" : 4,\n         \"options\" : [],\n         \"offset\" : 7,\n         \"text\" : \"this\"\n      },\n      {\n         \"length\" : 2,\n         \"options\" : [],\n         \"offset\" : 12,\n         \"text\" : \"is\"\n      },\n      {\n         \"length\" : 1,\n         \"offset\" : 15,\n         \"options\" : [],\n         \"text\" : \"a\"\n      },\n      {\n         \"length\" : 4,\n         \"offset\" : 17,\n         \"options\" : [\n            {\n               \"text\" : \"test\",\n               \"score\" : 0.75,\n               \"freq\" : 191\n            },\n            {\n               \"freq\" : 10,\n               \"score\" : 0.5,\n               \"text\" : \"tessa\"\n            },\n            {\n               \"text\" : \"tesco\",\n               \"score\" : 0.5,\n               \"freq\" : 9\n            },\n            {\n               \"text\" : \"tesia\",\n               \"score\" : 0.5,\n               \"freq\" : 2\n            },\n            {\n               \"freq\" : 2,\n               \"score\" : 0.5,\n               \"text\" : \"tester\"\n            }\n         ],\n         \"text\" : \"tesr\"\n      }\n   ]\n}",
-            "title": "200"
         },
         {
             "location": "/about/",
