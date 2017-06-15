@@ -429,6 +429,13 @@ rm -rf elasticsearch/data/nodes/
 StarChat is started immediately after elasticsearch and it is possible that elasticsearch is
  not ready to respond to REST calls from StarChat (i.e. an index not found error could be
  raised in this case).
+
+Sample error on the logs:
+```
+2017-06-15 10:37:22,993 >10:37:22.992UTC ERROR c.g.s.s.AnalyzerService(akka://starchat-service) com.getjenny.starchat.services.AnalyzerService(akka://starchat-service) - can't load analyzers: [jenny-en-0]
+ IndexNotFoundException[no such index]
+```
+
 In order to avoid this problem you can call the services one by one:
 ```bash
 docker-compose up elasticsearch # here wait elasticsearch is up and running
