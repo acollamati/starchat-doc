@@ -150,7 +150,7 @@
         
             <li><a href="#docker-start-from-scratch">Docker: start from scratch</a></li>
         
-            <li><a href="#docker-previously-stored-analyzers-are-not-loaded-on-startup-with-with-docker-compose">Docker: previously stored Analyzers are not loaded on startup with with docker-compose</a></li>
+            <li><a href="#docker-compose-analyzers-are-not-loaded">docker-compose: Analyzers are not loaded</a></li>
         
             <li><a href="#docker-size-of-virtual-memory">Docker: Size of virtual memory</a></li>
         
@@ -483,7 +483,7 @@ Elasticsearch docker are local, and mounted only when the container is up. There
 rm -rf elasticsearch/data/nodes/
 </code></pre>
 
-<h2 id="docker-previously-stored-analyzers-are-not-loaded-on-startup-with-with-docker-compose">Docker: previously stored Analyzers are not loaded on startup with with docker-compose</h2>
+<h2 id="docker-compose-analyzers-are-not-loaded">docker-compose: Analyzers are not loaded</h2>
 <p>StarChat is started immediately after elasticsearch and it is possible that elasticsearch is
  not ready to respond to REST calls from StarChat (i.e. an index not found error could be
  raised in this case).
@@ -551,5 +551,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.14.0
-Build Date UTC : 2017-06-15 09:11:42.900079
+Build Date UTC : 2017-06-15 09:16:34.315179
 -->
