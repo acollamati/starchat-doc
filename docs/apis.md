@@ -362,25 +362,55 @@ Sample response
 
 ```json
 {
-    "hits": [
-        {
-            "document": {
-                "answer": "you are welcome!",
-                "conversation": "832",
-                "doctype": "normal",
-                "id": "0",
-                "index_in_conversation": 11,
-                "question": "thank you",
-                "state": "",
-                "status": 0,
-                "topics": "",
-                "verified": false
-            },
-            "score": 0.0
-        }
-    ],
-    "max_score": 0.0,
-    "total": 1
+   "max_score" : 0,
+   "total" : 1,
+   "hits" : [
+      {
+         "score" : 0,
+         "document" : {
+            "conversation" : "id:1000",
+            "id" : "0",
+            "status" : 0,
+            "question_scored_terms" : [
+               [
+                  "currently",
+                  1.09018741311033
+               ],
+               [
+                  "installing",
+                  2.11472759638322
+               ],
+               [
+                  "mac",
+                  9.00048425224425
+               ],
+               [
+                  "reset",
+                  4.34483238516225
+               ],
+               [
+                  "app",
+                  1.22190615359614
+               ],
+               [
+                  "device",
+                  2.16794683907434e-213
+               ],
+               [
+                  "devices",
+                  4.19876258010776e-268
+               ]
+            ],
+            "verified" : true,
+            "answer" : "you are welcome!",
+            "topics" : "t1 t2",
+            "doctype" : "normal",
+            "index_in_conversation" : 1,
+            "question" : "thank you",
+            "state" : ""
+         }
+      }
+   ]
 }
 ```
 
@@ -393,43 +423,58 @@ Insert a new document
 #### 201
 
 ```bash
-curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/starchat-en/knowledgebase -d '{
-    "answer": "you are welcome!",
-    "conversation": "832",
-    "doctype": "normal",
-    "id": "0",
-    "index_in_conversation": 11,
-    "question": "thank you",
-    "state": "",
-    "status": 0,
-    "topics": "",
-    "verified": true
+curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/knowledgebase -d '{
+	"id": "0",
+	"conversation": "id:1000",
+	"index_in_conversation": 1,
+	"question": "thank you",
+	"answer": "you are welcome!",
+	"question_scored_terms": [
+		[
+			"currently",
+			1.0901874131103333
+		],
+		[
+			"installing",
+			2.11472759638322
+		],
+		[
+			"mac",
+			9.000484252244254
+		],
+		[
+			"reset",
+			4.34483238516225
+		],
+		[
+			"app",
+			1.2219061535961406
+		],
+		[
+			"device",
+			2.1679468390743414E-213
+		],
+		[
+			"devices",
+			4.1987625801077624E-268
+		]
+	],
+	"verified": true,
+	"topics": "t1 t2",
+	"doctype": "normal",
+	"state": "",
+	"status": 0
 }'
 ```
 
 Sample response
 
 ```json
-{
-    "hits": [
-        {
-            "document": {
-                "answer": "you are welcome!",
-                "conversation": "832",
-                "doctype": "normal",
-                "id": "0",
-                "index_in_conversation": 11,
-                "question": "thank you",
-                "state": "",
-                "status": 0,
-                "topics": "",
-                "verified": true
-            },
-            "score": 0.0
-        }
-    ],
-    "max_score": 0.0,
-    "total": 1
+{   "dtype": "question",
+    "version": 1,
+    "id": "1",
+    "index": "jenny-en-0",
+    "created":true
 }
 ```
 
@@ -451,11 +496,11 @@ Sample output
 
 ```bash
 {
-    "dtype": "question",
-    "found": false,
-    "id": "0",
-    "index": "jenny-en-0",
-    "version": 5
+   "id" : "0",
+   "version" : 5,
+   "index" : "jenny-en-0",
+   "dtype" : "question",
+   "found" : true
 }
 ```
 
@@ -472,16 +517,56 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X PUT http://localhost:8888/starchat-en/knowledgebase/                                                   e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297 -d '{
-    "answer": "you are welcome!",
-    "conversation": "832",
-    "doctype": "normal",
-    "index_in_conversation": 11,
-    "question": "thank yoy",
-    "state": "",
-    "status": 0,
-    "topics": "",
-    "verified": false
+{
+   "max_score" : 0,
+   "total" : 1,
+   "hits" : [
+      {
+         "score" : 0,
+         "document" : {
+            "conversation" : "id:1001",
+            "verified" : true,
+            "id" : "0",
+            "doctype" : "normal",
+            "question_scored_terms" : [
+               [
+                  "currently",
+                  1.09018741311033
+               ],
+               [
+                  "installing",
+                  2.11472759638322
+               ],
+               [
+                  "mac",
+                  9.00048425224425
+               ],
+               [
+                  "reset",
+                  4.34483238516225
+               ],
+               [
+                  "app",
+                  1.22190615359614
+               ],
+               [
+                  "device",
+                  2.16794683907434e-213
+               ],
+               [
+                  "devices",
+                  4.19876258010776e-268
+               ]
+            ],
+            "question" : "thank you",
+            "index_in_conversation" : 1,
+            "state" : "",
+            "topics" : "t1 t2",
+            "answer" : "you are welcome!",
+            "status" : 0
+         }
+      }
+   ]
 }'
 ```
 
@@ -489,11 +574,11 @@ Sample response
 
 ```json
 {
-    "created": false,
-    "dtype": "question",
-    "id": "e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297",
-    "index": "jenny-en-0",
-    "version": 3
+   "index" : "jenny-en-0",
+   "dtype" : "question",
+   "id" : "0",
+   "version" : 3,
+   "created" : false
 }
 ```
 
@@ -519,25 +604,47 @@ Sample output
 
 ```json
 {
-    "hits": [
-        {
-            "document": {
-                "answer": "you are welcome",
-                "conversation": "4346",
-                "doctype": "normal",
-                "id": "10",
-                "index_in_conversation": 6,
-                "question": "thank you",
-                "state": "",
-                "status": 0,
-                "topics": "",
-                "verified": true
-            },
-            "score": 3.5618982315063477
-        }
-    ],
-    "max_score": 3.5618982315063477,
-    "total": 1
+   "max_score" : 1.15013706684113,
+   "total" : 2,
+   "hits" : [
+      {
+         "document" : {
+            "id" : "1",
+            "doctype" : "normal",
+            "question_scored_terms" : [
+               [
+                  "validation",
+                  0.0343148699683119
+               ],
+               [
+                  "imac",
+                  1.12982760046835
+               ],
+               [
+                  "aware",
+                  3.15048958129597
+               ],
+               [
+                  "ios",
+                  6.14545226791214
+               ],
+               [
+                  "activation",
+                  4.92133804309887
+               ]
+            ],
+            "answer" : "fine thanks",
+            "conversation" : "id:1000",
+            "state" : "",
+            "question" : "how are you?",
+            "status" : 0,
+            "index_in_conversation" : 1,
+            "topics" : "t1 t2",
+            "verified" : true
+         },
+         "score" : 1.15013706684113
+      }
+   ]
 }
 ```
 
@@ -555,8 +662,7 @@ Sample call
 curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/language_guesser" -d "
 {
 	\"input_text\": \"good morning, may I ask you a question?\"
-	}
-	"
+}"
 ```
 
 Sample output
