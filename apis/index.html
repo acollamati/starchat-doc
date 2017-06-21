@@ -448,25 +448,55 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <p>Sample response</p>
 <pre><code class="json">{
-    &quot;hits&quot;: [
-        {
-            &quot;document&quot;: {
-                &quot;answer&quot;: &quot;you are welcome!&quot;,
-                &quot;conversation&quot;: &quot;832&quot;,
-                &quot;doctype&quot;: &quot;normal&quot;,
-                &quot;id&quot;: &quot;0&quot;,
-                &quot;index_in_conversation&quot;: 11,
-                &quot;question&quot;: &quot;thank you&quot;,
-                &quot;state&quot;: &quot;&quot;,
-                &quot;status&quot;: 0,
-                &quot;topics&quot;: &quot;&quot;,
-                &quot;verified&quot;: false
-            },
-            &quot;score&quot;: 0.0
-        }
-    ],
-    &quot;max_score&quot;: 0.0,
-    &quot;total&quot;: 1
+   &quot;max_score&quot; : 0,
+   &quot;total&quot; : 1,
+   &quot;hits&quot; : [
+      {
+         &quot;score&quot; : 0,
+         &quot;document&quot; : {
+            &quot;conversation&quot; : &quot;id:1000&quot;,
+            &quot;id&quot; : &quot;0&quot;,
+            &quot;status&quot; : 0,
+            &quot;question_scored_terms&quot; : [
+               [
+                  &quot;currently&quot;,
+                  1.09018741311033
+               ],
+               [
+                  &quot;installing&quot;,
+                  2.11472759638322
+               ],
+               [
+                  &quot;mac&quot;,
+                  9.00048425224425
+               ],
+               [
+                  &quot;reset&quot;,
+                  4.34483238516225
+               ],
+               [
+                  &quot;app&quot;,
+                  1.22190615359614
+               ],
+               [
+                  &quot;device&quot;,
+                  2.16794683907434e-213
+               ],
+               [
+                  &quot;devices&quot;,
+                  4.19876258010776e-268
+               ]
+            ],
+            &quot;verified&quot; : true,
+            &quot;answer&quot; : &quot;you are welcome!&quot;,
+            &quot;topics&quot; : &quot;t1 t2&quot;,
+            &quot;doctype&quot; : &quot;normal&quot;,
+            &quot;index_in_conversation&quot; : 1,
+            &quot;question&quot; : &quot;thank you&quot;,
+            &quot;state&quot; : &quot;&quot;
+         }
+      }
+   ]
 }
 </code></pre>
 
@@ -474,41 +504,56 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 <p>Insert a new document</p>
 <h3 id="return-codes_9">Return codes</h3>
 <h4 id="201_2">201</h4>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/starchat-en/knowledgebase -d '{
-    &quot;answer&quot;: &quot;you are welcome!&quot;,
-    &quot;conversation&quot;: &quot;832&quot;,
-    &quot;doctype&quot;: &quot;normal&quot;,
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/knowledgebase -d '{
     &quot;id&quot;: &quot;0&quot;,
-    &quot;index_in_conversation&quot;: 11,
+    &quot;conversation&quot;: &quot;id:1000&quot;,
+    &quot;index_in_conversation&quot;: 1,
     &quot;question&quot;: &quot;thank you&quot;,
+    &quot;answer&quot;: &quot;you are welcome!&quot;,
+    &quot;question_scored_terms&quot;: [
+        [
+            &quot;currently&quot;,
+            1.0901874131103333
+        ],
+        [
+            &quot;installing&quot;,
+            2.11472759638322
+        ],
+        [
+            &quot;mac&quot;,
+            9.000484252244254
+        ],
+        [
+            &quot;reset&quot;,
+            4.34483238516225
+        ],
+        [
+            &quot;app&quot;,
+            1.2219061535961406
+        ],
+        [
+            &quot;device&quot;,
+            2.1679468390743414E-213
+        ],
+        [
+            &quot;devices&quot;,
+            4.1987625801077624E-268
+        ]
+    ],
+    &quot;verified&quot;: true,
+    &quot;topics&quot;: &quot;t1 t2&quot;,
+    &quot;doctype&quot;: &quot;normal&quot;,
     &quot;state&quot;: &quot;&quot;,
-    &quot;status&quot;: 0,
-    &quot;topics&quot;: &quot;&quot;,
-    &quot;verified&quot;: true
+    &quot;status&quot;: 0
 }'
 </code></pre>
 
 <p>Sample response</p>
-<pre><code class="json">{
-    &quot;hits&quot;: [
-        {
-            &quot;document&quot;: {
-                &quot;answer&quot;: &quot;you are welcome!&quot;,
-                &quot;conversation&quot;: &quot;832&quot;,
-                &quot;doctype&quot;: &quot;normal&quot;,
-                &quot;id&quot;: &quot;0&quot;,
-                &quot;index_in_conversation&quot;: 11,
-                &quot;question&quot;: &quot;thank you&quot;,
-                &quot;state&quot;: &quot;&quot;,
-                &quot;status&quot;: 0,
-                &quot;topics&quot;: &quot;&quot;,
-                &quot;verified&quot;: true
-            },
-            &quot;score&quot;: 0.0
-        }
-    ],
-    &quot;max_score&quot;: 0.0,
-    &quot;total&quot;: 1
+<pre><code class="json">{   &quot;dtype&quot;: &quot;question&quot;,
+    &quot;version&quot;: 1,
+    &quot;id&quot;: &quot;1&quot;,
+    &quot;index&quot;: &quot;jenny-en-0&quot;,
+    &quot;created&quot;:true
 }
 </code></pre>
 
@@ -521,11 +566,11 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 <p>curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/knowledgebase/0</p>
 <p>Sample output</p>
 <pre><code class="bash">{
-    &quot;dtype&quot;: &quot;question&quot;,
-    &quot;found&quot;: false,
-    &quot;id&quot;: &quot;0&quot;,
-    &quot;index&quot;: &quot;jenny-en-0&quot;,
-    &quot;version&quot;: 5
+   &quot;id&quot; : &quot;0&quot;,
+   &quot;version&quot; : 5,
+   &quot;index&quot; : &quot;jenny-en-0&quot;,
+   &quot;dtype&quot; : &quot;question&quot;,
+   &quot;found&quot; : true
 }
 </code></pre>
 
@@ -535,26 +580,66 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 <h3 id="return-codes_11">Return codes</h3>
 <h4 id="200_8">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:8888/starchat-en/knowledgebase/                                                   e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297 -d '{
-    &quot;answer&quot;: &quot;you are welcome!&quot;,
-    &quot;conversation&quot;: &quot;832&quot;,
-    &quot;doctype&quot;: &quot;normal&quot;,
-    &quot;index_in_conversation&quot;: 11,
-    &quot;question&quot;: &quot;thank yoy&quot;,
-    &quot;state&quot;: &quot;&quot;,
-    &quot;status&quot;: 0,
-    &quot;topics&quot;: &quot;&quot;,
-    &quot;verified&quot;: false
+<pre><code class="bash">{
+   &quot;max_score&quot; : 0,
+   &quot;total&quot; : 1,
+   &quot;hits&quot; : [
+      {
+         &quot;score&quot; : 0,
+         &quot;document&quot; : {
+            &quot;conversation&quot; : &quot;id:1001&quot;,
+            &quot;verified&quot; : true,
+            &quot;id&quot; : &quot;0&quot;,
+            &quot;doctype&quot; : &quot;normal&quot;,
+            &quot;question_scored_terms&quot; : [
+               [
+                  &quot;currently&quot;,
+                  1.09018741311033
+               ],
+               [
+                  &quot;installing&quot;,
+                  2.11472759638322
+               ],
+               [
+                  &quot;mac&quot;,
+                  9.00048425224425
+               ],
+               [
+                  &quot;reset&quot;,
+                  4.34483238516225
+               ],
+               [
+                  &quot;app&quot;,
+                  1.22190615359614
+               ],
+               [
+                  &quot;device&quot;,
+                  2.16794683907434e-213
+               ],
+               [
+                  &quot;devices&quot;,
+                  4.19876258010776e-268
+               ]
+            ],
+            &quot;question&quot; : &quot;thank you&quot;,
+            &quot;index_in_conversation&quot; : 1,
+            &quot;state&quot; : &quot;&quot;,
+            &quot;topics&quot; : &quot;t1 t2&quot;,
+            &quot;answer&quot; : &quot;you are welcome!&quot;,
+            &quot;status&quot; : 0
+         }
+      }
+   ]
 }'
 </code></pre>
 
 <p>Sample response</p>
 <pre><code class="json">{
-    &quot;created&quot;: false,
-    &quot;dtype&quot;: &quot;question&quot;,
-    &quot;id&quot;: &quot;e9d7c04d0c539415620884f8c885fef93e9fd0b49bbea23a7f2d08426e4d185119068365a0c1c4a506c5c43079e1e8da4ef7558a7f74756a8d850cb2d14e5297&quot;,
-    &quot;index&quot;: &quot;jenny-en-0&quot;,
-    &quot;version&quot;: 3
+   &quot;index&quot; : &quot;jenny-en-0&quot;,
+   &quot;dtype&quot; : &quot;question&quot;,
+   &quot;id&quot; : &quot;0&quot;,
+   &quot;version&quot; : 3,
+   &quot;created&quot; : false
 }
 </code></pre>
 
@@ -572,25 +657,47 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <p>Sample output</p>
 <pre><code class="json">{
-    &quot;hits&quot;: [
-        {
-            &quot;document&quot;: {
-                &quot;answer&quot;: &quot;you are welcome&quot;,
-                &quot;conversation&quot;: &quot;4346&quot;,
-                &quot;doctype&quot;: &quot;normal&quot;,
-                &quot;id&quot;: &quot;10&quot;,
-                &quot;index_in_conversation&quot;: 6,
-                &quot;question&quot;: &quot;thank you&quot;,
-                &quot;state&quot;: &quot;&quot;,
-                &quot;status&quot;: 0,
-                &quot;topics&quot;: &quot;&quot;,
-                &quot;verified&quot;: true
-            },
-            &quot;score&quot;: 3.5618982315063477
-        }
-    ],
-    &quot;max_score&quot;: 3.5618982315063477,
-    &quot;total&quot;: 1
+   &quot;max_score&quot; : 1.15013706684113,
+   &quot;total&quot; : 2,
+   &quot;hits&quot; : [
+      {
+         &quot;document&quot; : {
+            &quot;id&quot; : &quot;1&quot;,
+            &quot;doctype&quot; : &quot;normal&quot;,
+            &quot;question_scored_terms&quot; : [
+               [
+                  &quot;validation&quot;,
+                  0.0343148699683119
+               ],
+               [
+                  &quot;imac&quot;,
+                  1.12982760046835
+               ],
+               [
+                  &quot;aware&quot;,
+                  3.15048958129597
+               ],
+               [
+                  &quot;ios&quot;,
+                  6.14545226791214
+               ],
+               [
+                  &quot;activation&quot;,
+                  4.92133804309887
+               ]
+            ],
+            &quot;answer&quot; : &quot;fine thanks&quot;,
+            &quot;conversation&quot; : &quot;id:1000&quot;,
+            &quot;state&quot; : &quot;&quot;,
+            &quot;question&quot; : &quot;how are you?&quot;,
+            &quot;status&quot; : 0,
+            &quot;index_in_conversation&quot; : 1,
+            &quot;topics&quot; : &quot;t1 t2&quot;,
+            &quot;verified&quot; : true
+         },
+         &quot;score&quot; : 1.15013706684113
+      }
+   ]
 }
 </code></pre>
 
@@ -602,8 +709,7 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 <pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/language_guesser&quot; -d &quot;
 {
     \&quot;input_text\&quot;: \&quot;good morning, may I ask you a question?\&quot;
-    }
-    &quot;
+}&quot;
 </code></pre>
 
 <p>Sample output</p>
