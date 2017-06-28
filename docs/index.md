@@ -20,12 +20,12 @@ The easiest way is to install StarChat using two docker images. You only need:
 * [docker](https://docs.docker.com/engine/installation/)
 * [docker compose](https://docs.docker.com/compose/install/)
 
-In this way, you will put all the indices in the Elasticsearch (version 5.3) image, and StarChat itself in the Java (8) image.
+In this way, you will put all the indices in the Elasticsearch (version 5.4) image, and StarChat itself in the Java (8) image.
 
 _If you do not use docker_ you therefore need on your machine:
 
 1. [Scala 12.2](http://scala-lang.org)
-2. [Elasticsearch 5.3](http://elastic.co)
+2. [Elasticsearch 5.4](http://elastic.co)
 
 ## Setup with Docker (recommended)
 
@@ -50,11 +50,11 @@ The zip packet contains:
 
 * a set of scripts to test the endpoints and as a complement for the documentation: ```starchat/scripts/api_test/```
 * a set of command line programs ```starchat/bin``` to run starchat and other tools.
-* delete-decision-table: delete items from the decision table
-* index-corpus-on-knowledge-base: index a corpus on knowledge base as hidden (to improve the language model)
-* index-decision-table: index data on the decision table from a csv
-* index-knowledge-base: index data into the knowledge base
-* index-terms: index terms vectors
+* delete-decision-table: application to delete items from the decision table
+* index-corpus-on-knowledge-base: application to index a corpus on knowledge base as hidden (to improve the language model)
+* index-decision-table: application to index data on the decision table from a csv
+* index-knowledge-base: application to index data into the knowledge base
+* index-terms: application to index terms vectors
 * starchat: start starchat
 
 Review the configuration files `starchat/config/application.conf` and configure the language if needed (by default you have `index_language = "english"`)
@@ -139,20 +139,25 @@ curl  -H "Content-Type: application/json" -X POST http://localhost:8888/get_next
 You should get:
 
 ```json
-{
-    "action": "",
-    "action_input": {},
-    "analyzer": "and(keyword(\"test\"), or(keyword(\"send\"), keyword(\"get\")))",
-    "bubble": "This is the test state",
-    "conversation_id": "1234",
-    "data": {},
-    "failure_value": "",
-    "max_state_count": 0,
-    "score": 1.0,
-    "state": "test_state",
-    "state_data": {},
-    "success_value": ""
-}
+[
+   {
+      "score" : 1,
+      "action" : "",
+      "max_state_count" : 0,
+      "data" : {},
+      "bubble" : "This is the test state",
+      "failure_value" : "",
+      "traversed_states" : [
+         "test_state"
+      ],
+      "analyzer" : "booleanAnd(booleanNot(booleanOr(keyword(\"dont\"),keyword(\"don't\"))), keyword(\"test\"), booleanOr(keyword(\"send\"), keyword(\"get\")))",
+      "state_data" : {},
+      "action_input" : {},
+      "success_value" : "",
+      "conversation_id" : "1234",
+      "state" : "test_state"
+   }
+]
 ```
 
 If you look at the `"analyzer"` field, you'll see that this state is triggered when
@@ -202,6 +207,7 @@ Operators evaluate the output of one or more expression and return a value. Curr
 * _boolean not_:  ditto, `bnot`
 * _conjunction_:  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true (`P(A)*P(B)`)
 * _disjunction_:  as above, the probability that at least one is true (`1-(1-P(A))*(1-P(B))`)
+* _max_: takes the max score of returned by the expression arguments
 
 #### Technical corner: `expressions`
 
@@ -263,6 +269,7 @@ Fields in the configuration file are of three types:
 And the fields are:
 
 * **state**: a unique name of the state (e.g. `forgot_password`)
+* **execution_order**: specify an order of evaluation for analyzers the lower is the number earlier is the evaluation of the state
 * **max_state_count**: defines how many times StarChat can repropose the state during a conversation.
 * **analyzer (T,I)**: specify an analyzer expression which triggers the state
 * **query (T,I)**: list of sentences whose meaning identify the state
@@ -340,7 +347,7 @@ In the diagram below, a load balancer forward requests coming from the front-end
 1, 2 or 3. These instances, as said, behave identically because they all refer to `Index 0` in the 
 Elasticsearch cluster.
 
-![Image](doc/readme_images/scalability_diagram_starchat.png?raw=true)
+![Image](img/scalability_diagram_starchat.png?raw=true)
 
 ### Scaling Elasticsearch
 
@@ -403,6 +410,9 @@ sbt "run-main com.getjenny.command.IndexTerms --inputfile terms.txt --vecsize 30
 
 The format for each row of an input file with 5 dimension vectors is:
 ```hello 1.0 2.0 3.0 4.0 0.0```
+
+You can use your ad-hoc trained vector model (as we do) otherwise you can use the google word2vec models
+trained on google news. You can find a copy of the [elasticsearch index with a pre-loaded google news terms](https://raw.githubusercontent.com/GetJenny/jenny-public-data/master/elasticsearch.GoogleNewsVectors.tar.bz2).
 
 # Test
 

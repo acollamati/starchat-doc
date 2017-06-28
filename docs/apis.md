@@ -9,14 +9,16 @@ Data to post:
 
 ```json
 {
-    "conversation_id": "1234",
-    "user_input": "(Optional)",
-    "text" : "the text typed by the user (Optional)",
-    "img": "(e.g.) image attached by the user (Optional)",
-l
-    "return_value": "the value either in success_value or in failure_value (Optional)",
-    "data": "all the variables, e.g. for the STRING TEMPLATEs (Optional)"
+  "conversation_id": "1234",
+  "user_input": { "text": "the text typed by the user" }, // optional
+  "values": {
+    "return_value": "the value either in success_value or in failure_value (Optional)", 
+    "data": {} // all the variables, e.g. for the STRING TEMPLATEs (Optional)
+  },
+  "threshold": 0.0, // the minimum match threshold
+  "max_results": 4 // the max number of result to return
 }
+
 ```
 ### Return codes
 
@@ -30,35 +32,43 @@ User input is "I forgot my password":
 
 ```bash
 curl  -H "Content-Type: application/json" -X POST http://localhost:8888/get_next_response -d '{   
-"conversation_id": "1234",   
-"user_input": { "text": "I forgot my password" },   
-"values": {
-    "return_value": "", 
-    "data": {}   
-    }
+    "conversation_id": "1234",
+    "user_input": { "text": "I forgot my password" },
+    "values": {
+        "return_value": "",
+        "data": {}
+    },
+    "threshold": 0.0,
+    "max_results": 4
 }'
 ```
 
 returns:
 
 ```json
-{
-    "action": "input_form",
-    "action_input": {
-        "email": "email"
-    },
-    "bubble": "We can reset your password by sending you a message to your registered e-mail address. Please tell me your address so I may send you the new password generation link.",
-    "conversation_id": "1234",
-    "data": {},
-    "failure_value": "\"dont_understand\"",
-    "max_state_count": 0,
-    "analyzer": "",
-    "state": "forgot_password",
-    "state_data": {
-        "verification": "did you mean you forgot the password?"
-    },
-    "success_value": "\"send_password_generation_link\""
-}
+[
+   {
+      "analyzer" : "and(or(keyword(\"reset\"),keyword(\"forgot\")),keyword(\"password\"))",
+      "state" : "forgot_password",
+      "score" : 0.25,
+      "action" : "input_form",
+      "action_input" : {
+         "email" : "email"
+      },
+      "traversed_states" : [
+         "forgot_password"
+      ],
+      "success_value" : "send_password_generation_link",
+      "data" : {},
+      "bubble" : "We can reset your password by sending you a message to your registered e-mail address. Please type your email address:",
+      "state_data" : {
+         "verification" : "did you mean you forgot the password?"
+      },
+      "max_state_count" : 0,
+      "failure_value" : "dont_understand",
+      "conversation_id" : "1234"
+   }
+]
 ```
 
 ##### Example 2
@@ -80,25 +90,29 @@ curl  -H "Content-Type: application/json" -X POST http://localhost:8888/get_next
 and gets:
 
 ```json
-{
-    "action": "send_password_generation_link",
-    "action_input": {
-        "email": "john@example.com",
-        "template": "somebody requested to reset your password, if you requested the password reset follow the link: %link%"
-    },
-    "bubble": "Thank you. An e-mail will be sent to this address: a@b.com with your account details and the necessary steps for you to reset your password.",
-    "conversation_id": "1234",
-    "data": {
-        "email": "john@example.com"
-    },
-    "failure_value": "call_operator",
-    "max_state_count": 0,
-    "analyzer": "",
-    "state": "send_password_generation_link",
-    "state_data": {},
-    "success_value": "\"any_further\""
-}
-
+[
+   {
+      "traversed_states" : [],
+      "failure_value" : "call_operator",
+      "success_value" : "any_further",
+      "action" : "send_password_generation_link",
+      "state" : "send_password_generation_link",
+      "max_state_count" : 0,
+      "state_data" : {},
+      "conversation_id" : "1234",
+      "data" : {
+         "email" : "john@example.com"
+      },
+      "score" : 1,
+      "analyzer" : "",
+      "action_input" : {
+         "email" : "john@example.com",
+         "subject" : "New password",
+         "template" : "Hi,\nSomeone requested a new password for your account. You can set a new password here: %link%\nIf you did not request this, just ignore this message."
+      },
+      "bubble" : "Thank you. An e-mail will be sent to this address: john@example.com with your account details and the necessary steps for you to reset your password."
+   }
+]
 ```
 
 #### 204
@@ -149,36 +163,37 @@ Sample output
 
 ```json
 {
-  "total": 1,
-  "max_score": 0,
-  "hits": [
-    {
-      "score": 0,
-      "document": {
-        "analyzer": "((forgot).*(password))",
-        "queries": [
-          "cannot access account",
-          "problem access account"
-        ],
-        "state": "further_details_access_question",
-        "state_data": {
-          "verification": "did you mean you can't access to your account?"
-        },
-        "success_value": "eval(show_buttons)",
-        "failure_value": "\"dont_understand\"",
-        "bubble": "Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?",
-        "action_input": {
-          "Specify your problem": "specify_problem",
-          "I want to call an operator": "call_operator",
-          "None of the above": "start",
-          "Forgot Password": "forgot_password",
-          "Account locked": "account_locked"
-        },
-        "max_state_count": 0,
-        "action": "show_buttons"
+   "hits" : [
+      {
+         "score" : 0,
+         "document" : {
+            "execution_order" : 1,
+            "bubble" : "Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?",
+            "state" : "further_details_access_question",
+            "max_state_count" : 0,
+            "queries" : [
+               "cannot access account",
+               "problem access account"
+            ],
+            "state_data" : {
+               "verification" : "did you mean you can't access to your account?"
+            },
+            "action_input" : {
+               "None of the above" : "start",
+               "Account locked" : "account_locked",
+               "Forgot Password" : "forgot_password",
+               "Specify your problem" : "specify_problem",
+               "I want to call an operator" : "call_operator"
+            },
+            "analyzer" : "or(and(or(keyword(\"problem.*\"),keyword(\"issue.*\"),keyword(\"trouble.*\")),keyword(\"account\")),search(\"further_details_access_question\"))",
+            "success_value" : "eval(show_buttons)",
+            "action" : "show_buttons",
+            "failure_value" : "dont_understand"
+         }
       }
-    }
-  ]
+   ],
+   "total" : 1,
+   "max_score" : 0
 }
 ```
 
@@ -225,6 +240,7 @@ Sample call
 ```bash
 curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/decisiontable -d '{
   "state": "further_details_access_question",
+  "execution_order": 1,
   "max_state_count": 0,
   "analyzer": "",
   "queries": ["cannot access account", "problem access account"],
@@ -294,6 +310,44 @@ curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/decisi
 }'
 ```
 
+Sample response 
+
+```json
+{
+   "max_score" : 0.930855453014374,
+   "hits" : [
+      {
+         "document" : {
+            "action_input" : {
+               "I want to call an operator" : "call_operator",
+               "Forgot Password" : "forgot_password",
+               "None of the above" : "start",
+               "Account locked" : "account_locked",
+               "Specify your problem" : "specify_problem"
+            },
+            "bubble" : "Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?",
+            "success_value" : "eval(show_buttons)",
+            "action" : "show_buttons",
+            "queries" : [
+               "cannot access account",
+               "problem access account"
+            ],
+            "execution_order" : 1,
+            "max_state_count" : 0,
+            "failure_value" : "dont_understand",
+            "state_data" : {
+               "verification" : "did you mean you can't access to your account?"
+            },
+            "analyzer" : "or(and(or(keyword(\"problem.*\"),keyword(\"issue.*\"),keyword(\"trouble.*\")),keyword(\"account\")),search(\"further_details_access_question\"))",
+            "state" : "further_details_access_question"
+         },
+         "score" : 0.930855453014374
+      }
+   ],
+   "total" : 1
+}
+```
+
 ## `GET /decisiontable_analyzer` 
 
 (WORK IN PROGRESS, PARTIALLY IMPLEMENTED)
@@ -315,9 +369,38 @@ Sample response
 
 ```json
 {
-  "analyzer_map": {
-    "further_details_access_question": "((forgot).*(password))"
-  }
+   "analyzer_map" : {
+      "account_locked" : {
+         "analyzer" : "booleanand(keyword(\"locked\"), keyword(\"account\"), )",
+         "execution_order" : 1,
+         "build" : true
+      },
+      "call_operator" : {
+         "analyzer" : "and(or(keyword(\"call\"),keyword(\"talk\"),keyword(\"speak\")),keyword(\"operator\"))",
+         "execution_order" : 1,
+         "build" : true
+      },
+      "forgot_password" : {
+         "execution_order" : 1,
+         "build" : true,
+         "analyzer" : "and(or(keyword(\"reset\"),keyword(\"forgot\")),keyword(\"password\"))"
+      },
+      "terrible_feedback" : {
+         "build" : true,
+         "execution_order" : 1,
+         "analyzer" : "booleanor(keyword(\"idiot\"), keyword(\"fuck.*\"), keyword(\"screw\"), keyword(\"damn.*\"), keyword(\"asshole\"))"
+      },
+      "test_state" : {
+         "analyzer" : "booleanAnd(booleanNot(booleanOr(keyword(\"dont\"),keyword(\"don't\"))), keyword(\"test\"), booleanOr(keyword(\"send\"), keyword(\"get\")))",
+         "execution_order" : 1,
+         "build" : true
+      },
+      "further_details_access_question" : {
+         "execution_order" : 1,
+         "build" : true,
+         "analyzer" : "or(and(or(keyword(\"problem.*\"),keyword(\"issue.*\"),keyword(\"trouble.*\")),keyword(\"account\")),search(\"further_details_access_question\"))"
+      }
+   }
 }
 ```
 
@@ -1350,6 +1433,31 @@ Sample output
    "build" : true
 }
 ```
+
+Sample of pattern extraction through analyzers
+ 
+```json
+curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d' 
+{
+        "analyzer": "band(keyword(\"on\"), matchPatternRegex(\"[day,month,year](?:(0[1-9]|[12][0-9]|3[01])(?:[- \\\/\\.])(0[1-9]|1[012])(?:[- \\\/\\.])((?:19|20)\\d\\d))\"))",
+        "query": "on 31-11-1900"
+}'```
+
+Sample output
+
+```json
+{
+   "build_message" : "success",
+   "variables" : {
+      "month.0" : "11",
+      "day.0" : "31",
+      "year.0" : "1900"
+   },
+   "build" : true,
+   "value" : 1
+}
+```
+
 
 ## `POST /spellcheck/terms`
 
