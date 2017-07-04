@@ -175,14 +175,16 @@
 about the next state.</p>
 <p>Data to post:</p>
 <pre><code class="json">{
-    &quot;conversation_id&quot;: &quot;1234&quot;,
-    &quot;user_input&quot;: &quot;(Optional)&quot;,
-    &quot;text&quot; : &quot;the text typed by the user (Optional)&quot;,
-    &quot;img&quot;: &quot;(e.g.) image attached by the user (Optional)&quot;,
-l
-    &quot;return_value&quot;: &quot;the value either in success_value or in failure_value (Optional)&quot;,
-    &quot;data&quot;: &quot;all the variables, e.g. for the STRING TEMPLATEs (Optional)&quot;
+  &quot;conversation_id&quot;: &quot;1234&quot;,
+  &quot;user_input&quot;: { &quot;text&quot;: &quot;the text typed by the user&quot; }, // optional
+  &quot;values&quot;: {
+    &quot;return_value&quot;: &quot;the value either in success_value or in failure_value (Optional)&quot;, 
+    &quot;data&quot;: {} // all the variables, e.g. for the STRING TEMPLATEs (Optional)
+  },
+  &quot;threshold&quot;: 0.0, // the minimum match threshold
+  &quot;max_results&quot;: 4 // the max number of result to return
 }
+
 </code></pre>
 
 <h3 id="return-codes">Return codes</h3>
@@ -191,33 +193,41 @@ l
 <h5 id="example-1">Example 1</h5>
 <p>User input is "I forgot my password":</p>
 <pre><code class="bash">curl  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/get_next_response -d '{   
-&quot;conversation_id&quot;: &quot;1234&quot;,   
-&quot;user_input&quot;: { &quot;text&quot;: &quot;I forgot my password&quot; },   
-&quot;values&quot;: {
-    &quot;return_value&quot;: &quot;&quot;, 
-    &quot;data&quot;: {}   
-    }
+    &quot;conversation_id&quot;: &quot;1234&quot;,
+    &quot;user_input&quot;: { &quot;text&quot;: &quot;I forgot my password&quot; },
+    &quot;values&quot;: {
+        &quot;return_value&quot;: &quot;&quot;,
+        &quot;data&quot;: {}
+    },
+    &quot;threshold&quot;: 0.0,
+    &quot;max_results&quot;: 4
 }'
 </code></pre>
 
 <p>returns:</p>
-<pre><code class="json">{
-    &quot;action&quot;: &quot;input_form&quot;,
-    &quot;action_input&quot;: {
-        &quot;email&quot;: &quot;email&quot;
-    },
-    &quot;bubble&quot;: &quot;We can reset your password by sending you a message to your registered e-mail address. Please tell me your address so I may send you the new password generation link.&quot;,
-    &quot;conversation_id&quot;: &quot;1234&quot;,
-    &quot;data&quot;: {},
-    &quot;failure_value&quot;: &quot;\&quot;dont_understand\&quot;&quot;,
-    &quot;max_state_count&quot;: 0,
-    &quot;analyzer&quot;: &quot;&quot;,
-    &quot;state&quot;: &quot;forgot_password&quot;,
-    &quot;state_data&quot;: {
-        &quot;verification&quot;: &quot;did you mean you forgot the password?&quot;
-    },
-    &quot;success_value&quot;: &quot;\&quot;send_password_generation_link\&quot;&quot;
-}
+<pre><code class="json">[
+   {
+      &quot;analyzer&quot; : &quot;and(or(keyword(\&quot;reset\&quot;),keyword(\&quot;forgot\&quot;)),keyword(\&quot;password\&quot;))&quot;,
+      &quot;state&quot; : &quot;forgot_password&quot;,
+      &quot;score&quot; : 0.25,
+      &quot;action&quot; : &quot;input_form&quot;,
+      &quot;action_input&quot; : {
+         &quot;email&quot; : &quot;email&quot;
+      },
+      &quot;traversed_states&quot; : [
+         &quot;forgot_password&quot;
+      ],
+      &quot;success_value&quot; : &quot;send_password_generation_link&quot;,
+      &quot;data&quot; : {},
+      &quot;bubble&quot; : &quot;We can reset your password by sending you a message to your registered e-mail address. Please type your email address:&quot;,
+      &quot;state_data&quot; : {
+         &quot;verification&quot; : &quot;did you mean you forgot the password?&quot;
+      },
+      &quot;max_state_count&quot; : 0,
+      &quot;failure_value&quot; : &quot;dont_understand&quot;,
+      &quot;conversation_id&quot; : &quot;1234&quot;
+   }
+]
 </code></pre>
 
 <h5 id="example-2">Example 2</h5>
@@ -235,25 +245,29 @@ The client sends:</p>
 </code></pre>
 
 <p>and gets:</p>
-<pre><code class="json">{
-    &quot;action&quot;: &quot;send_password_generation_link&quot;,
-    &quot;action_input&quot;: {
-        &quot;email&quot;: &quot;john@example.com&quot;,
-        &quot;template&quot;: &quot;somebody requested to reset your password, if you requested the password reset follow the link: %link%&quot;
-    },
-    &quot;bubble&quot;: &quot;Thank you. An e-mail will be sent to this address: a@b.com with your account details and the necessary steps for you to reset your password.&quot;,
-    &quot;conversation_id&quot;: &quot;1234&quot;,
-    &quot;data&quot;: {
-        &quot;email&quot;: &quot;john@example.com&quot;
-    },
-    &quot;failure_value&quot;: &quot;call_operator&quot;,
-    &quot;max_state_count&quot;: 0,
-    &quot;analyzer&quot;: &quot;&quot;,
-    &quot;state&quot;: &quot;send_password_generation_link&quot;,
-    &quot;state_data&quot;: {},
-    &quot;success_value&quot;: &quot;\&quot;any_further\&quot;&quot;
-}
-
+<pre><code class="json">[
+   {
+      &quot;traversed_states&quot; : [],
+      &quot;failure_value&quot; : &quot;call_operator&quot;,
+      &quot;success_value&quot; : &quot;any_further&quot;,
+      &quot;action&quot; : &quot;send_password_generation_link&quot;,
+      &quot;state&quot; : &quot;send_password_generation_link&quot;,
+      &quot;max_state_count&quot; : 0,
+      &quot;state_data&quot; : {},
+      &quot;conversation_id&quot; : &quot;1234&quot;,
+      &quot;data&quot; : {
+         &quot;email&quot; : &quot;john@example.com&quot;
+      },
+      &quot;score&quot; : 1,
+      &quot;analyzer&quot; : &quot;&quot;,
+      &quot;action_input&quot; : {
+         &quot;email&quot; : &quot;john@example.com&quot;,
+         &quot;subject&quot; : &quot;New password&quot;,
+         &quot;template&quot; : &quot;Hi,\nSomeone requested a new password for your account. You can set a new password here: %link%\nIf you did not request this, just ignore this message.&quot;
+      },
+      &quot;bubble&quot; : &quot;Thank you. An e-mail will be sent to this address: john@example.com with your account details and the necessary steps for you to reset your password.&quot;
+   }
+]
 </code></pre>
 
 <h4 id="204">204</h4>
@@ -290,36 +304,37 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <p>Sample output</p>
 <pre><code class="json">{
-  &quot;total&quot;: 1,
-  &quot;max_score&quot;: 0,
-  &quot;hits&quot;: [
-    {
-      &quot;score&quot;: 0,
-      &quot;document&quot;: {
-        &quot;analyzer&quot;: &quot;((forgot).*(password))&quot;,
-        &quot;queries&quot;: [
-          &quot;cannot access account&quot;,
-          &quot;problem access account&quot;
-        ],
-        &quot;state&quot;: &quot;further_details_access_question&quot;,
-        &quot;state_data&quot;: {
-          &quot;verification&quot;: &quot;did you mean you can't access to your account?&quot;
-        },
-        &quot;success_value&quot;: &quot;eval(show_buttons)&quot;,
-        &quot;failure_value&quot;: &quot;\&quot;dont_understand\&quot;&quot;,
-        &quot;bubble&quot;: &quot;Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?&quot;,
-        &quot;action_input&quot;: {
-          &quot;Specify your problem&quot;: &quot;specify_problem&quot;,
-          &quot;I want to call an operator&quot;: &quot;call_operator&quot;,
-          &quot;None of the above&quot;: &quot;start&quot;,
-          &quot;Forgot Password&quot;: &quot;forgot_password&quot;,
-          &quot;Account locked&quot;: &quot;account_locked&quot;
-        },
-        &quot;max_state_count&quot;: 0,
-        &quot;action&quot;: &quot;show_buttons&quot;
+   &quot;hits&quot; : [
+      {
+         &quot;score&quot; : 0,
+         &quot;document&quot; : {
+            &quot;execution_order&quot; : 1,
+            &quot;bubble&quot; : &quot;Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?&quot;,
+            &quot;state&quot; : &quot;further_details_access_question&quot;,
+            &quot;max_state_count&quot; : 0,
+            &quot;queries&quot; : [
+               &quot;cannot access account&quot;,
+               &quot;problem access account&quot;
+            ],
+            &quot;state_data&quot; : {
+               &quot;verification&quot; : &quot;did you mean you can't access to your account?&quot;
+            },
+            &quot;action_input&quot; : {
+               &quot;None of the above&quot; : &quot;start&quot;,
+               &quot;Account locked&quot; : &quot;account_locked&quot;,
+               &quot;Forgot Password&quot; : &quot;forgot_password&quot;,
+               &quot;Specify your problem&quot; : &quot;specify_problem&quot;,
+               &quot;I want to call an operator&quot; : &quot;call_operator&quot;
+            },
+            &quot;analyzer&quot; : &quot;or(and(or(keyword(\&quot;problem.*\&quot;),keyword(\&quot;issue.*\&quot;),keyword(\&quot;trouble.*\&quot;)),keyword(\&quot;account\&quot;)),search(\&quot;further_details_access_question\&quot;))&quot;,
+            &quot;success_value&quot; : &quot;eval(show_buttons)&quot;,
+            &quot;action&quot; : &quot;show_buttons&quot;,
+            &quot;failure_value&quot; : &quot;dont_understand&quot;
+         }
       }
-    }
-  ]
+   ],
+   &quot;total&quot; : 1,
+   &quot;max_score&quot; : 0
 }
 </code></pre>
 
@@ -352,6 +367,7 @@ curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:88
 <p>Sample call</p>
 <pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/decisiontable -d '{
   &quot;state&quot;: &quot;further_details_access_question&quot;,
+  &quot;execution_order&quot;: 1,
   &quot;max_state_count&quot;: 0,
   &quot;analyzer&quot;: &quot;&quot;,
   &quot;queries&quot;: [&quot;cannot access account&quot;, &quot;problem access account&quot;],
@@ -405,6 +421,42 @@ curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:88
 }'
 </code></pre>
 
+<p>Sample response </p>
+<pre><code class="json">{
+   &quot;max_score&quot; : 0.930855453014374,
+   &quot;hits&quot; : [
+      {
+         &quot;document&quot; : {
+            &quot;action_input&quot; : {
+               &quot;I want to call an operator&quot; : &quot;call_operator&quot;,
+               &quot;Forgot Password&quot; : &quot;forgot_password&quot;,
+               &quot;None of the above&quot; : &quot;start&quot;,
+               &quot;Account locked&quot; : &quot;account_locked&quot;,
+               &quot;Specify your problem&quot; : &quot;specify_problem&quot;
+            },
+            &quot;bubble&quot; : &quot;Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?&quot;,
+            &quot;success_value&quot; : &quot;eval(show_buttons)&quot;,
+            &quot;action&quot; : &quot;show_buttons&quot;,
+            &quot;queries&quot; : [
+               &quot;cannot access account&quot;,
+               &quot;problem access account&quot;
+            ],
+            &quot;execution_order&quot; : 1,
+            &quot;max_state_count&quot; : 0,
+            &quot;failure_value&quot; : &quot;dont_understand&quot;,
+            &quot;state_data&quot; : {
+               &quot;verification&quot; : &quot;did you mean you can't access to your account?&quot;
+            },
+            &quot;analyzer&quot; : &quot;or(and(or(keyword(\&quot;problem.*\&quot;),keyword(\&quot;issue.*\&quot;),keyword(\&quot;trouble.*\&quot;)),keyword(\&quot;account\&quot;)),search(\&quot;further_details_access_question\&quot;))&quot;,
+            &quot;state&quot; : &quot;further_details_access_question&quot;
+         },
+         &quot;score&quot; : 0.930855453014374
+      }
+   ],
+   &quot;total&quot; : 1
+}
+</code></pre>
+
 <h2 id="get-decisiontable_analyzer"><code>GET /decisiontable_analyzer</code></h2>
 <p>(WORK IN PROGRESS, PARTIALLY IMPLEMENTED)</p>
 <p>Get and return the map of analyzer for each state</p>
@@ -417,9 +469,38 @@ curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:88
 
 <p>Sample response</p>
 <pre><code class="json">{
-  &quot;analyzer_map&quot;: {
-    &quot;further_details_access_question&quot;: &quot;((forgot).*(password))&quot;
-  }
+   &quot;analyzer_map&quot; : {
+      &quot;account_locked&quot; : {
+         &quot;analyzer&quot; : &quot;booleanand(keyword(\&quot;locked\&quot;), keyword(\&quot;account\&quot;), )&quot;,
+         &quot;execution_order&quot; : 1,
+         &quot;build&quot; : true
+      },
+      &quot;call_operator&quot; : {
+         &quot;analyzer&quot; : &quot;and(or(keyword(\&quot;call\&quot;),keyword(\&quot;talk\&quot;),keyword(\&quot;speak\&quot;)),keyword(\&quot;operator\&quot;))&quot;,
+         &quot;execution_order&quot; : 1,
+         &quot;build&quot; : true
+      },
+      &quot;forgot_password&quot; : {
+         &quot;execution_order&quot; : 1,
+         &quot;build&quot; : true,
+         &quot;analyzer&quot; : &quot;and(or(keyword(\&quot;reset\&quot;),keyword(\&quot;forgot\&quot;)),keyword(\&quot;password\&quot;))&quot;
+      },
+      &quot;terrible_feedback&quot; : {
+         &quot;build&quot; : true,
+         &quot;execution_order&quot; : 1,
+         &quot;analyzer&quot; : &quot;booleanor(keyword(\&quot;idiot\&quot;), keyword(\&quot;fuck.*\&quot;), keyword(\&quot;screw\&quot;), keyword(\&quot;damn.*\&quot;), keyword(\&quot;asshole\&quot;))&quot;
+      },
+      &quot;test_state&quot; : {
+         &quot;analyzer&quot; : &quot;booleanAnd(booleanNot(booleanOr(keyword(\&quot;dont\&quot;),keyword(\&quot;don't\&quot;))), keyword(\&quot;test\&quot;), booleanOr(keyword(\&quot;send\&quot;), keyword(\&quot;get\&quot;)))&quot;,
+         &quot;execution_order&quot; : 1,
+         &quot;build&quot; : true
+      },
+      &quot;further_details_access_question&quot; : {
+         &quot;execution_order&quot; : 1,
+         &quot;build&quot; : true,
+         &quot;analyzer&quot; : &quot;or(and(or(keyword(\&quot;problem.*\&quot;),keyword(\&quot;issue.*\&quot;),keyword(\&quot;trouble.*\&quot;)),keyword(\&quot;account\&quot;)),search(\&quot;further_details_access_question\&quot;))&quot;
+      }
+   }
 }
 </code></pre>
 
@@ -1272,6 +1353,28 @@ curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://local
    &quot;value&quot; : 0.25,
    &quot;build_message&quot; : &quot;success&quot;,
    &quot;build&quot; : true
+}
+</code></pre>
+
+<p>Sample of pattern extraction through analyzers</p>
+<pre><code class="json">curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d' 
+{
+        &quot;analyzer&quot;: &quot;band(keyword(\&quot;on\&quot;), matchPatternRegex(\&quot;[day,month,year](?:(0[1-9]|[12][0-9]|3[01])(?:[- \\\/\\.])(0[1-9]|1[012])(?:[- \\\/\\.])((?:19|20)\\d\\d))\&quot;))&quot;,
+        &quot;query&quot;: &quot;on 31-11-1900&quot;
+}'```
+
+Sample output
+
+```json
+{
+   &quot;build_message&quot; : &quot;success&quot;,
+   &quot;variables&quot; : {
+      &quot;month.0&quot; : &quot;11&quot;,
+      &quot;day.0&quot; : &quot;31&quot;,
+      &quot;year.0&quot; : &quot;1900&quot;
+   },
+   &quot;build&quot; : true,
+   &quot;value&quot; : 1
 }
 </code></pre>
 

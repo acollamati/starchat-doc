@@ -174,11 +174,11 @@ minumum requirements of the code contributions.</p>
 <li><a href="https://docs.docker.com/engine/installation/">docker</a></li>
 <li><a href="https://docs.docker.com/compose/install/">docker compose</a></li>
 </ul>
-<p>In this way, you will put all the indices in the Elasticsearch (version 5.3) image, and StarChat itself in the Java (8) image.</p>
+<p>In this way, you will put all the indices in the Elasticsearch (version 5.4) image, and StarChat itself in the Java (8) image.</p>
 <p><em>If you do not use docker</em> you therefore need on your machine:</p>
 <ol>
 <li><a href="http://scala-lang.org">Scala 12.2</a></li>
-<li><a href="http://elastic.co">Elasticsearch 5.3</a></li>
+<li><a href="http://elastic.co">Elasticsearch 5.4</a></li>
 </ol>
 <h2 id="setup-with-docker-recommended">Setup with Docker (recommended)</h2>
 <h3 id="1-launch-docker-compose">1. Launch docker-compose</h3>
@@ -199,11 +199,11 @@ ln -s starchat-4ee..../  starchat
 <ul>
 <li>a set of scripts to test the endpoints and as a complement for the documentation: <code>starchat/scripts/api_test/</code></li>
 <li>a set of command line programs <code>starchat/bin</code> to run starchat and other tools.</li>
-<li>delete-decision-table: delete items from the decision table</li>
-<li>index-corpus-on-knowledge-base: index a corpus on knowledge base as hidden (to improve the language model)</li>
-<li>index-decision-table: index data on the decision table from a csv</li>
-<li>index-knowledge-base: index data into the knowledge base</li>
-<li>index-terms: index terms vectors</li>
+<li>delete-decision-table: application to delete items from the decision table</li>
+<li>index-corpus-on-knowledge-base: application to index a corpus on knowledge base as hidden (to improve the language model)</li>
+<li>index-decision-table: application to index data on the decision table from a csv</li>
+<li>index-knowledge-base: application to index data into the knowledge base</li>
+<li>index-terms: application to index terms vectors</li>
 <li>starchat: start starchat</li>
 </ul>
 <p>Review the configuration files <code>starchat/config/application.conf</code> and configure the language if needed (by default you have <code>index_language = "english"</code>)</p>
@@ -259,20 +259,25 @@ sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sampl
 </code></pre>
 
 <p>You should get:</p>
-<pre><code class="json">{
-    &quot;action&quot;: &quot;&quot;,
-    &quot;action_input&quot;: {},
-    &quot;analyzer&quot;: &quot;and(keyword(\&quot;test\&quot;), or(keyword(\&quot;send\&quot;), keyword(\&quot;get\&quot;)))&quot;,
-    &quot;bubble&quot;: &quot;This is the test state&quot;,
-    &quot;conversation_id&quot;: &quot;1234&quot;,
-    &quot;data&quot;: {},
-    &quot;failure_value&quot;: &quot;&quot;,
-    &quot;max_state_count&quot;: 0,
-    &quot;score&quot;: 1.0,
-    &quot;state&quot;: &quot;test_state&quot;,
-    &quot;state_data&quot;: {},
-    &quot;success_value&quot;: &quot;&quot;
-}
+<pre><code class="json">[
+   {
+      &quot;score&quot; : 1,
+      &quot;action&quot; : &quot;&quot;,
+      &quot;max_state_count&quot; : 0,
+      &quot;data&quot; : {},
+      &quot;bubble&quot; : &quot;This is the test state&quot;,
+      &quot;failure_value&quot; : &quot;&quot;,
+      &quot;traversed_states&quot; : [
+         &quot;test_state&quot;
+      ],
+      &quot;analyzer&quot; : &quot;booleanAnd(booleanNot(booleanOr(keyword(\&quot;dont\&quot;),keyword(\&quot;don't\&quot;))), keyword(\&quot;test\&quot;), booleanOr(keyword(\&quot;send\&quot;), keyword(\&quot;get\&quot;)))&quot;,
+      &quot;state_data&quot; : {},
+      &quot;action_input&quot; : {},
+      &quot;success_value&quot; : &quot;&quot;,
+      &quot;conversation_id&quot; : &quot;1234&quot;,
+      &quot;state&quot; : &quot;test_state&quot;
+   }
+]
 </code></pre>
 
 <p>If you look at the <code>"analyzer"</code> field, you'll see that this state is triggered when
@@ -308,6 +313,7 @@ you only have to configure a conversation flow and eventually a front-end client
 <li><em>boolean not</em>:  ditto, <code>bnot</code></li>
 <li><em>conjunction</em>:  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true (<code>P(A)*P(B)</code>)</li>
 <li><em>disjunction</em>:  as above, the probability that at least one is true (<code>1-(1-P(A))*(1-P(B))</code>)</li>
+<li><em>max</em>: takes the max score of returned by the expression arguments</li>
 </ul>
 <h4 id="technical-corner-expressions">Technical corner: <code>expressions</code></h4>
 <p><a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/expressions/Expression.scala">Expressions</a>, like <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/KeywordAtomic.scala#L18">keywords</a> in the example, are called <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/AbstractAtomic.scala">atoms</a>, and have the following methods/members:</p>
@@ -318,7 +324,18 @@ you only have to configure a conversation flow and eventually a front-end client
 <li><code>val rx</code>: the name of the atom, as it should be used in the <code>analyzer</code> field.</li>
 </ol>
 <h2 id="configuration-of-the-answer-recommender-knowledge-base">Configuration of the answer recommender (Knowledge Base)</h2>
-<p>TODO</p>
+<p>The knowledge base table items are accessible through the method of the <code>/knowledgebase</code> API endpoint:</p>
+<p>Api:<br />
+  *  index items: <a href="https://getjenny.github.io/starchat-doc/apis/#post-knowledgebase">POST /knowledgebase</a>
+  *  get items: <a href="https://getjenny.github.io/starchat-doc/apis/#get-knowledgebase">GET /knowledgebase</a>
+  *  delete items: <a href="https://getjenny.github.io/starchat-doc/apis/#delete-knowledgebase">DELETE /knowledgebase</a>
+  *  to update items: <a href="https://getjenny.github.io/starchat-doc/apis/#put-knowledgebase">PUT /knowledgebase</a>
+  *  to search: <a href="https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search">POST /knowledgebase_search</a></p>
+<h3 id="manaus">Manaus</h3>
+<p>The questions on knowledge can be processed using <a href="https://github.com/GetJenny/manaus">Manaus</a> and the results are indexed to the knowledge base.
+to extract significant terms from the sentences. The terms extracted with <a href="https://github.com/GetJenny/manaus">Manaus</a>
+  can be indexed and used to improve the accuracy of search <a href="https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search">(POST /knowledgebase_search)</a>
+The docker-compose default installation has an example of the Manaus processing.</p>
 <h1 id="technology">Technology</h1>
 <p>StarChat was design with the following goals in mind:</p>
 <ol>
@@ -352,6 +369,7 @@ indexing, sentence cleansing, and tokenization.</p>
 <p>And the fields are:</p>
 <ul>
 <li><strong>state</strong>: a unique name of the state (e.g. <code>forgot_password</code>)</li>
+<li><strong>execution_order</strong>: specify an order of evaluation for analyzers the lower is the number earlier is the evaluation of the state</li>
 <li><strong>max_state_count</strong>: defines how many times StarChat can repropose the state during a conversation.</li>
 <li><strong>analyzer (T,I)</strong>: specify an analyzer expression which triggers the state</li>
 <li><strong>query (T,I)</strong>: list of sentences whose meaning identify the state</li>
@@ -417,7 +435,7 @@ with a load balancing service.</p>
 <p>In the diagram below, a load balancer forward requests coming from the front-end to StarChat instances 
 1, 2 or 3. These instances, as said, behave identically because they all refer to <code>Index 0</code> in the 
 Elasticsearch cluster.</p>
-<p><img alt="Image" src="./doc/readme_images/scalability_diagram_starchat.png?raw=true" /></p>
+<p><img alt="Image" src="./img/scalability_diagram_starchat.png?raw=true" /></p>
 <h3 id="scaling-elasticsearch">Scaling Elasticsearch</h3>
 <p>Similarly, Elasticsearch can easily scale horizontally adding new nodes to the cluster, as explained
  in <a href="https://www.elastic.co/guide/en/elasticsearch/guide/master/_scale_horizontally.html">Elasticsearch Documentation</a>.</p>
@@ -469,6 +487,8 @@ as well as useless from a security point of view.</p>
 
 <p>The format for each row of an input file with 5 dimension vectors is:
 <code>hello 1.0 2.0 3.0 4.0 0.0</code></p>
+<p>You can use your ad-hoc trained vector model (as we do) otherwise you can use the google word2vec models
+trained on google news. You can find a copy of the <a href="https://raw.githubusercontent.com/GetJenny/jenny-public-data/master/elasticsearch.GoogleNewsVectors.tar.bz2">elasticsearch index with a pre-loaded google news terms</a>.</p>
 <h1 id="test">Test</h1>
 <ul>
 <li>Unit tests are available with <code>sbt test</code> command</li>
@@ -556,5 +576,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.14.0
-Build Date UTC : 2017-06-21 15:06:41.568669
+Build Date UTC : 2017-07-04 14:08:27.186492
 -->
