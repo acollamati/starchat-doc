@@ -223,11 +223,11 @@ Operators evaluate the output of one or more expression and return a value. Curr
 The knowledge base table items are accessible through the method of the `/knowledgebase` API endpoint:
   
 Api:  
-  *  index items: [POST /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#post-knowledgebase)
-  *  get items: [GET /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#get-knowledgebase)
-  *  delete items: [DELETE /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#delete-knowledgebase)
-  *  to update items: [PUT /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#put-knowledgebase)
-  *  to search: [POST /knowledgebase_search](https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search)
+1.  index items: [POST /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#post-knowledgebase)
+2.  get items: [GET /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#get-knowledgebase)
+3.  delete items: [DELETE /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#delete-knowledgebase)
+4.  to update items: [PUT /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#put-knowledgebase)
+5.  to search: [POST /knowledgebase_search](https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search)
   
 ### Manaus
 
