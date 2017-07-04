@@ -220,7 +220,21 @@ Operators evaluate the output of one or more expression and return a value. Curr
 
 ## Configuration of the answer recommender (Knowledge Base)
 
-TODO
+The knowledge base table items are accessible through the method of the `/knowledgebase` API endpoint:
+  
+Api:  
+  *  index items: [POST /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#post-knowledgebase)
+  *  get items: [GET /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#get-knowledgebase)
+  *  delete items: [DELETE /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#delete-knowledgebase)
+  *  to update items: [PUT /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#put-knowledgebase)
+  *  to search: [POST /knowledgebase_search](https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search)
+  
+### Manaus
+
+The questions on knowledge can be processed using [Manaus](https://github.com/GetJenny/manaus) and the results are indexed to the knowledge base.
+to extract significant terms from the sentences. The terms extracted with [Manaus](https://github.com/GetJenny/manaus)
+  can be indexed and used to improve the accuracy of search [(POST /knowledgebase_search)](https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search)
+The docker-compose default installation has an example of the Manaus processing.
 
 # Technology
 
