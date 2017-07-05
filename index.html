@@ -4,25 +4,24 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+        <meta name="description" content="None">
         
         
         <link rel="shortcut icon" href="./img/favicon.ico">
-
-	<title>StarChat Documentation</title>
-
+        <title>StarChat Documentation</title>
         <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.5.0.css" rel="stylesheet">
         <link href="./css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="./css/highlight.css">
-
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-
-        
+	
+	<script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script> 
     </head>
 
     <body class="homepage">
@@ -32,7 +31,6 @@
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
-            
             <!-- Expander button -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -40,38 +38,23 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            
-
-            <!-- Main title -->
             <a class="navbar-brand" href=".">StarChat Documentation</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
-            
                 <!-- Main navigation -->
                 <ul class="nav navbar-nav">
-                
-                
                     <li class="active">
                         <a href=".">Home</a>
                     </li>
-                
-                
-                
                     <li >
                         <a href="apis/">APIs</a>
                     </li>
-                
-                
-                
                     <li >
                         <a href="about/">About</a>
                     </li>
-                
-                
                 </ul>
-            
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -79,7 +62,6 @@
                         <i class="fa fa-search"></i> Search
                     </a>
                 </li>
-                
                     <li class="disabled">
                         <a rel="next" >
                             <i class="fa fa-arrow-left"></i> Previous
@@ -90,71 +72,38 @@
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
-                
-                
             </ul>
         </div>
     </div>
 </div>
 
         <div class="container">
-            
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-    
         <li class="main active"><a href="#welcome">Welcome!</a></li>
-        
-    
         <li class="main "><a href="#how-to-contribute">How to contribute</a></li>
-        
-    
         <li class="main "><a href="#quick-start">Quick Start</a></li>
-        
             <li><a href="#requirements">Requirements</a></li>
-        
             <li><a href="#setup-with-docker-recommended">Setup with Docker (recommended)</a></li>
-        
             <li><a href="#install-without-docker">Install without Docker</a></li>
-        
             <li><a href="#test-the-installation">Test the installation</a></li>
-        
             <li><a href="#configuration-of-the-chatbot-decision-table">Configuration of the chatbot (Decision Table)</a></li>
-        
             <li><a href="#nlp-processing">NLP processing</a></li>
-        
             <li><a href="#configuration-of-the-answer-recommender-knowledge-base">Configuration of the answer recommender (Knowledge Base)</a></li>
-        
-    
+            <li><a href="#manaus">Manaus</a></li>
         <li class="main "><a href="#technology">Technology</a></li>
-        
             <li><a href="#how-does-starchat-work">How does StarChat work?</a></li>
-        
             <li><a href="#configuration-of-the-decisiontable">Configuration of the DecisionTable</a></li>
-        
             <li><a href="#client-functions">Client functions</a></li>
-        
             <li><a href="#mechanics">Mechanics</a></li>
-        
             <li><a href="#scalability">Scalability</a></li>
-        
             <li><a href="#security">Security</a></li>
-        
-    
         <li class="main "><a href="#indexing-terms-on-term-table">Indexing terms on term table</a></li>
-        
-    
         <li class="main "><a href="#test">Test</a></li>
-        
-    
         <li class="main "><a href="#troubleshooting">Troubleshooting</a></li>
-        
             <li><a href="#docker-start-from-scratch">Docker: start from scratch</a></li>
-        
             <li><a href="#docker-compose-analyzers-are-not-loaded">docker-compose: Analyzers are not loaded</a></li>
-        
             <li><a href="#docker-size-of-virtual-memory">Docker: Size of virtual memory</a></li>
-        
-    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -222,15 +171,15 @@ curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://local
 <h3 id="3-load-the-configuration-file">3. Load the configuration file</h3>
 <p>Now you have to load the configuration file for the actual chat, aka <a href="#services">decision table</a>. We have provided an example csv in English, therefore:</p>
 <pre><code class="bash">cd $STARCHAT_DIR  # or cd .. 
-sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/sample_state_machine_specification.csv --skiplines 1&quot;
+sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/decision_table_starchat_doc.csv --skiplines 1&quot;
 </code></pre>
 
 <p>and then (you need to index the analyzer):</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/decisiontable_analyzer&quot;
+<pre><code class="bash">./docker-starchat/starchat/bin/index-decision-table --inputfile doc/decision_table_starchat_doc.csv 
 </code></pre>
 
-<p>This command deletes all the states it finds on the first column:</p>
-<pre><code class="bash">sbt &quot;run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/sample_state_machine_specification.csv&quot;
+<p>This command deletes all the states it finds on the first column in the inputfile:</p>
+<pre><code class="bash">sbt &quot;run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/decision_table_starchat_doc.csv&quot;
 </code></pre>
 
 <p>NB This means that if you create a state in the CSV file, index it, then delete it in the CSV and run <code>DeleteDecisionTable</code>, it won't be deleted!</p>
@@ -324,18 +273,59 @@ you only have to configure a conversation flow and eventually a front-end client
 <li><code>val rx</code>: the name of the atom, as it should be used in the <code>analyzer</code> field.</li>
 </ol>
 <h2 id="configuration-of-the-answer-recommender-knowledge-base">Configuration of the answer recommender (Knowledge Base)</h2>
-<p>The knowledge base table items are accessible through the method of the <code>/knowledgebase</code> API endpoint:</p>
-<p>Api:<br />
-1.  index items: <a href="https://getjenny.github.io/starchat-doc/apis/#post-knowledgebase">POST /knowledgebase</a>
-2.  get items: <a href="https://getjenny.github.io/starchat-doc/apis/#get-knowledgebase">GET /knowledgebase</a>
-3.  delete items: <a href="https://getjenny.github.io/starchat-doc/apis/#delete-knowledgebase">DELETE /knowledgebase</a>
-4.  to update items: <a href="https://getjenny.github.io/starchat-doc/apis/#put-knowledgebase">PUT /knowledgebase</a>
-5.  to search: <a href="https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search">POST /knowledgebase_search</a></p>
-<h3 id="manaus">Manaus</h3>
-<p>The questions on knowledge can be processed using <a href="https://github.com/GetJenny/manaus">Manaus</a> and the results are indexed to the knowledge base.
-to extract significant terms from the sentences. The terms extracted with <a href="https://github.com/GetJenny/manaus">Manaus</a>
-  can be indexed and used to improve the accuracy of search <a href="https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search">(POST /knowledgebase_search)</a>
-The docker-compose default installation has an example of the Manaus processing.</p>
+<p>Through the <a href="https://getjenny.github.io/starchat-doc/apis/#get-knowledgebase">/knowledgebase</a> endpoint
+you can add, edit and remove pairs of question and answers used by StarChat to recommend possible answers when a question arrives.</p>
+<p>Documents containing Q&amp;A must be structured like that:</p>
+<pre><code class="json">{
+    &quot;id&quot;: &quot;0&quot;,  // id of the pair
+    &quot;conversation&quot;: &quot;id:1000&quot;,   // id of the conversation. This can be useful to external services
+    &quot;index_in_conversation&quot;: 1,  // when the pair appears inside the conversation, as above
+    &quot;question&quot;: &quot;thank you&quot;,  // The question to be matched
+    &quot;answer&quot;: &quot;you are welcome!&quot;,  // The answer to be recommended 
+    &quot;question_scored_terms&quot;: [  // A list of keyword and score. You can use your own keyword extractor or our Manaus (see later)
+        [
+            &quot;thank&quot;, 
+            1.9
+        ]
+    ],
+    &quot;verified&quot;: true,  // A variable used in some call centers
+    &quot;topics&quot;: &quot;t1 t2&quot;,  // Eventual topics to be associated
+    &quot;doctype&quot;: &quot;normal&quot;,
+    &quot;state&quot;: &quot;&quot;,
+    &quot;status&quot;: 0
+}
+</code></pre>
+
+<p>See <a href="https://getjenny.github.io/starchat-doc/apis/#post-knowledgebase">POST /knowledgebase</a> for an example with <code>curl</code>. Other calls (<code>GET, DELETE, PUT</code>) are used to get the state, delete it or update it. </p>
+<h3 id="test-the-knowledge-base">Test the knowledge base</h3>
+<p>Just run the example in <a href="https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search">POST /knowledgebase_search</a>.</p>
+<h2 id="manaus">Manaus</h2>
+<p>In the Q&amp;A pair above you saw the field
+<code>question_scored_terms</code>. Having good keywords improves enormously the
+quality of the answer. You can of course put them by hand, or run a
+software which extracts the keywords from the question. If you prefer
+the latter, but don't have any, we provide
+<a href="https://github.com/GetJenny/manaus">Manaus</a>.</p>
+<p>Manaus is still under development, but it's already included in the
+Docker's installation of StarChat. When you launch <code>docker-compose up
+-d</code>, you also launch a container with Manaus which analyzes all the
+Q&amp;A in the Knowledge Base, produces keywords and updates the field
+question_scored_terms for all documents. The process is repeated evert
+4 hour.</p>
+<h3 id="manaus-configuration">Manaus configuration</h3>
+<p>Have a look at the file <code>docker-starchat/docker-compose.yml</code>. For
+Manaus to have good performance, you need to provide decent language
+statistics. Update the file <code>/manaus/statistics_data/english/word_frequency.tsv</code> with a
+word-frequency file with the following format:</p>
+<pre><code>1       you     1222421
+2       I       1052546
+3       to      823661
+....
+</code></pre>
+
+<p>We have frequency file for more than 50 languages, but consider that
+the choice of good "prior distribution" of word frequency is crucial
+for any NLP task.</p>
 <h1 id="technology">Technology</h1>
 <p>StarChat was design with the following goals in mind:</p>
 <ol>
@@ -530,51 +520,43 @@ elastisearch exited with code 78
 <p>run:</p>
 <pre><code class="bash">sysctl -w vm.max_map_count=262144
 </code></pre></div>
-            
         </div>
 
         <footer class="col-md-12">
             <hr>
-            
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-
-        <script src="./js/jquery-1.10.2.min.js"></script>
-        <script src="./js/bootstrap-3.0.3.min.js"></script>
-        <script src="./js/highlight.pack.js"></script>
         <script>var base_url = '.';</script>
         <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
-        <script src="./js/base.js"></script>
-
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+        <script src="./js/base.js"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
                     </div>
-                    <div class="modal-body">
-                        <p>
-                            From here you can search these documents. Enter
-                            your search terms below.
-                        </p>
-                        <form role="form">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
-                            </div>
-                        </form>
-                        <div id="mkdocs-search-results"></div>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
+    </div>
+</div>
 
     </body>
 </html>
 
 <!--
-MkDocs version : 0.14.0
-Build Date UTC : 2017-07-04 14:12:25.810067
+MkDocs version : 0.16.3
+Build Date UTC : 2017-07-05 16:25:42
 -->
