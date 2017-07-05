@@ -252,39 +252,14 @@ See [POST /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#post-kno
 
 Just run the example in [POST /knowledgebase_search](https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search).
   
-## Manaus
+### Manaus
 
-In the Q&A pair above you saw the field
-`question_scored_terms`. Having good keywords improves enormously the
-quality of the answer. You can of course put them by hand, or run a
-software which extracts the keywords from the question. If you prefer
-the latter, but don't have any, we provide
-[Manaus](https://github.com/GetJenny/manaus).
+In the Q&A pair above you saw the field `question_scored_terms`. Having good keywords improves enormously the quality of the answer. You can of course put them by hand, or run a software whi
 
-Manaus is still under development, but it's already included in the
-Docker's installation of StarChat. When you launch `docker-compose up
--d`, you also launch a container with Manaus which analyzes all the
-Q&A in the Knowledge Base, produces keywords and updates the field
-question_scored_terms for all documents. The process is repeated evert
-4 hour.
-
-### Manaus configuration
-
-Have a look at the file `docker-starchat/docker-compose.yml`. For
-Manaus to have good performance, you need to provide decent language
-statistics. Update the file `/manaus/statistics_data/english/word_frequency.tsv` with a
-word-frequency file with the following format:
-
-```
-1       you     1222421
-2       I       1052546
-3       to      823661
-....
-```
-
-We have frequency file for more than 50 languages, but consider that
-the choice of good "prior distribution" of word frequency is crucial
-for any NLP task.
+The questions on knowledge can be processed using [Manaus](https://github.com/GetJenny/manaus) and the results are indexed to the knowledge base.
+to extract significant terms from the sentences. The terms extracted with [Manaus](https://github.com/GetJenny/manaus)
+  can be indexed and used to improve the accuracy of search [(POST /knowledgebase_search)](https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search)
+The docker-compose default installation has an example of the Manaus processing.
 
 # Technology
 

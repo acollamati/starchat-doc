@@ -282,9 +282,7 @@ word-frequency file with the following format:
 ....
 ```
 
-We have frequency file for more than 50 languages, but consider that
-the choice of good "prior distribution" of word frequency is crucial
-for any NLP task.
+We have frequency file for more
 
 # Technology
 

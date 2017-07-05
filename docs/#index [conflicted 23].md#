@@ -272,19 +272,7 @@ question_scored_terms for all documents. The process is repeated evert
 
 Have a look at the file `docker-starchat/docker-compose.yml`. For
 Manaus to have good performance, you need to provide decent language
-statistics. Update the file `/manaus/statistics_data/english/word_frequency.tsv` with a
-word-frequency file with the following format:
-
-```
-1       you     1222421
-2       I       1052546
-3       to      823661
-....
-```
-
-We have frequency file for more than 50 languages, but consider that
-the choice of good "prior distribution" of word frequency is crucial
-for any NLP task.
+statistics. Update the file `/manaus/statistics_data/english/word_frequency.tsv` with your 
 
 # Technology
 

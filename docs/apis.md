@@ -456,32 +456,8 @@ Sample response
             "status" : 0,
             "question_scored_terms" : [
                [
-                  "currently",
-                  1.09018741311033
-               ],
-               [
-                  "installing",
-                  2.11472759638322
-               ],
-               [
-                  "mac",
-                  9.00048425224425
-               ],
-               [
-                  "reset",
-                  4.34483238516225
-               ],
-               [
-                  "app",
-                  1.22190615359614
-               ],
-               [
-                  "device",
-                  2.16794683907434e-213
-               ],
-               [
-                  "devices",
-                  4.19876258010776e-268
+                  "thank",
+		  1.09
                ]
             ],
             "verified" : true,
@@ -514,32 +490,8 @@ curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/knowle
 	"answer": "you are welcome!",
 	"question_scored_terms": [
 		[
-			"currently",
-			1.0901874131103333
-		],
-		[
-			"installing",
-			2.11472759638322
-		],
-		[
-			"mac",
-			9.000484252244254
-		],
-		[
-			"reset",
-			4.34483238516225
-		],
-		[
-			"app",
-			1.2219061535961406
-		],
-		[
-			"device",
-			2.1679468390743414E-213
-		],
-		[
-			"devices",
-			4.1987625801077624E-268
+			"thank",
+			1.9
 		]
 	],
 	"verified": true,
@@ -573,7 +525,9 @@ Output JSON
 
 Sample call
 
+```bash
 curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/knowledgebase/0
+```
 
 Sample output
 
@@ -600,56 +554,17 @@ Output JSON
 Sample call
 
 ```bash
-{
-   "max_score" : 0,
-   "total" : 1,
-   "hits" : [
-      {
-         "score" : 0,
-         "document" : {
-            "conversation" : "id:1001",
-            "verified" : true,
-            "id" : "0",
-            "doctype" : "normal",
-            "question_scored_terms" : [
-               [
-                  "currently",
-                  1.09018741311033
-               ],
-               [
-                  "installing",
-                  2.11472759638322
-               ],
-               [
-                  "mac",
-                  9.00048425224425
-               ],
-               [
-                  "reset",
-                  4.34483238516225
-               ],
-               [
-                  "app",
-                  1.22190615359614
-               ],
-               [
-                  "device",
-                  2.16794683907434e-213
-               ],
-               [
-                  "devices",
-                  4.19876258010776e-268
-               ]
-            ],
-            "question" : "thank you",
-            "index_in_conversation" : 1,
-            "state" : "",
-            "topics" : "t1 t2",
-            "answer" : "you are welcome!",
-            "status" : 0
-         }
-      }
-   ]
+curl -v -H "Content-Type: application/json" -X PUT http://localhost:8888/knowledgebase/0 -d '{
+    "question_scored_terms": [
+                [
+                        "thank",
+                        1.9
+                ],
+                [
+                        "thanks",
+                        1.9
+                ]
+    ]
 }'
 ```
 
@@ -876,7 +791,7 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X DELETE "http://localhost:8888/language_guesser/en"
+curl -v -H "Content-Type: application/json" -X DELETE "http://localhost:8888/index_management"
 ```
 
 Sample output

@@ -223,6 +223,8 @@ Operators evaluate the output of one or more expression and return a value. Curr
 Through the [/knowledgebase](https://getjenny.github.io/starchat-doc/apis/#get-knowledgebase) endpoint
 you can add, edit and remove pairs of question and answers used by StarChat to recommend possible answers when a question arrives.
 
+### Index pairs of questions and answers
+
 Documents containing Q&A must be structured like that:
 
 ```json
@@ -232,59 +234,35 @@ Documents containing Q&A must be structured like that:
     "index_in_conversation": 1,  // when the pair appears inside the conversation, as above
     "question": "thank you",  // The question to be matched
     "answer": "you are welcome!",  // The answer to be recommended 
-    "question_scored_terms": [  // A list of keyword and score. You can use your own keyword extractor or our Manaus (see later)
+    "question_scored_terms": [  // A list of keyword and score. You can use your own keyword extractor
         [
             "thank", 
             1.9
         ]
     ],
     "verified": true,  // A variable used in some call centers
-    "topics": "t1 t2",  // Eventual topics to be associated
+    "topics": "t1 t2",  // Eventual topics to be assoc
     "doctype": "normal",
     "state": "",
     "status": 0
 }
 ```
 
-See [POST /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#post-knowledgebase) for an example with `curl`. Other calls (`GET, DELETE, PUT`) are used to get the state, delete it or update it. 
-
-### Test the knowledge base
-
-Just run the example in [POST /knowledgebase_search](https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search).
   
-## Manaus
+Api:  
 
-In the Q&A pair above you saw the field
-`question_scored_terms`. Having good keywords improves enormously the
-quality of the answer. You can of course put them by hand, or run a
-software which extracts the keywords from the question. If you prefer
-the latter, but don't have any, we provide
-[Manaus](https://github.com/GetJenny/manaus).
+1.  index items: [POST /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#post-knowledgebase)
+2.  get items: [GET /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#get-knowledgebase)
+3.  delete items: [DELETE /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#delete-knowledgebase)
+4.  to update items: [PUT /knowledgebase](https://getjenny.github.io/starchat-doc/apis/#put-knowledgebase)
+5.  to search: [POST /knowledgebase_search](https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search)
+  
+### Manaus
 
-Manaus is still under development, but it's already included in the
-Docker's installation of StarChat. When you launch `docker-compose up
--d`, you also launch a container with Manaus which analyzes all the
-Q&A in the Knowledge Base, produces keywords and updates the field
-question_scored_terms for all documents. The process is repeated evert
-4 hour.
-
-### Manaus configuration
-
-Have a look at the file `docker-starchat/docker-compose.yml`. For
-Manaus to have good performance, you need to provide decent language
-statistics. Update the file `/manaus/statistics_data/english/word_frequency.tsv` with a
-word-frequency file with the following format:
-
-```
-1       you     1222421
-2       I       1052546
-3       to      823661
-....
-```
-
-We have frequency file for more than 50 languages, but consider that
-the choice of good "prior distribution" of word frequency is crucial
-for any NLP task.
+The questions on knowledge can be processed using [Manaus](https://github.com/GetJenny/manaus) and the results are indexed to the knowledge base.
+to extract significant terms from the sentences. The terms extracted with [Manaus](https://github.com/GetJenny/manaus)
+  can be indexed and used to improve the accuracy of search [(POST /knowledgebase_search)](https://getjenny.github.io/starchat-doc/apis/#knowledgebase_search)
+The docker-compose default installation has an example of the Manaus processing.
 
 # Technology
 
