@@ -147,6 +147,10 @@
     
         <li class="main "><a href="#test">Test</a></li>
         
+            <li><a href="#unit-tests">Unit tests</a></li>
+        
+            <li><a href="#test-scripts-with-sample-api-calls">test scripts with sample API calls</a></li>
+        
     
         <li class="main "><a href="#troubleshooting">Troubleshooting</a></li>
         
@@ -533,8 +537,13 @@ as well as useless from a security point of view.</p>
 <p>You can use your ad-hoc trained vector model (as we do) otherwise you can use the google word2vec models
 trained on google news. You can find a copy of the <a href="https://raw.githubusercontent.com/GetJenny/jenny-public-data/master/elasticsearch.GoogleNewsVectors.tar.bz2">elasticsearch index with a pre-loaded google news terms</a>.</p>
 <h1 id="test">Test</h1>
+<h2 id="unit-tests">Unit tests</h2>
+<p>A set of unit test is available using docker-compose to set up a backend, the command to run tests is:</p>
+<pre><code class="bash">sbt dockerComposeUp ; sbt test ; sbt dockerComposeStop
+</code></pre>
+
+<h2 id="test-scripts-with-sample-api-calls">test scripts with sample API calls</h2>
 <ul>
-<li>Unit tests are available with <code>sbt test</code> command</li>
 <li>A set of test script is present inside scripts/api_test</li>
 </ul>
 <h1 id="troubleshooting">Troubleshooting</h1>
@@ -619,5 +628,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.14.0
-Build Date UTC : 2017-07-20 07:15:32.647731
+Build Date UTC : 2017-08-03 14:16:35.538604
 -->
