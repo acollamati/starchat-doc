@@ -480,7 +480,16 @@ trained on google news. You can find a copy of the [elasticsearch index with a p
 
 # Test
 
-* Unit tests are available with `sbt test` command
+## Unit tests
+
+A set of unit test is available using docker-compose to set up a backend, the command to run tests is:
+
+```bash
+sbt dockerComposeUp ; sbt test ; sbt dockerComposeStop
+```
+
+## test scripts with sample API calls
+
 * A set of test script is present inside scripts/api_test
 
 
