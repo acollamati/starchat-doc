@@ -1334,25 +1334,47 @@ used to test analyzers on the fly
 
 #### 200
 
-Sample call
+Sample call keyword
 
 ```bash
-ANALYZER="keyword(\\\"test\\\")"
-QUERY="this is a test"
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/analyzers_playground" -d "
+curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d '
 {
-        \"analyzer\": \"${ANALYZER}\",
-	        \"query\": \"${QUERY}\"
-		}"
+        "analyzer": "keyword(\"test\")",
+        "query": "this is a test",
+        "data": {"item_list": [], "extracted_variables":{}}
+}
+'
 ```
 
-Sample output
+Sample output keyword
 
 ```json
 {
-   "value" : 0.25,
    "build_message" : "success",
-   "build" : true
+   "build" : true,
+   "value" : 0.25
+}
+```
+
+Sample states analyzers
+
+```bash
+curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d '
+{
+        "analyzer": "hasTravState(\"one\")",
+        "query": "query",
+        "data": {"item_list": ["one", "two"], "extracted_variables":{}}
+}
+'
+```
+
+Sample output states analyzers
+
+```json
+{
+   "build_message" : "success",
+   "build" : true,
+   "value" : 1
 }
 ```
 
@@ -1363,7 +1385,8 @@ curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyz
 {
         "analyzer": "band(keyword(\"on\"), matchPatternRegex(\"[day,month,year](?:(0[1-9]|[12][0-9]|3[01])(?:[- \\\/\\.])(0[1-9]|1[012])(?:[- \\\/\\.])((?:19|20)\\d\\d))\"))",
         "query": "on 31-11-1900"
-}'```
+}'
+```
 
 Sample output
 
