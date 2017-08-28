@@ -179,7 +179,7 @@ If the `analyzer` field is empty, StarChat will query Elasticsearch for the stat
 
 ### Analyzer
 
-Through the `analyzer`s, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the  [CSV provided in the doc/ directory](https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv) for the state `forgot_passord`:
+Through the `analyzer`s, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the  [CSV provided in the doc/ directory](https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv) for the state `forgot_password`:
 
 `and(or(keyword("reset"),keyword("forgot")),keyword("password"))`
 
