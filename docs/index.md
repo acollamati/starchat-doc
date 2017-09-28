@@ -240,6 +240,7 @@ Documents containing Q&A must be structured like that:
     ],
     "verified": true,  // A variable used in some call centers
     "topics": "t1 t2",  // Eventual topics to be associated
+    "dclass": "", // Optional field as a searchable class for answer
     "doctype": "normal",
     "state": "",
     "status": 0
