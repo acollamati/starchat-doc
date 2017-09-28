@@ -490,7 +490,7 @@ curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/knowle
 	"conversation": "id:1000",
 	"index_in_conversation": 1,
 	"question": "thank you",
-	"question_negative": [""thank you anyway"],
+	"question_negative": ["thank you anyway"],
 	"answer": "you are welcome!",
 	"question_scored_terms": [
 		[
