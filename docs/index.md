@@ -197,6 +197,18 @@ These are currently the expression you can use to evaluate the goodness of a que
 * _synonym("word")_: gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this [word2vec demo](http://bionlp-www.utu.fi/wv_demo/) by [Turku University](http://bionlp.utu.fi/)
 * _similar("a whole sentence")_:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)
 * _similarState(state_name)_:  same as above, but for the sentences in the field "queries" of the state in the argument.
+* _similarEucEmd("a whole sentence")_: gives a non-normalized euclidean distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)
+* _similarEucEmdState(state_name): same as above, but for the sentences in the field "queries" of the state in the argument.
+* _similarCosEmd("a whole sentence")_: gives a normalized cosine distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)
+* _similarCosEmdState(state_name)_: same as above, but for the sentences in the field "queries" of the state in the argument.
+* _matchPatternRegex(regex)_: A generic pattern extraction analyzer, it extract named patterns matching a given regex e.g. the following will match tree numbers separated by semicolumn:
+  *   [first,second,third](?:([0-9]+:[0-9]:[0-9]+) if the regex matches it will create the entries into the state variables dictionary e.g.: 10:11:12 will result in Map("first.0" -> "10", "second.0" -> "11", "third.0" -> "12") the number at the end of the name is an index incremented for multiple occurrences of the pattern in the query
+* _matchDateDDMMYYYY(prefix)_: parse a date in DDMMYYYY format is built using the matchPatternRegex with the following regex: "(?:(?:[^0-9]+|\A)(0[1-9]|[12][0-9]|3[01])(?:[- \/\.])(0[1-9]|1[012])(?:[- \/\.])((?:19|20)\d\d)(?:[^0-9]+|$))"
+* _existsVariable(variable_name)_: check whether a variable exists or not 
+* _hasTravState_(state_name): check if a state_name is present into the history of traversed states
+* _lastTravStateIs_(state_name): check if the last traversed state is state_name
+* _prevTravStateIs(state_name)_: check if the last but one traversed state is state_name
+* _distance("keyword1", ..., "keyword N")_: calculate the cosine distance between the query and the list of keywords, this analyzer can be called using `cosDistanceKeywords`
 
 #### Expressions: Operators
 
