@@ -198,7 +198,7 @@ These are currently the expression you can use to evaluate the goodness of a que
 * _similar("a whole sentence")_:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)
 * _similarState(state_name)_:  same as above, but for the sentences in the field "queries" of the state in the argument.
 * _similarEucEmd("a whole sentence")_: gives a non-normalized euclidean distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)
-* _similarEucEmdState(state_name): same as above, but for the sentences in the field "queries" of the state in the argument.
+* _similarEucEmdState(state_name)_: same as above, but for the sentences in the field "queries" of the state in the argument.
 * _similarCosEmd("a whole sentence")_: gives a normalized cosine distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)
 * _similarCosEmdState(state_name)_: same as above, but for the sentences in the field "queries" of the state in the argument.
 * _matchPatternRegex(regex)_: A generic pattern extraction analyzer, it extract named patterns matching a given regex e.g. the following will match tree numbers separated by semicolumn:
