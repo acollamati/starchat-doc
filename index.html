@@ -311,7 +311,7 @@ you only have to configure a conversation flow and eventually a front-end client
 <li><em>similar("a whole sentence")</em>:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)</li>
 <li><em>similarState(state_name)</em>:  same as above, but for the sentences in the field "queries" of the state in the argument.</li>
 <li><em>similarEucEmd("a whole sentence")</em>: gives a non-normalized euclidean distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)</li>
-<li>_similarEucEmdState(state_name): same as above, but for the sentences in the field "queries" of the state in the argument.</li>
+<li><em>similarEucEmdState(state_name)</em>: same as above, but for the sentences in the field "queries" of the state in the argument.</li>
 <li><em>similarCosEmd("a whole sentence")</em>: gives a normalized cosine distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)</li>
 <li><em>similarCosEmdState(state_name)</em>: same as above, but for the sentences in the field "queries" of the state in the argument.</li>
 <li><em>matchPatternRegex(regex)</em>: A generic pattern extraction analyzer, it extract named patterns matching a given regex e.g. the following will match tree numbers separated by semicolumn:</li>
@@ -641,5 +641,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.14.0
-Build Date UTC : 2017-10-02 11:44:34.186064
+Build Date UTC : 2017-10-03 10:09:45.933684
 -->
