@@ -291,6 +291,21 @@ Sample output
 }
 ```
 
+Sample call: delete all
+
+```bash
+curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/decisiontable
+```
+
+Sample output: delete all
+
+```json
+{
+   "message" : "delete",
+   "deleted" : 120
+}
+```
+
 ## `POST /decisiontable_search`
 
 Update a document
@@ -542,6 +557,21 @@ Sample output
    "index" : "jenny-en-0",
    "dtype" : "question",
    "found" : true
+}
+```
+
+Sample call: delete all
+
+```bash
+curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/knowledgebase
+```
+
+Sample output: delete all
+
+```json
+{
+   "message" : "delete",
+   "deleted" : 10
 }
 ```
 
@@ -1002,6 +1032,22 @@ Sample output
    ]
 }
 
+```
+
+Sample call: delete all
+
+```bash
+curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/term -d'{
+        "ids": []
+}'
+```
+
+Sample call: delete all
+```json
+{
+  "message":"delete",
+  "deleted":2000
+}
 ```
 
 ## `PUT /term`
