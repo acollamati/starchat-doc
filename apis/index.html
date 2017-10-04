@@ -408,6 +408,17 @@ curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:88
 }
 </code></pre>
 
+<p>Sample call: delete all</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/decisiontable
+</code></pre>
+
+<p>Sample output: delete all</p>
+<pre><code class="json">{
+   &quot;message&quot; : &quot;delete&quot;,
+   &quot;deleted&quot; : 120
+}
+</code></pre>
+
 <h2 id="post-decisiontable_search"><code>POST /decisiontable_search</code></h2>
 <p>Update a document</p>
 <p>Output JSON</p>
@@ -610,6 +621,17 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
    &quot;index&quot; : &quot;jenny-en-0&quot;,
    &quot;dtype&quot; : &quot;question&quot;,
    &quot;found&quot; : true
+}
+</code></pre>
+
+<p>Sample call: delete all</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/knowledgebase
+</code></pre>
+
+<p>Sample output: delete all</p>
+<pre><code class="json">{
+   &quot;message&quot; : &quot;delete&quot;,
+   &quot;deleted&quot; : 10
 }
 </code></pre>
 
@@ -973,6 +995,19 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
    ]
 }
 
+</code></pre>
+
+<p>Sample call: delete all</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/term -d'{
+        &quot;ids&quot;: []
+}'
+</code></pre>
+
+<p>Sample call: delete all</p>
+<pre><code class="json">{
+  &quot;message&quot;:&quot;delete&quot;,
+  &quot;deleted&quot;:2000
+}
 </code></pre>
 
 <h2 id="put-term"><code>PUT /term</code></h2>
