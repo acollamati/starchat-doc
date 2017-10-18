@@ -1439,16 +1439,18 @@ Sample output
 ```json
 {
    "build_message" : "success",
-   "variables" : {
-      "month.0" : "11",
-      "day.0" : "31",
-      "year.0" : "1900"
+   "data" : {
+      "item_list" : [],
+      "extracted_variables" : {
+         "month.0" : "11",
+         "year.0" : "1900",
+         "day.0" : "31"
+      }
    },
-   "build" : true,
-   "value" : 1
+   "value" : 1,
+   "build" : true
 }
 ```
-
 
 ## `POST /spellcheck/terms`
 
