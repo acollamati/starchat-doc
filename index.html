@@ -256,7 +256,7 @@ sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/decis
 <p>Get the <code>test_state</code></p>
 <pre><code class="bash">curl  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/get_next_response -d '{
  &quot;conversation_id&quot;: &quot;1234&quot;,
-  &quot;user_input&quot;: { &quot;text&quot;: &quot;Please send me the test state&quot; },
+  &quot;user_input&quot;: { &quot;text&quot;: &quot;install starchat&quot; },
   &quot;values&quot;: {
       &quot;return_value&quot;: &quot;&quot;,
       &quot;data&quot;: {}
@@ -267,21 +267,21 @@ sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/decis
 <p>You should get:</p>
 <pre><code class="json">[
    {
-      &quot;score&quot; : 1,
-      &quot;action&quot; : &quot;&quot;,
-      &quot;max_state_count&quot; : 0,
-      &quot;data&quot; : {},
-      &quot;bubble&quot; : &quot;This is the test state&quot;,
-      &quot;failure_value&quot; : &quot;&quot;,
-      &quot;traversed_states&quot; : [
-         &quot;test_state&quot;
-      ],
-      &quot;analyzer&quot; : &quot;booleanAnd(booleanNot(booleanOr(keyword(\&quot;dont\&quot;),keyword(\&quot;don't\&quot;))), keyword(\&quot;test\&quot;), booleanOr(keyword(\&quot;send\&quot;), keyword(\&quot;get\&quot;)))&quot;,
-      &quot;state_data&quot; : {},
-      &quot;action_input&quot; : {},
-      &quot;success_value&quot; : &quot;&quot;,
       &quot;conversation_id&quot; : &quot;1234&quot;,
-      &quot;state&quot; : &quot;test_state&quot;
+      &quot;max_state_count&quot; : 0,
+      &quot;analyzer&quot; : &quot;band(bor(keyword(\&quot;setup\&quot;), keyword(\&quot;install.*\&quot;)), bnot(bor(keyword(\&quot;standalone\&quot;), keyword(\&quot;docker\&quot;))))&quot;,
+      &quot;success_value&quot; : &quot;&quot;,
+      &quot;data&quot; : {},
+      &quot;bubble&quot; : &quot;Just choose one of the two:\n&lt;ul&gt;\n&lt;li&gt;docker install (recommended)&lt;/li&gt;\n&lt;li&gt;standalone install&lt;/li&gt;\n&lt;/ul&gt;&quot;,
+      &quot;state&quot; : &quot;install&quot;,
+      &quot;action&quot; : &quot;&quot;,
+      &quot;failure_value&quot; : &quot;&quot;,
+      &quot;state_data&quot; : {},
+      &quot;traversed_states&quot; : [
+         &quot;install&quot;
+      ],
+      &quot;action_input&quot; : {},
+      &quot;score&quot; : 1
    }
 ]
 </code></pre>
@@ -640,5 +640,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.14.0
-Build Date UTC : 2017-10-18 10:05:18.585369
+Build Date UTC : 2017-10-18 14:36:56.329040
 -->
