@@ -128,7 +128,7 @@ Get the `test_state`
 ```bash
 curl  -H "Content-Type: application/json" -X POST http://localhost:8888/get_next_response -d '{
  "conversation_id": "1234",
-  "user_input": { "text": "Please send me the test state" },
+  "user_input": { "text": "install starchat" },
   "values": {
       "return_value": "",
       "data": {}
@@ -141,21 +141,21 @@ You should get:
 ```json
 [
    {
-      "score" : 1,
-      "action" : "",
-      "max_state_count" : 0,
-      "data" : {},
-      "bubble" : "This is the test state",
-      "failure_value" : "",
-      "traversed_states" : [
-         "test_state"
-      ],
-      "analyzer" : "booleanAnd(booleanNot(booleanOr(keyword(\"dont\"),keyword(\"don't\"))), keyword(\"test\"), booleanOr(keyword(\"send\"), keyword(\"get\")))",
-      "state_data" : {},
-      "action_input" : {},
-      "success_value" : "",
       "conversation_id" : "1234",
-      "state" : "test_state"
+      "max_state_count" : 0,
+      "analyzer" : "band(bor(keyword(\"setup\"), keyword(\"install.*\")), bnot(bor(keyword(\"standalone\"), keyword(\"docker\"))))",
+      "success_value" : "",
+      "data" : {},
+      "bubble" : "Just choose one of the two:\n<ul>\n<li>docker install (recommended)</li>\n<li>standalone install</li>\n</ul>",
+      "state" : "install",
+      "action" : "",
+      "failure_value" : "",
+      "state_data" : {},
+      "traversed_states" : [
+         "install"
+      ],
+      "action_input" : {},
+      "score" : 1
    }
 ]
 ```
