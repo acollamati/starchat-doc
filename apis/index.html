@@ -1342,13 +1342,16 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 <p>Sample output</p>
 <pre><code class="json">{
    &quot;build_message&quot; : &quot;success&quot;,
-   &quot;variables&quot; : {
-      &quot;month.0&quot; : &quot;11&quot;,
-      &quot;day.0&quot; : &quot;31&quot;,
-      &quot;year.0&quot; : &quot;1900&quot;
+   &quot;data&quot; : {
+      &quot;item_list&quot; : [],
+      &quot;extracted_variables&quot; : {
+         &quot;month.0&quot; : &quot;11&quot;,
+         &quot;year.0&quot; : &quot;1900&quot;,
+         &quot;day.0&quot; : &quot;31&quot;
+      }
    },
-   &quot;build&quot; : true,
-   &quot;value&quot; : 1
+   &quot;value&quot; : 1,
+   &quot;build&quot; : true
 }
 </code></pre>
 
