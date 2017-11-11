@@ -132,37 +132,55 @@ minumum requirements of the code contributions.</p>
 <li><a href="http://elastic.co">Elasticsearch 5.4</a></li>
 </ol>
 <h2 id="setup-with-docker-recommended">Setup with Docker (recommended)</h2>
-<h3 id="1-launch-docker-compose">1. Launch docker-compose</h3>
-<p>Generate a packet distribution:</p>
-<pre><code class="bash">sbt dist
+<h3 id="1-launch-docker-containers">1. Launch Docker containers</h3>
+<p>We have made available all the containers needed for having StarChat up and running without local compiling.</p>
+<p>To use them, you need to download <a href="https://github.com/GetJenny/starchat-docker">Starchat Docker</a> or simply type:</p>
+<pre><code class="bash">git clone git@github.com:GetJenny/starchat-docker.git
 </code></pre>
 
-<p>Enter the directory docker-starchat:</p>
-<pre><code class="bash">cd  docker-starchat
+<p><em>Only if you are using another language than English:</em></p>
+<p>In the file <code>starchat-docker/starchat/config/application.conf</code> change:</p>
+<pre><code class="json">es {
+  index_language = &quot;english&quot;
+  index_name = &quot;jenny-en-0&quot;
+  ...
+  }
 </code></pre>
 
-<p>You will get a message like <code>Your package is ready in ...../target/universal/starchat-4ee.... .zip</code>.  Extract the packet into the docker-starchat folder:</p>
-<pre><code class="bash">unzip ../target/universal/starchat-4eee.....zip
-ln -s starchat-4ee..../  starchat
+<p>to your language (here <code>italian</code>, no <code>*</code> of course):</p>
+<pre><code class="json">es {
+  index_language = &quot;***italian***&quot;
+  index_name = &quot;jenny-***it***-0&quot;
+  ...
+  }
 </code></pre>
 
-<p>The zip packet contains:</p>
-<ul>
-<li>a set of scripts to test the endpoints and as a complement for the documentation: <code>starchat/scripts/api_test/</code></li>
-<li>a set of command line programs <code>starchat/bin</code> to run starchat and other tools.</li>
-<li>delete-decision-table: application to delete items from the decision table</li>
-<li>index-corpus-on-knowledge-base: application to index a corpus on knowledge base as hidden (to improve the language model)</li>
-<li>index-decision-table: application to index data on the decision table from a csv</li>
-<li>index-knowledge-base: application to index data into the knowledge base</li>
-<li>index-terms: application to index terms vectors</li>
-<li>starchat: start starchat</li>
-</ul>
-<p>Review the configuration files <code>starchat/config/application.conf</code> and configure the language if needed (by default you have <code>index_language = "english"</code>)</p>
-<p>(If you are re-installing StarChat, and want to start from scratch see <a href="#docker-start-from-scratch">start from scratch</a>.)</p>
-<p>Start both startchat and elasticsearch:</p>
+<p>And in the file <code>docker-compose.yml</code> change:</p>
+<pre><code class="json">    command: [&quot;/manaus/scripts/wait-for-it.sh&quot;, 
+    &quot;getjenny-es&quot;, &quot;9200&quot;, &quot;5&quot;, 
+    &quot;/manaus/bin/continuous-keywords-update&quot;, &quot;--temp_data_folder&quot;, 
+    &quot;/manaus/data&quot;, 
+    &quot;--host_map&quot;, &quot;getjenny-es=9300&quot;, &quot;--interval_sec&quot;, &quot;14400&quot;, 
+    &quot;--word_frequencies&quot;, 
+    &quot;/manaus/statistics_data/english/word_frequency.tsv&quot;, 
+    &quot;--cluster_name&quot;, &quot;starchat&quot;, &quot;--index_name&quot;, &quot;jenny-en-0&quot;]
+</code></pre>
+
+<p>to</p>
+<pre><code class="json">    command: [&quot;/manaus/scripts/wait-for-it.sh&quot;, 
+    &quot;getjenny-es&quot;, &quot;9200&quot;, &quot;5&quot;, 
+    &quot;/manaus/bin/continuous-keywords-update&quot;, &quot;--temp_data_folder&quot;, 
+    &quot;/manaus/data&quot;, 
+    &quot;--host_map&quot;, &quot;getjenny-es=9300&quot;, &quot;--interval_sec&quot;, &quot;14400&quot;, 
+    &quot;--word_frequencies&quot;, &quot;/manaus/statistics_data/***italian***/word_frequency.tsv&quot;, 
+    &quot;--cluster_name&quot;, &quot;starchat&quot;, &quot;--index_name&quot;,  &quot;***jenny-it-0***&quot;]
+</code></pre>
+
+<p>Now just type:</p>
 <pre><code class="bash">docker-compose up -d
 </code></pre>
 
+<p>And you will have a running instance on port 8888. (If you want to change ports, go to <code>starchat-docker/starchat/config/application.conf</code>)</p>
 <p>(Problems like <code>elastisearch exited with code 78</code>? have a look at <a href="#troubleshooting">troubleshooting</a>!)</p>
 <h3 id="2-create-elasticsearch-indices">2. Create Elasticsearch indices</h3>
 <p>Run from a terminal:</p>
@@ -190,13 +208,15 @@ sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/decis
 <h3 id="5-index-the-faqs-optional">5. Index the FAQs (optional)</h3>
 <p>TODO: You might want to activate the <a href="#configuration-of-the-answer-recommender-knowledge-base">knowledge base</a> for simple Question and Anwer. </p>
 <h2 id="install-without-docker">Install without Docker</h2>
-<p>Note: we do not support this installation.
-<em> Clone the repository and enter the starchat directory.
-</em> Initialize the Elasticsearch instance (see above for Docker)
-* Run the service: <code>sbt compile run</code></p>
+<p>Note: we do not support this installation.</p>
+<ul>
+<li>Clone the repository and enter the starchat directory.</li>
+<li>Initialize the Elasticsearch instance (see above for Docker)</li>
+<li>Run the service: <code>sbt compile run</code></li>
+</ul>
 <p>The service binds on the port 8888 by default.</p>
 <h2 id="test-the-installation">Test the installation</h2>
-<p>Is the service working?</p>
+<p>Is the service working? But first: <em>did you load a configuration file</em>? If yes, try:</p>
 <p><code>curl -X GET localhost:8888 | python -mjson.tool</code></p>
 <p>Get the <code>test_state</code></p>
 <pre><code class="bash">curl  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/get_next_response -d '{
@@ -577,5 +597,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-11-06 13:56:35
+Build Date UTC : 2017-11-11 14:33:25
 -->
