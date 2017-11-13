@@ -86,6 +86,7 @@
             <li><a href="#requirements">Requirements</a></li>
             <li><a href="#setup-with-docker-recommended">Setup with Docker (recommended)</a></li>
             <li><a href="#install-without-docker">Install without Docker</a></li>
+            <li><a href="#install-local-docker-for-testing-branches">Install local Docker (for testing branches)</a></li>
             <li><a href="#test-the-installation">Test the installation</a></li>
             <li><a href="#configuration-of-the-chatbot-decision-table">Configuration of the chatbot (Decision Table)</a></li>
             <li><a href="#nlp-processing">NLP processing</a></li>
@@ -138,8 +139,14 @@ minumum requirements of the code contributions.</p>
 <pre><code class="bash">git clone git@github.com:GetJenny/starchat-docker.git
 </code></pre>
 
-<p><em>Only if you are using another language than English:</em></p>
-<p>In the file <code>starchat-docker/starchat/config/application.conf</code> change:</p>
+<p>Now just type:</p>
+<pre><code class="bash">docker-compose up -d
+</code></pre>
+
+<p>And you will have a running instance on port 8888. (If you want to change ports, go to <code>starchat-docker/starchat/config/application.conf</code>)</p>
+<p>(Problems like <code>elastisearch exited with code 78</code>? have a look at <a href="#troubleshooting">troubleshooting</a>!)</p>
+<h4 id="change-language">Change Language</h4>
+<p>If you are using another language than English, change in the file <code>starchat-docker/starchat/config/application.conf</code>:</p>
 <pre><code class="json">es {
   index_language = &quot;english&quot;
   index_name = &quot;jenny-en-0&quot;
@@ -176,12 +183,6 @@ minumum requirements of the code contributions.</p>
     &quot;--cluster_name&quot;, &quot;starchat&quot;, &quot;--index_name&quot;,  &quot;***jenny-it-0***&quot;]
 </code></pre>
 
-<p>Now just type:</p>
-<pre><code class="bash">docker-compose up -d
-</code></pre>
-
-<p>And you will have a running instance on port 8888. (If you want to change ports, go to <code>starchat-docker/starchat/config/application.conf</code>)</p>
-<p>(Problems like <code>elastisearch exited with code 78</code>? have a look at <a href="#troubleshooting">troubleshooting</a>!)</p>
 <h3 id="2-create-elasticsearch-indices">2. Create Elasticsearch indices</h3>
 <p>Run from a terminal:</p>
 <pre><code class="bash"># create the indices in Elasticsearch
@@ -189,20 +190,19 @@ curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://local
 </code></pre>
 
 <h3 id="3-load-the-configuration-file">3. Load the configuration file</h3>
-<p>Now you have to load the configuration file for the actual chat, aka <a href="#services">decision table</a>. We have provided an example csv in English, therefore:</p>
-<pre><code class="bash">cd $STARCHAT_DIR  # or cd .. 
-sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/decision_table_starchat_doc.csv --skiplines 1&quot;
+<p>Now you have to load the configuration file for the actual chat, aka <a href="#services">decision table</a>. We have provided an <a href="https://github.com/GetJenny/starchat/tree/master/doc">example configuration file in English</a>, therefore:</p>
+<pre><code class="bash">cd $STARCHAT  # so we have doc/decision_table_starchat_doc.csv
+curl -v --form &quot;csv=@doc/decision_table_starchat_doc.csv&quot; http://localhost:8888/decisiontable_upload_csv
 </code></pre>
 
-<p>and then (you need to index the analyzer):</p>
-<pre><code class="bash">./docker-starchat/starchat/bin/index-decision-table --inputfile doc/decision_table_starchat_doc.csv 
+<p>and then you need to index the analyzer:</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/decisiontable_analyzer&quot;
 </code></pre>
 
-<p>This command deletes all the states it finds on the first column in the inputfile:</p>
-<pre><code class="bash">sbt &quot;run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/decision_table_starchat_doc.csv&quot;
+<p>In case you want to delete all states previously loaded, this endpoint deletes all the states:</p>
+<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/decisiontable
 </code></pre>
 
-<p>NB This means that if you create a state in the CSV file, index it, then delete it in the CSV and run <code>DeleteDecisionTable</code>, it won't be deleted!</p>
 <h3 id="4-load-external-corpus-optional">4. Load external corpus (optional)</h3>
 <p>To have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the <a href="#post-knowledgebase">POST /knowledgebase</a> endpoint with <code>doctype: "hidden"</code>.</p>
 <h3 id="5-index-the-faqs-optional">5. Index the FAQs (optional)</h3>
@@ -215,6 +215,38 @@ sbt &quot;run-main com.getjenny.command.IndexDecisionTable --inputfile doc/decis
 <li>Run the service: <code>sbt compile run</code></li>
 </ul>
 <p>The service binds on the port 8888 by default.</p>
+<h2 id="install-local-docker-for-testing-branches">Install local Docker (for testing branches)</h2>
+<p>Generate a packet distribution. In StarChat directory:</p>
+<pre><code class="bash">sbt dist
+</code></pre>
+
+<p>Enter the directory docker-starchat:</p>
+<pre><code class="bash">cd  docker-starchat
+</code></pre>
+
+<p>You will get a message like <code>Your package is ready in ...../target/universal/starchat-4ee.... .zip</code>.  Extract the packet into the docker-starchat folder:</p>
+<pre><code class="bash">unzip ../target/universal/starchat-4eee.....zip
+ln -s starchat-4ee..../  starchat
+</code></pre>
+
+<p>The zip packet contains:</p>
+<ul>
+<li>a set of scripts to test the endpoints and as a complement for the documentation: <code>starchat/scripts/api_test/</code></li>
+<li>a set of command line programs <code>starchat/bin</code> to run starchat and other tools.</li>
+<li>delete-decision-table: application to delete items from the decision table</li>
+<li>index-corpus-on-knowledge-base: application to index a corpus on knowledge base as hidden (to improve the language model)</li>
+<li>index-decision-table: application to index data on the decision table from a csv</li>
+<li>index-knowledge-base: application to index data into the knowledge base</li>
+<li>index-terms: application to index terms vectors</li>
+<li>starchat: start starchat</li>
+</ul>
+<p>Review the configuration files <code>starchat/config/application.conf</code> and configure the language if needed (by default you have <code>index_language = "english"</code>)</p>
+<p>(If you are re-installing StarChat, and want to start from scratch see <a href="#docker-start-from-scratch">start from scratch</a>.)</p>
+<p>Start both startchat and elasticsearch:</p>
+<pre><code class="bash">docker-compose up -d
+</code></pre>
+
+<p>(Problems like <code>elastisearch exited with code 78</code>? have a look at <a href="#troubleshooting">troubleshooting</a>!)</p>
 <h2 id="test-the-installation">Test the installation</h2>
 <p>Is the service working? But first: <em>did you load a configuration file</em>? If yes, try:</p>
 <p><code>curl -X GET localhost:8888 | python -mjson.tool</code></p>
@@ -597,5 +629,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-11-11 14:33:25
+Build Date UTC : 2017-11-13 17:12:15
 -->
