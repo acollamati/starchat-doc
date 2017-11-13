@@ -29,18 +29,137 @@ _If you do not use docker_ you therefore need on your machine:
 
 ## Setup with Docker (recommended)
 
-### 1. Launch docker-compose
+### 1. Launch Docker containers
 
-Generate a packet distribution:
+We have made available all the containers needed for having StarChat up and running without local compiling.
+
+To use them, you need to download [Starchat Docker](https://github.com/GetJenny/starchat-docker) or simply type:
+
+```bash
+git clone git@github.com:GetJenny/starchat-docker.git
+```
+
+Now just type:
+
+```bash
+docker-compose up -d
+```
+
+And you will have a running instance on port 8888. (If you want to change ports, go to `starchat-docker/starchat/config/application.conf`)
+
+
+(Problems like `elastisearch exited with code 78`? have a look at [troubleshooting](#troubleshooting)!)
+
+
+#### Change Language
+
+If you are using another language than English, change in the file `starchat-docker/starchat/config/application.conf`:
+
+```json
+es {
+  index_language = "english"
+  index_name = "jenny-en-0"
+  ...
+  }
+```
+
+to your language (here `italian`, no `*` of course):
+
+```json
+es {
+  index_language = "***italian***"
+  index_name = "jenny-***it***-0"
+  ...
+  }
+```
+
+And in the file `docker-compose.yml` change:
+
+```json
+    command: ["/manaus/scripts/wait-for-it.sh", 
+    "getjenny-es", "9200", "5", 
+    "/manaus/bin/continuous-keywords-update", "--temp_data_folder", 
+    "/manaus/data", 
+    "--host_map", "getjenny-es=9300", "--interval_sec", "14400", 
+    "--word_frequencies", 
+    "/manaus/statistics_data/english/word_frequency.tsv", 
+    "--cluster_name", "starchat", "--index_name", "jenny-en-0"]
+```
+to
+
+```json
+    command: ["/manaus/scripts/wait-for-it.sh", 
+    "getjenny-es", "9200", "5", 
+    "/manaus/bin/continuous-keywords-update", "--temp_data_folder", 
+    "/manaus/data", 
+    "--host_map", "getjenny-es=9300", "--interval_sec", "14400", 
+    "--word_frequencies", "/manaus/statistics_data/***italian***/word_frequency.tsv", 
+    "--cluster_name", "starchat", "--index_name",  "***jenny-it-0***"]
+```
+
+### 2. Create Elasticsearch indices
+
+Run from a terminal:
+
+```bash
+# create the indices in Elasticsearch
+curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/index_management/create"
+```
+
+### 3. Load the configuration file
+
+Now you have to load the configuration file for the actual chat, aka [decision table](#services). We have provided an [example configuration file in English](https://github.com/GetJenny/starchat/tree/master/doc), therefore:
+
+```bash
+cd $STARCHAT  # so we have doc/decision_table_starchat_doc.csv
+curl -v --form "csv=@doc/decision_table_starchat_doc.csv" http://localhost:8888/decisiontable_upload_csv
+```
+
+and then you need to index the analyzer:
+
+```bash
+curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/decisiontable_analyzer"
+```
+
+In case you want to delete all states previously loaded, this endpoint deletes all the states:
+
+```bash
+curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/decisiontable
+```
+
+### 4. Load external corpus (optional)
+
+To have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the [POST /knowledgebase](#post-knowledgebase) endpoint with `doctype: "hidden"`.
+
+### 5. Index the FAQs (optional)
+
+TODO: You might want to activate the [knowledge base](#configuration-of-the-answer-recommender-knowledge-base) for simple Question and Anwer. 
+
+## Install without Docker
+
+Note: we do not support this installation.
+
+* Clone the repository and enter the starchat directory.
+* Initialize the Elasticsearch instance (see above for Docker)
+* Run the service: `sbt compile run`
+
+The service binds on the port 8888 by default.
+
+## Install local Docker (for testing branches)
+
+Generate a packet distribution. In StarChat directory:
+
 ```bash
 sbt dist
 ```
 
 Enter the directory docker-starchat:
+
 ```bash
 cd  docker-starchat
 ```
 You will get a message like `Your package is ready in ...../target/universal/starchat-4ee.... .zip`.  Extract the packet into the docker-starchat folder:
+
 ```bash
 unzip ../target/universal/starchat-4eee.....zip
 ln -s starchat-4ee..../  starchat
@@ -62,64 +181,16 @@ Review the configuration files `starchat/config/application.conf` and configure 
 (If you are re-installing StarChat, and want to start from scratch see [start from scratch](#docker-start-from-scratch).)
 
 Start both startchat and elasticsearch:
+
 ```bash
 docker-compose up -d
 ```
 
 (Problems like `elastisearch exited with code 78`? have a look at [troubleshooting](#troubleshooting)!)
 
-### 2. Create Elasticsearch indices
-
-Run from a terminal:
-
-```bash
-# create the indices in Elasticsearch
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/index_management/create"
-```
-
-### 3. Load the configuration file
-
-Now you have to load the configuration file for the actual chat, aka [decision table](#services). We have provided an example csv in English, therefore:
-
-```bash
-cd $STARCHAT_DIR  # or cd .. 
-sbt "run-main com.getjenny.command.IndexDecisionTable --inputfile doc/decision_table_starchat_doc.csv --skiplines 1"
-```
-
-and then (you need to index the analyzer):
-
-```bash
-./docker-starchat/starchat/bin/index-decision-table --inputfile doc/decision_table_starchat_doc.csv 
-```
-
-This command deletes all the states it finds on the first column in the inputfile:
-
-```bash
-sbt "run-main com.getjenny.command.DeleteDecisionTable --inputfile doc/decision_table_starchat_doc.csv"
-```
-
-NB This means that if you create a state in the CSV file, index it, then delete it in the CSV and run `DeleteDecisionTable`, it won't be deleted!
-
-### 4. Load external corpus (optional)
-
-To have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the [POST /knowledgebase](#post-knowledgebase) endpoint with `doctype: "hidden"`.
-
-### 5. Index the FAQs (optional)
-
-TODO: You might want to activate the [knowledge base](#configuration-of-the-answer-recommender-knowledge-base) for simple Question and Anwer. 
-
-## Install without Docker
-
-Note: we do not support this installation.
-* Clone the repository and enter the starchat directory.
-* Initialize the Elasticsearch instance (see above for Docker)
-* Run the service: `sbt compile run`
-
-The service binds on the port 8888 by default.
-
 ## Test the installation
 
-Is the service working?
+Is the service working? But first: *did you load a configuration file*? If yes, try:
 
 `curl -X GET localhost:8888 | python -mjson.tool`
 
