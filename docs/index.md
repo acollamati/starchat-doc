@@ -51,29 +51,9 @@ And you will have a running instance on port 8888. (If you want to change ports,
 (Problems like `elastisearch exited with code 78`? have a look at [troubleshooting](#troubleshooting)!)
 
 
-#### Change Language
+#### Change Manaus Language
 
-If you are using another language than English, change in the file `starchat-docker/starchat/config/application.conf`:
-
-```json
-es {
-  index_language = "english"
-  index_name = "jenny-en-0"
-  ...
-  }
-```
-
-to your language (here `italian`, no `*` of course):
-
-```json
-es {
-  index_language = "***italian***"
-  index_name = "jenny-***it***-0"
-  ...
-  }
-```
-
-And in the file `docker-compose.yml` change:
+In the file `docker-compose.yml` change:
 
 ```json
     command: ["/manaus/scripts/wait-for-it.sh", 
@@ -102,8 +82,35 @@ to
 Run from a terminal:
 
 ```bash
-# create the indices in Elasticsearch
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/index_management/create"
+# create the system indices in Elasticsearch
+PORT=${1:-8888}
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/system_index_management/create"
+```
+
+If you are using another language than English, change the value of the LANGUAGE variable:
+
+```bash
+# create the application indices on Elasticsearch
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_0}
+LANGUAGE=${3:-english}
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/${LANGUAGE}/index_management/create"
+```
+
+```bash
+# add a user to the system associated to the application index index_0 previously created
+PORT=${1:-8888}
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/user -d '{
+        "id": "test_user",
+        "password": "3c98bf19cb962ac4cd0227142b3495ab1be46534061919f792254b80c0f3e566f7819cae73bdc616af0ff555f7460ac96d88d56338d659ebd93e2be858ce1cf9", 
+        "salt": "salt",
+        "permissions": {
+                "index_0": ["read", "write"]
+        }
+}'
 ```
 
 ### 3. Load the configuration file
@@ -112,19 +119,29 @@ Now you have to load the configuration file for the actual chat, aka [decision t
 
 ```bash
 cd $STARCHAT  # so we have doc/decision_table_starchat_doc.csv
-curl -v --form "csv=@doc/decision_table_starchat_doc.csv" http://localhost:8888/decisiontable_upload_csv
+PORT=${1:-8888}
+INDEX_NAME=${2:-'index_0'}
+FILENAME=${3:-"`readlink -e doc/decision_table_starchat_doc.csv`"}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  --form "csv=@${FILENAME}" http://localhost:8888/${INDEX_NAME}/decisiontable_upload_csv
 ```
 
 and then you need to index the analyzer:
 
 ```bash
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/decisiontable_analyzer"
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer"
 ```
 
 In case you want to delete all states previously loaded, this endpoint deletes all the states:
 
 ```bash
-curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/decisiontable
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable
 ```
 
 ### 4. Load external corpus (optional)
@@ -197,7 +214,10 @@ Is the service working? But first: *did you load a configuration file*? If yes, 
 Get the `test_state`
 
 ```bash
-curl  -H "Content-Type: application/json" -X POST http://localhost:8888/get_next_response -d '{
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+ -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d '{
  "conversation_id": "1234",
   "user_input": { "text": "install starchat" },
   "values": {
@@ -212,21 +232,21 @@ You should get:
 ```json
 [
    {
-      "conversation_id" : "1234",
-      "max_state_count" : 0,
-      "analyzer" : "band(bor(keyword(\"setup\"), keyword(\"install.*\")), bnot(bor(keyword(\"standalone\"), keyword(\"docker\"))))",
-      "success_value" : "",
-      "data" : {},
-      "bubble" : "Just choose one of the two:\n<ul>\n<li>docker install (recommended)</li>\n<li>standalone install</li>\n</ul>",
       "state" : "install",
+      "data" : {},
       "action" : "",
-      "failure_value" : "",
+      "success_value" : "",
       "state_data" : {},
+      "score" : 1,
+      "conversation_id" : "1234",
       "traversed_states" : [
          "install"
       ],
+      "max_state_count" : 0,
       "action_input" : {},
-      "score" : 1
+      "analyzer" : "band(bor(keyword(\"setup\"), keyword(\"install.*\")), bnot(bor(keyword(\"standalone\"), keyword(\"docker\"))))",
+      "bubble" : "Just choose one of the two:\n<ul>\n<li>docker install (recommended)</li>\n<li>standalone install</li>\n</ul>",
+      "failure_value" : ""
    }
 ]
 ```
@@ -374,9 +394,10 @@ for any NLP task.
 StarChat was design with the following goals in mind:
 
 1. easy deployment
-2. horizontally scalability without any service interruption.
-3. modularity
-4. statelessness
+2. multi-tenancy: starchat can handle different KnowledBase and DecisionTable configurations 
+3. horizontally scalability without any service interruption.
+4. modularity
+5. statelessness
 
 ## How does StarChat work?
 
@@ -486,13 +507,13 @@ StarChat consists of two different services: StarChat itself and an Elasticsearc
      
 ### Scaling StarChat instances
      
-StarChat can scale horizontally by simple replication. Because StarChat is stateless, instances looking 
-at the same Elasticsearch index will behave identically. New instances can then be added together
-with a load balancing service.
+Since StarChat is stateless it can scale horizontally by replication.
+All the instances can access to all the configured indexes on ElasticSearch and can answer to the 
+APIs call enforcing authentication and authorization rules. A load balancer will be responsible
+of scheduling the requests to the instances transparently.
 
 In the diagram below, a load balancer forward requests coming from the front-end to StarChat instances 
-1, 2 or 3. These instances, as said, behave identically because they all refer to `Index 0` in the 
-Elasticsearch cluster.
+which access to the indices created on the Elasticsearch cluster.
 
 ![Image](img/scalability_diagram_starchat.png?raw=true)
 
@@ -503,13 +524,14 @@ Similarly, Elasticsearch can easily scale horizontally adding new nodes to the c
  
 ## Security
 
-StarChat is a backend service and *should never* be exposed to the internet,
-it should be placed behind a firewall.
-One of the most effective and flexible method to add an access control layer is to use 
-[Kong](https://getkong.org) in front of StarChat as a gateway, in this way
-StarChat can be shield by unwanted accesses.
+StarChat is a backend service which supports authentication and authorization with salted SHA512 hashed
+password and differentiated permissions.
 
-In addition StarChat support TLS connections, the configuration file allow to
+The admin hashed password and salt are stored on the StarChat configuration file, the user credentials 
+(hashed password, salt, permissions) are instead saved on ElasticSearch (further backend for 
+authentication/authorization can be implemented by specialization of the Auth. classes).
+
+StarChat support TLS connections, the configuration file allow to
 choose if the service should expose an https connection or an http connection
 or both.
 In order to use the https connection the user must do the following things:
