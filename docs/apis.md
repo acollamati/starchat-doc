@@ -1,5 +1,235 @@
 # APIs
 
+## `POST /system_index_management/create`
+
+Create a new system index, this operation init. a new system index and is required 
+to start using starchat.
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/system_index_management/create"
+```
+
+Sample response:
+
+```json
+{
+   "message" : "IndexCreation: user(starchat_system_0.user, true) refresh_decisiontable(starchat_system_0.refresh_decisiontable, true)"
+}
+```
+
+## `GET /system_index_management`
+
+Fetch and returns the informations about the system index
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET "http://localhost:${PORT}/system_index_management"
+```
+
+Sample response:
+
+```json
+{
+   "message" : "IndexCheck: user(starchat_system_0.user, true) refresh_decisiontable(starchat_system_0.refresh_decisiontable, true)"
+}
+```
+
+## `DELETE /system_index_management`
+
+Delete a system index, this operation destroy any user created
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X DELETE "http://localhost:${PORT}/system_index_management"
+```
+
+Sample response:
+
+```json
+{
+   "message" : "IndexDeletion: user(starchat_system_0.user, true) refresh_decisiontable(starchat_system_0.refresh_decisiontable, true)"
+}
+```
+
+## `POST /user`
+
+Insert a new user to the system, the user record can be generated 
+using the '/user_gen/test_user' endpoint
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/user -d '{
+        "id": "test_user",
+        "password": "3c98bf19cb962ac4cd0227142b3495ab1be46534061919f792254b80c0f3e566f7819cae73bdc616af0ff555f7460ac96d88d56338d659ebd93e2be858ce1cf9", 
+        "salt": "salt",
+        "permissions": {
+                "index_0": ["read", "write"]
+        }
+}'
+```
+
+Sample response:
+
+```json
+{
+   "version" : 1,
+   "created" : true,
+   "index" : "starchat_system_0.user",
+   "dtype" : "user",
+   "id" : "test_user"
+}
+```
+
+## `GET /user`
+
+Fetch the informations about a user
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+USERNAME=${2:-"admin"}
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET http://localhost:${PORT}/user/${USERNAME}
+```
+
+Sample response:
+
+```json
+{
+   "permissions" : {
+      "admin" : [
+         "admin"
+      ]
+   },
+   "salt" : "salt2",
+   "id" : "admin",
+   "password" : "ce822ea3bd2ac45ed908f0fac0c81d95df7e59ad554ebed5e173113f5fb97a6c585803233136dd6b16b02742f50dd8cff6fac97ff827394e694f63198618e02c"
+}
+```
+
+## `PUT /user`
+
+Update a user record
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+ -H "Content-Type: application/json" -X PUT http://localhost:${PORT}/user/test_user -d '{
+        "permissions": {
+                "index_0": ["read"]
+        }
+}'
+```
+
+Sample response:
+
+```json
+{
+   "version" : 2,
+   "created" : false,
+   "dtype" : "user",
+   "index" : "starchat_system_0.user",
+   "id" : "test_user"
+}
+```
+
+## `POST /user_gen/test_user `
+
+Generate the record for a user with hashed password and a randomly generated salt.
+The user must be then inserted into the system.
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT=${1:-8888}
+
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/user_gen/test_user -d '{
+        "password": "plain text password",
+        "permissions": {
+                "index_0": ["read"],
+                "index_1": ["read", "write"]
+        }
+}'
+```
+
+Sample response:
+
+```json
+{
+   "password" : "d4cc0586d5d9116e755f5011d2c03e627821c2596820236ef230ff094176586d05fbfa98a198aaa08935df2849196d2648012f1e40ff2e40ca8c3f627b41e9db",
+   "salt" : "qoKJUyUwpvWM53PI",
+   "id" : "test_user",
+   "permissions" : {
+      "index_1" : [
+         "read",
+         "write"
+      ],
+      "index_0" : [
+         "read"
+      ]
+   }
+}
+```
+
 ## `POST /get_next_response` 
 
 Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction 
