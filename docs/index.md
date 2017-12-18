@@ -20,7 +20,7 @@ The easiest way is to install StarChat using two docker images. You only need:
 * [docker](https://docs.docker.com/engine/installation/)
 * [docker compose](https://docs.docker.com/compose/install/)
 
-In this way, you will put all the indices in the Elasticsearch (version 5.4) image, and StarChat itself in the Java (8) image.
+In this way, you will put all the indices in the Elasticsearch (version 6.1) image, and StarChat itself in the Java (8) image.
 
 _If you do not use docker_ you therefore need on your machine:
 
