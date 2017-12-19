@@ -88,19 +88,18 @@ curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
   -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/system_index_management/create"
 ```
 
-If you are using another language than English, change the value of the LANGUAGE variable:
+If you are using another language than English, replace english in the name of the index:
 
 ```bash
 # create the application indices on Elasticsearch
 PORT=${1:-8888}
-INDEX_NAME=${2:-index_0}
-LANGUAGE=${3:-english}
+INDEX_NAME=${2:-index_english_0}
 curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
-  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/${LANGUAGE}/index_management/create"
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/index_management/create"
 ```
 
 ```bash
-# add a user to the system associated to the application index index_0 previously created
+# add a user to the system associated to the application index index_english_0 previously created
 PORT=${1:-8888}
 curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
   -H "Content-Type: application/json" -X POST http://localhost:${PORT}/user -d '{
@@ -108,7 +107,7 @@ curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
         "password": "3c98bf19cb962ac4cd0227142b3495ab1be46534061919f792254b80c0f3e566f7819cae73bdc616af0ff555f7460ac96d88d56338d659ebd93e2be858ce1cf9", 
         "salt": "salt",
         "permissions": {
-                "index_0": ["read", "write"]
+                "index_english_0": ["read", "write"]
         }
 }'
 ```
@@ -120,7 +119,7 @@ Now you have to load the configuration file for the actual chat, aka [decision t
 ```bash
 cd $STARCHAT  # so we have doc/decision_table_starchat_doc.csv
 PORT=${1:-8888}
-INDEX_NAME=${2:-'index_0'}
+INDEX_NAME=${2:-'index_english_0'}
 FILENAME=${3:-"`readlink -e doc/decision_table_starchat_doc.csv`"}
 curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
   --form "csv=@${FILENAME}" http://localhost:8888/${INDEX_NAME}/decisiontable_upload_csv
@@ -130,7 +129,7 @@ and then you need to index the analyzer:
 
 ```bash
 PORT=${1:-8888}
-INDEX_NAME=${2:-index_0}
+INDEX_NAME=${2:-index_english_0}
 curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
   -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer"
 ```
@@ -139,7 +138,7 @@ In case you want to delete all states previously loaded, this endpoint deletes a
 
 ```bash
 PORT=${1:-8888}
-INDEX_NAME=${2:-index_0}
+INDEX_NAME=${2:-index_english_0}
 curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
   -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable
 ```
@@ -215,7 +214,7 @@ Get the `test_state`
 
 ```bash
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_0}
+INDEX_NAME=${3:-index_english_0}
 curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d '{
  "conversation_id": "1234",
