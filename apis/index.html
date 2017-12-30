@@ -8,20 +8,21 @@
         
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>APIs - StarChat Documentation</title>
+
+	<title>APIs - StarChat Documentation</title>
+
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/highlight.css">
+
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-	
-	<script src="../js/jquery-1.10.2.min.js"></script>
-        <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/highlight.pack.js"></script> 
+
+        
     </head>
 
     <body>
@@ -31,6 +32,7 @@
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
+            
             <!-- Expander button -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -38,23 +40,38 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            
+
+            <!-- Main title -->
             <a class="navbar-brand" href="..">StarChat Documentation</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
+            
                 <!-- Main navigation -->
                 <ul class="nav navbar-nav">
+                
+                
                     <li >
                         <a href="..">Home</a>
                     </li>
+                
+                
+                
                     <li class="active">
                         <a href="./">APIs</a>
                     </li>
+                
+                
+                
                     <li >
                         <a href="../about/">About</a>
                     </li>
+                
+                
                 </ul>
+            
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -62,6 +79,7 @@
                         <i class="fa fa-search"></i> Search
                     </a>
                 </li>
+                
                     <li >
                         <a rel="next" href="..">
                             <i class="fa fa-arrow-left"></i> Previous
@@ -72,50 +90,283 @@
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
+                
+                
             </ul>
         </div>
     </div>
 </div>
 
         <div class="container">
+            
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
+    
         <li class="main active"><a href="#apis">APIs</a></li>
+        
+            <li><a href="#post-system_index_managementcreate">POST /system_index_management/create</a></li>
+        
+            <li><a href="#get-system_index_management">GET /system_index_management</a></li>
+        
+            <li><a href="#delete-system_index_management">DELETE /system_index_management</a></li>
+        
+            <li><a href="#post-user">POST /user</a></li>
+        
+            <li><a href="#get-user">GET /user</a></li>
+        
+            <li><a href="#put-user">PUT /user</a></li>
+        
+            <li><a href="#post-user_gentest_user">POST /user_gen/test_user</a></li>
+        
             <li><a href="#post-get_next_response">POST /get_next_response</a></li>
+        
             <li><a href="#get-decisiontable">GET /decisiontable</a></li>
+        
             <li><a href="#put-decisiontable">PUT /decisiontable</a></li>
+        
             <li><a href="#post-decisiontable">POST /decisiontable</a></li>
+        
             <li><a href="#delete-decisiontable">DELETE /decisiontable</a></li>
+        
+            <li><a href="#post-decisiontable_upload_csv">POST /decisiontable_upload_csv</a></li>
+        
             <li><a href="#post-decisiontable_search">POST /decisiontable_search</a></li>
+        
             <li><a href="#get-decisiontable_analyzer">GET /decisiontable_analyzer</a></li>
+        
             <li><a href="#post-decisiontable_analyzer">POST /decisiontable_analyzer</a></li>
+        
             <li><a href="#get-knowledgebase">GET /knowledgebase</a></li>
+        
             <li><a href="#post-knowledgebase">POST /knowledgebase</a></li>
+        
             <li><a href="#delete-knowledgebase">DELETE /knowledgebase</a></li>
+        
             <li><a href="#put-knowledgebase">PUT /knowledgebase</a></li>
+        
             <li><a href="#post-knowledgebase_search">POST /knowledgebase_search</a></li>
+        
             <li><a href="#post-language_guesser">POST /language_guesser</a></li>
+        
             <li><a href="#get-language_guesser">GET /language_guesser</a></li>
+        
             <li><a href="#post-index_managementcreate">POST /index_management/create</a></li>
+        
             <li><a href="#post-index_managementrefresh">POST /index_management/refresh</a></li>
+        
             <li><a href="#get-index_management">GET /index_management</a></li>
+        
             <li><a href="#put-index_management">PUT /index_management</a></li>
+        
             <li><a href="#delete-index_management">DELETE /index_management</a></li>
+        
             <li><a href="#post-termindex">POST /term/index</a></li>
+        
             <li><a href="#post-termget">POST /term/get</a></li>
+        
             <li><a href="#delete-term">DELETE /term</a></li>
+        
             <li><a href="#put-term">PUT /term</a></li>
+        
             <li><a href="#get-termterm">GET /term/term</a></li>
+        
             <li><a href="#get-termtext">GET /term/text</a></li>
+        
             <li><a href="#get-tokenizers">GET /tokenizers</a></li>
+        
             <li><a href="#post-tokenizers">POST /tokenizers</a></li>
+        
             <li><a href="#post-analyzers_playground">POST /analyzers_playground</a></li>
+        
             <li><a href="#post-spellcheckterms">POST /spellcheck/terms</a></li>
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
 <h1 id="apis">APIs</h1>
+<h2 id="post-system_index_managementcreate"><code>POST /system_index_management/create</code></h2>
+<p>Create a new system index, this operation init. a new system index and is required 
+to start using starchat.</p>
+<p>Output JSON</p>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="sample-call">Sample call</h3>
+<pre><code class="bash">PORT=&quot;${1:-8888}&quot;
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/system_index_management/create&quot;
+</code></pre>
+
+<p>Sample response:</p>
+<pre><code class="json">{
+   &quot;message&quot; : &quot;IndexCreation: user(starchat_system_0.user, true) refresh_decisiontable(starchat_system_0.refresh_decisiontable, true)&quot;
+}
+</code></pre>
+
+<h2 id="get-system_index_management"><code>GET /system_index_management</code></h2>
+<p>Fetch and returns the informations about the system index</p>
+<p>Output JSON</p>
+<h3 id="requirements_1">Requirements</h3>
+<ul>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="sample-call_1">Sample call</h3>
+<pre><code class="bash">PORT=&quot;${1:-8888}&quot;
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/system_index_management&quot;
+</code></pre>
+
+<p>Sample response:</p>
+<pre><code class="json">{
+   &quot;message&quot; : &quot;IndexCheck: user(starchat_system_0.user, true) refresh_decisiontable(starchat_system_0.refresh_decisiontable, true)&quot;
+}
+</code></pre>
+
+<h2 id="delete-system_index_management"><code>DELETE /system_index_management</code></h2>
+<p>Delete a system index, this operation destroy any user created</p>
+<p>Output JSON</p>
+<h3 id="requirements_2">Requirements</h3>
+<ul>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="sample-call_2">Sample call</h3>
+<pre><code class="bash">PORT=&quot;${1:-8888}&quot;
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X DELETE &quot;http://localhost:${PORT}/system_index_management&quot;
+</code></pre>
+
+<p>Sample response:</p>
+<pre><code class="json">{
+   &quot;message&quot; : &quot;IndexDeletion: user(starchat_system_0.user, true) refresh_decisiontable(starchat_system_0.refresh_decisiontable, true)&quot;
+}
+</code></pre>
+
+<h2 id="post-user"><code>POST /user</code></h2>
+<p>Insert a new user to the system, the user record can be generated 
+using the '/user_gen/test_user' endpoint</p>
+<p>Output JSON</p>
+<h3 id="requirements_3">Requirements</h3>
+<ul>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="sample-call_3">Sample call</h3>
+<pre><code class="bash">PORT=&quot;${1:-8888}&quot;
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/user -d '{
+        &quot;id&quot;: &quot;test_user&quot;,
+        &quot;password&quot;: &quot;3c98bf19cb962ac4cd0227142b3495ab1be46534061919f792254b80c0f3e566f7819cae73bdc616af0ff555f7460ac96d88d56338d659ebd93e2be858ce1cf9&quot;, 
+        &quot;salt&quot;: &quot;salt&quot;,
+        &quot;permissions&quot;: {
+                &quot;index_english_0&quot;: [&quot;read&quot;, &quot;write&quot;]
+        }
+}'
+</code></pre>
+
+<p>Sample response:</p>
+<pre><code class="json">{
+   &quot;version&quot; : 1,
+   &quot;created&quot; : true,
+   &quot;index&quot; : &quot;starchat_system_0.user&quot;,
+   &quot;dtype&quot; : &quot;user&quot;,
+   &quot;id&quot; : &quot;test_user&quot;
+}
+</code></pre>
+
+<h2 id="get-user"><code>GET /user</code></h2>
+<p>Fetch the informations about a user</p>
+<p>Output JSON</p>
+<h3 id="requirements_4">Requirements</h3>
+<ul>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="sample-call_4">Sample call</h3>
+<pre><code class="bash">PORT=&quot;${1:-8888}&quot;
+USERNAME=${2:-&quot;admin&quot;}
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET http://localhost:${PORT}/user/${USERNAME}
+</code></pre>
+
+<p>Sample response:</p>
+<pre><code class="json">{
+   &quot;permissions&quot; : {
+      &quot;admin&quot; : [
+         &quot;admin&quot;
+      ]
+   },
+   &quot;salt&quot; : &quot;salt2&quot;,
+   &quot;id&quot; : &quot;admin&quot;,
+   &quot;password&quot; : &quot;ce822ea3bd2ac45ed908f0fac0c81d95df7e59ad554ebed5e173113f5fb97a6c585803233136dd6b16b02742f50dd8cff6fac97ff827394e694f63198618e02c&quot;
+}
+</code></pre>
+
+<h2 id="put-user"><code>PUT /user</code></h2>
+<p>Update a user record</p>
+<p>Output JSON</p>
+<h3 id="requirements_5">Requirements</h3>
+<ul>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="sample-call_5">Sample call</h3>
+<pre><code class="bash">PORT=&quot;${1:-8888}&quot;
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+ -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/user/test_user -d '{
+        &quot;permissions&quot;: {
+                &quot;index_english_0&quot;: [&quot;read&quot;]
+        }
+}'
+</code></pre>
+
+<p>Sample response:</p>
+<pre><code class="json">{
+   &quot;version&quot; : 2,
+   &quot;created&quot; : false,
+   &quot;dtype&quot; : &quot;user&quot;,
+   &quot;index&quot; : &quot;starchat_system_0.user&quot;,
+   &quot;id&quot; : &quot;test_user&quot;
+}
+</code></pre>
+
+<h2 id="post-user_gentest_user"><code>POST /user_gen/test_user</code></h2>
+<p>Generate the record for a user with hashed password and a randomly generated salt.
+The user must be then inserted into the system.</p>
+<p>Output JSON</p>
+<h3 id="requirements_6">Requirements</h3>
+<ul>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="sample-call_6">Sample call</h3>
+<pre><code class="bash">PORT=${1:-8888}
+
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/user_gen/test_user -d '{
+        &quot;password&quot;: &quot;plain text password&quot;,
+        &quot;permissions&quot;: {
+                &quot;index_english_0&quot;: [&quot;read&quot;],
+                &quot;index_1&quot;: [&quot;read&quot;, &quot;write&quot;]
+        }
+}'
+</code></pre>
+
+<p>Sample response:</p>
+<pre><code class="json">{
+   &quot;password&quot; : &quot;d4cc0586d5d9116e755f5011d2c03e627821c2596820236ef230ff094176586d05fbfa98a198aaa08935df2849196d2648012f1e40ff2e40ca8c3f627b41e9db&quot;,
+   &quot;salt&quot; : &quot;qoKJUyUwpvWM53PI&quot;,
+   &quot;id&quot; : &quot;test_user&quot;,
+   &quot;permissions&quot; : {
+      &quot;index_1&quot; : [
+         &quot;read&quot;,
+         &quot;write&quot;
+      ],
+      &quot;index_english_0&quot; : [
+         &quot;read&quot;
+      ]
+   }
+}
+</code></pre>
+
 <h2 id="post-get_next_response"><code>POST /get_next_response</code></h2>
 <p>Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction 
 about the next state.</p>
@@ -133,85 +384,96 @@ about the next state.</p>
 
 </code></pre>
 
+<h3 id="requirements_7">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
 <h3 id="return-codes">Return codes</h3>
 <h4 id="200">200</h4>
 <p>Similar Json, see examples below</p>
 <h5 id="example-1">Example 1</h5>
-<p>User input is "I forgot my password":</p>
-<pre><code class="bash">curl  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/get_next_response -d '{   
-    &quot;conversation_id&quot;: &quot;1234&quot;,
-    &quot;user_input&quot;: { &quot;text&quot;: &quot;I forgot my password&quot; },
-    &quot;values&quot;: {
-        &quot;return_value&quot;: &quot;&quot;,
-        &quot;data&quot;: {}
-    },
-    &quot;threshold&quot;: 0.0,
-    &quot;max_results&quot;: 4
-}'
+<p>User input is "how to install starchat":</p>
+<pre><code class="bash">QUERY=${1:-&quot;how to install starchat&quot;}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+ -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d &quot;{
+        \&quot;conversation_id\&quot;: \&quot;1234\&quot;,
+        \&quot;user_input\&quot;: { \&quot;text\&quot;: \&quot;${QUERY}\&quot; },
+        \&quot;values\&quot;: {
+                \&quot;return_value\&quot;: \&quot;\&quot;,
+                \&quot;data\&quot;: {\&quot;varname1\&quot;: \&quot;value1\&quot;, \&quot;varname2\&quot;: \&quot;value2\&quot;}
+        },
+        \&quot;threshold\&quot;: 0.0,
+        \&quot;max_results\&quot;: 4
+}&quot;
 </code></pre>
 
 <p>returns:</p>
 <pre><code class="json">[
    {
-      &quot;analyzer&quot; : &quot;and(or(keyword(\&quot;reset\&quot;),keyword(\&quot;forgot\&quot;)),keyword(\&quot;password\&quot;))&quot;,
-      &quot;state&quot; : &quot;forgot_password&quot;,
-      &quot;score&quot; : 0.25,
-      &quot;action&quot; : &quot;input_form&quot;,
-      &quot;action_input&quot; : {
-         &quot;email&quot; : &quot;email&quot;
+      &quot;bubble&quot; : &quot;Just choose one of the two:\n&lt;ul&gt;\n&lt;li&gt;docker install (recommended)&lt;/li&gt;\n&lt;li&gt;standalone install&lt;/li&gt;\n&lt;/ul&gt;&quot;,
+      &quot;analyzer&quot; : &quot;band(bor(keyword(\&quot;setup\&quot;), keyword(\&quot;install.*\&quot;)), bnot(bor(keyword(\&quot;standalone\&quot;), keyword(\&quot;docker\&quot;))))&quot;,
+      &quot;state_data&quot; : {},
+      &quot;data&quot; : {
+         &quot;varname1&quot; : &quot;value1&quot;,
+         &quot;varname2&quot; : &quot;value2&quot;
       },
+      &quot;failure_value&quot; : &quot;&quot;,
+      &quot;state&quot; : &quot;install&quot;,
       &quot;traversed_states&quot; : [
-         &quot;forgot_password&quot;
+         &quot;install&quot;
       ],
-      &quot;success_value&quot; : &quot;send_password_generation_link&quot;,
-      &quot;data&quot; : {},
-      &quot;bubble&quot; : &quot;We can reset your password by sending you a message to your registered e-mail address. Please type your email address:&quot;,
-      &quot;state_data&quot; : {
-         &quot;verification&quot; : &quot;did you mean you forgot the password?&quot;
-      },
+      &quot;conversation_id&quot; : &quot;1234&quot;,
+      &quot;action&quot; : &quot;&quot;,
+      &quot;action_input&quot; : {},
+      &quot;score&quot; : 1,
       &quot;max_state_count&quot; : 0,
-      &quot;failure_value&quot; : &quot;dont_understand&quot;,
-      &quot;conversation_id&quot; : &quot;1234&quot;
+      &quot;success_value&quot; : &quot;&quot;
    }
 ]
 </code></pre>
 
 <h5 id="example-2">Example 2</h5>
-<p>User inserts their email after having been in <code>forgot_password</code>. 
-The client sends:</p>
-<pre><code class="bash">curl  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/get_next_response -d '
-{
-    &quot;conversation_id&quot;: &quot;1234&quot;,
-    &quot;user_input&quot;: { &quot;text&quot;: &quot;&quot; },
-    &quot;values&quot;: {
-        &quot;return_value&quot;: &quot;send_password_generation_link&quot;,
-        &quot;data&quot;: { &quot;email&quot;: &quot;john@example.com&quot; }
-    }
-}'
+<p>User input is: "how can I contribute to starchat?"</p>
+<pre><code class="bash">QUERY=${1:-&quot;how can I contribute to starchat?&quot;}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+ -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d &quot;{
+        \&quot;conversation_id\&quot;: \&quot;1234\&quot;,
+        \&quot;user_input\&quot;: { \&quot;text\&quot;: \&quot;${QUERY}\&quot; },
+        \&quot;values\&quot;: {
+                \&quot;return_value\&quot;: \&quot;\&quot;,
+                \&quot;data\&quot;: {\&quot;varname1\&quot;: \&quot;value1\&quot;, \&quot;varname2\&quot;: \&quot;value2\&quot;}
+        },
+        \&quot;threshold\&quot;: 0.0,
+        \&quot;max_results\&quot;: 4
+}&quot;
 </code></pre>
 
 <p>and gets:</p>
 <pre><code class="json">[
    {
-      &quot;traversed_states&quot; : [],
-      &quot;failure_value&quot; : &quot;call_operator&quot;,
-      &quot;success_value&quot; : &quot;any_further&quot;,
-      &quot;action&quot; : &quot;send_password_generation_link&quot;,
-      &quot;state&quot; : &quot;send_password_generation_link&quot;,
-      &quot;max_state_count&quot; : 0,
+      &quot;analyzer&quot; : &quot;bor(keyword(\&quot;contribute\&quot;))&quot;,
       &quot;state_data&quot; : {},
-      &quot;conversation_id&quot; : &quot;1234&quot;,
       &quot;data&quot; : {
-         &quot;email&quot; : &quot;john@example.com&quot;
+         &quot;varname2&quot; : &quot;value2&quot;,
+         &quot;varname1&quot; : &quot;value1&quot;
       },
+      &quot;traversed_states&quot; : [
+         &quot;contribute&quot;
+      ],
+      &quot;conversation_id&quot; : &quot;1234&quot;,
+      &quot;bubble&quot; : &quot;To contribute to &lt;a href=\&quot;http://git.io/*chat\&quot;&gt;StarChat&lt;/a&gt;, please send us a pull request from your fork of this repository.\n&lt;br&gt;Our concise contribution guideline contains the bare minimum requirements of the code contributions.\n&lt;br&gt;Before contributing (or opening issues), you might want to email us at starchat@getjenny.com.&quot;,
+      &quot;action&quot; : &quot;&quot;,
+      &quot;state&quot; : &quot;contribute&quot;,
+      &quot;max_state_count&quot; : 0,
       &quot;score&quot; : 1,
-      &quot;analyzer&quot; : &quot;&quot;,
-      &quot;action_input&quot; : {
-         &quot;email&quot; : &quot;john@example.com&quot;,
-         &quot;subject&quot; : &quot;New password&quot;,
-         &quot;template&quot; : &quot;Hi,\nSomeone requested a new password for your account. You can set a new password here: %link%\nIf you did not request this, just ignore this message.&quot;
-      },
-      &quot;bubble&quot; : &quot;Thank you. An e-mail will be sent to this address: john@example.com with your account details and the necessary steps for you to reset your password.&quot;
+      &quot;failure_value&quot; : &quot;&quot;,
+      &quot;action_input&quot; : {},
+      &quot;success_value&quot; : &quot;&quot;
    }
 ]
 </code></pre>
@@ -241,87 +503,114 @@ The client sends:</p>
 <h2 id="get-decisiontable"><code>GET /decisiontable</code></h2>
 <p>Get a document by ID</p>
 <p>Output JSON</p>
+<h3 id="requirements_8">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
 <h3 id="return-codes_1">Return codes</h3>
 <h4 id="200_1">200</h4>
 <p>Sample call</p>
 <pre><code class="bash"># retrieve one or more entries with given ids; ids can be specified multiple times
-curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:8888/decisiontable?ids=further_details_access_question&quot;
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+# retrieve one or more entries with given ids; ids can be specified multiple times
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; &quot;http://localhost:${PORT}/${INDEX_NAME}/decisiontable?ids=further_details_access_question&quot;
 </code></pre>
 
 <p>Sample output</p>
 <pre><code class="json">{
+   &quot;total&quot; : 1,
    &quot;hits&quot; : [
       {
-         &quot;score&quot; : 0,
          &quot;document&quot; : {
-            &quot;execution_order&quot; : 1,
-            &quot;bubble&quot; : &quot;Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?&quot;,
+            &quot;failure_value&quot; : &quot;dont_understand&quot;,
             &quot;state&quot; : &quot;further_details_access_question&quot;,
+            &quot;bubble&quot; : &quot;Can you specify which of the following problems you have? [NB works only if buttons can be shown!]&quot;,
+            &quot;success_value&quot; : &quot;eval(show_buttons)&quot;,
+            &quot;action_input&quot; : {
+               &quot;I want to call an operator&quot; : &quot;call_operator&quot;,
+               &quot;Forgot Password&quot; : &quot;forgot_password&quot;,
+               &quot;Specify your problem&quot; : &quot;specify_problem&quot;,
+               &quot;None of the above&quot; : &quot;start&quot;,
+               &quot;Account locked&quot; : &quot;account_locked&quot;
+            },
             &quot;max_state_count&quot; : 0,
+            &quot;analyzer&quot; : &quot;or(and(or(keyword(\&quot;problem.*\&quot;),keyword(\&quot;issue.*\&quot;),keyword(\&quot;trouble.*\&quot;)),keyword(\&quot;account\&quot;)))&quot;,
             &quot;queries&quot; : [
                &quot;cannot access account&quot;,
                &quot;problem access account&quot;
             ],
+            &quot;action&quot; : &quot;show_buttons&quot;,
             &quot;state_data&quot; : {
                &quot;verification&quot; : &quot;did you mean you can't access to your account?&quot;
             },
-            &quot;action_input&quot; : {
-               &quot;None of the above&quot; : &quot;start&quot;,
-               &quot;Account locked&quot; : &quot;account_locked&quot;,
-               &quot;Forgot Password&quot; : &quot;forgot_password&quot;,
-               &quot;Specify your problem&quot; : &quot;specify_problem&quot;,
-               &quot;I want to call an operator&quot; : &quot;call_operator&quot;
-            },
-            &quot;analyzer&quot; : &quot;or(and(or(keyword(\&quot;problem.*\&quot;),keyword(\&quot;issue.*\&quot;),keyword(\&quot;trouble.*\&quot;)),keyword(\&quot;account\&quot;)),search(\&quot;further_details_access_question\&quot;))&quot;,
-            &quot;success_value&quot; : &quot;eval(show_buttons)&quot;,
-            &quot;action&quot; : &quot;show_buttons&quot;,
-            &quot;failure_value&quot; : &quot;dont_understand&quot;
-         }
+            &quot;execution_order&quot; : 1
+         },
+         &quot;score&quot; : 0
       }
    ],
-   &quot;total&quot; : 1,
    &quot;max_score&quot; : 0
 }
 </code></pre>
 
 <h2 id="put-decisiontable"><code>PUT /decisiontable</code></h2>
 <p>Output JSON</p>
+<h3 id="requirements_9">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
 <h3 id="return-codes_2">Return codes</h3>
 <h4 id="201">201</h4>
 <p>Sample call</p>
 <pre><code class="bash"># update the &quot;further_details_access_question&quot; entry in the DT
-curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:8888/decisiontable/further_details_access_question -d '{
-  &quot;queries&quot;: [&quot;cannot access account&quot;, &quot;problem access account&quot;, &quot;unable to access to my account&quot;]
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+# update the &quot;further_details_access_question&quot; entry in the DT
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/${INDEX_NAME}/decisiontable/further_details_access_question -d '{
+        &quot;queries&quot;: [&quot;cannot access account&quot;, &quot;problem access account&quot;, &quot;unable to access to my account&quot;, &quot;completely forgot my password&quot;]
 }'
 </code></pre>
 
 <p>Sample output</p>
 <pre><code class="json">{
-    &quot;created&quot;: false,
-    &quot;dtype&quot;: &quot;state&quot;,
-    &quot;id&quot;: &quot;further_details_access_question&quot;,
-    &quot;index&quot;: &quot;jenny-en-0&quot;,
-    &quot;version&quot;: 2
+   &quot;dtype&quot; : &quot;state&quot;,
+   &quot;created&quot; : false,
+   &quot;index&quot; : &quot;index_english_0.state&quot;,
+   &quot;version&quot; : 2,
+   &quot;id&quot; : &quot;further_details_access_question&quot;
 }
 </code></pre>
 
 <h2 id="post-decisiontable"><code>POST /decisiontable</code></h2>
 <p>Insert a new document.</p>
 <p>Output JSON</p>
+<h3 id="requirements_10">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
 <h3 id="return-codes_3">Return codes</h3>
 <h4 id="201_1">201</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/decisiontable -d '{
-  &quot;state&quot;: &quot;further_details_access_question&quot;,
-  &quot;execution_order&quot;: 1,
-  &quot;max_state_count&quot;: 0,
-  &quot;analyzer&quot;: &quot;&quot;,
-  &quot;queries&quot;: [&quot;cannot access account&quot;, &quot;problem access account&quot;],
-  &quot;bubble&quot;: &quot;What seems to be the problem exactly?&quot;,
-  &quot;action&quot;: &quot;show_buttons&quot;,
-  &quot;action_input&quot;: {&quot;Forgot Password&quot;: &quot;forgot_password&quot;, &quot;Account locked&quot;: &quot;account_locked&quot;, &quot;Payment problem&quot;: &quot;payment_problem&quot;, &quot;Specify your problem&quot;: &quot;specify_problem&quot;, &quot;I want to call an operator&quot;: &quot;call_operator&quot;, &quot;None of the above&quot;: &quot;start&quot;},
-  &quot;success_value&quot;: &quot;eval(show_buttons)&quot;,
-  &quot;failure_value&quot;: &quot;dont_understand&quot;
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/decisiontable -d '{
+        &quot;state&quot;: &quot;further_details_access_question&quot;,
+        &quot;max_state_count&quot;: 0,
+        &quot;execution_order&quot;: 0,
+        &quot;analyzer&quot;: &quot;&quot;,
+        &quot;queries&quot;: [&quot;cannot access account&quot;, &quot;problem access account&quot;],
+        &quot;bubble&quot;: &quot;What seems to be the problem exactly?&quot;,
+        &quot;action&quot;: &quot;show_buttons&quot;,
+        &quot;action_input&quot;: {&quot;Forgot Password&quot;: &quot;forgot_password&quot;, &quot;Account locked&quot;: &quot;account_locked&quot;, &quot;Payment problem&quot;: &quot;payment_problem&quot;, &quot;Specify your problem&quot;: &quot;specify_problem&quot;, &quot;I want to call an operator&quot;: &quot;call_operator&quot;, &quot;None of the above&quot;: &quot;start&quot;},
+    &quot;state_data&quot;: {},
+        &quot;success_value&quot;: &quot;eval(show_buttons)&quot;,
+        &quot;failure_value&quot;: &quot;dont_understand&quot;
 }'
 </code></pre>
 
@@ -330,7 +619,7 @@ curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:88
     &quot;created&quot;: true,
     &quot;dtype&quot;: &quot;state&quot;,
     &quot;id&quot;: &quot;further_details_access_question&quot;,
-    &quot;index&quot;: &quot;jenny-en-0&quot;,
+    &quot;index&quot;: &quot;index_english_0.state&quot;,
     &quot;version&quot;: 1
 }
 </code></pre>
@@ -338,124 +627,368 @@ curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:88
 <h2 id="delete-decisiontable"><code>DELETE /decisiontable</code></h2>
 <p>Delete a document by ID</p>
 <p>Output JSON</p>
+<h3 id="requirements_11">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
 <h3 id="return-codes_4">Return codes</h3>
 <h4 id="200_2">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/decisiontable/further_details_access_question
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+ -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable/further_details_access_question
 </code></pre>
 
 <p>Sample output</p>
 <pre><code class="json">{
-    &quot;dtype&quot;: &quot;state&quot;,
-    &quot;found&quot;: true,
-    &quot;id&quot;: &quot;further_details_access_question&quot;,
-    &quot;index&quot;: &quot;jenny-en-0&quot;,
-    &quot;version&quot;: 3
+  &quot;dtype&quot;: &quot;state&quot;,
+  &quot;version&quot;: 7,
+  &quot;found&quot;: true,
+  &quot;id&quot;: &quot;further_details_access_question&quot;,
+  &quot;index&quot;:&quot;index_english_0.state&quot;
 }
 </code></pre>
 
 <p>Sample call: delete all</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/decisiontable
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+ -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable
 </code></pre>
 
 <p>Sample output: delete all</p>
 <pre><code class="json">{
    &quot;message&quot; : &quot;delete&quot;,
-   &quot;deleted&quot; : 120
+   &quot;deleted&quot; : 18
+}
+</code></pre>
+
+<h2 id="post-decisiontable_upload_csv"><code>POST /decisiontable_upload_csv</code></h2>
+<p>upload load a csv file on decisiontable</p>
+<p>Output JSON</p>
+<h3 id="requirements_12">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h3 id="return-codes_5">Return codes</h3>
+<h4 id="201_2">201</h4>
+<p>Sample call</p>
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-'index_english_0'}
+FILENAME=${3:-&quot;`readlink -e ../../doc/decision_table_starchat_doc.csv`&quot;}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+ -X POST --form &quot;csv=@${FILENAME}&quot; http://localhost:8888/${INDEX_NAME}/decisiontable_upload_csv
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;data&quot; : [
+      {
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;id&quot; : &quot;help&quot;,
+         &quot;created&quot; : true,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1
+      },
+      {
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1,
+         &quot;created&quot; : true,
+         &quot;id&quot; : &quot;further_details_access_question&quot;,
+         &quot;index&quot; : &quot;index_english_0.state&quot;
+      },
+      {
+         &quot;id&quot; : &quot;contribute&quot;,
+         &quot;created&quot; : true,
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1
+      },
+      {
+         &quot;version&quot; : 1,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;created&quot; : true,
+         &quot;id&quot; : &quot;quickstart&quot;
+      },
+      {
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1,
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;created&quot; : true,
+         &quot;id&quot; : &quot;docker_install&quot;
+      },
+      {
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1,
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;id&quot; : &quot;create_es_indices&quot;,
+         &quot;created&quot; : true
+      },
+      {
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1,
+         &quot;id&quot; : &quot;delete_es_indexes&quot;,
+         &quot;created&quot; : true,
+         &quot;index&quot; : &quot;index_english_0.state&quot;
+      },
+      {
+         &quot;version&quot; : 1,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;created&quot; : true,
+         &quot;id&quot; : &quot;create_es_indexes&quot;
+      },
+      {
+         &quot;created&quot; : true,
+         &quot;id&quot; : &quot;index_data&quot;,
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1
+      },
+      {
+         &quot;version&quot; : 1,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;id&quot; : &quot;index_analyzer&quot;,
+         &quot;created&quot; : true,
+         &quot;index&quot; : &quot;index_english_0.state&quot;
+      },
+      {
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;id&quot; : &quot;load_conf_file&quot;,
+         &quot;created&quot; : true,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1
+      },
+      {
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1,
+         &quot;created&quot; : true,
+         &quot;id&quot; : &quot;install&quot;,
+         &quot;index&quot; : &quot;index_english_0.state&quot;
+      },
+      {
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;id&quot; : &quot;standalone_install&quot;,
+         &quot;created&quot; : true,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1
+      },
+      {
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1,
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;id&quot; : &quot;code_78&quot;,
+         &quot;created&quot; : true
+      },
+      {
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;id&quot; : &quot;licence&quot;,
+         &quot;created&quot; : true,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1
+      },
+      {
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;created&quot; : true,
+         &quot;id&quot; : &quot;terrible_feedback&quot;,
+         &quot;version&quot; : 1,
+         &quot;dtype&quot; : &quot;state&quot;
+      },
+      {
+         &quot;id&quot; : &quot;call_operator&quot;,
+         &quot;created&quot; : true,
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;version&quot; : 1
+      },
+      {
+         &quot;version&quot; : 1,
+         &quot;dtype&quot; : &quot;state&quot;,
+         &quot;id&quot; : &quot;any_further&quot;,
+         &quot;created&quot; : true,
+         &quot;index&quot; : &quot;index_english_0.state&quot;
+      },
+      {
+         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;id&quot; : &quot;dont_understand&quot;,
+         &quot;created&quot; : true,
+         &quot;version&quot; : 1,
+         &quot;dtype&quot; : &quot;state&quot;
+      }
+   ]
 }
 </code></pre>
 
 <h2 id="post-decisiontable_search"><code>POST /decisiontable_search</code></h2>
 <p>Update a document</p>
 <p>Output JSON</p>
-<h3 id="return-codes_5">Return codes</h3>
+<h3 id="requirements_13">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_6">Return codes</h3>
 <h4 id="200_3">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/decisiontable_search -d '{
-  &quot;queries&quot;: &quot;cannot access my account&quot;,
-  &quot;min_score&quot;: 0.1,
-  &quot;boost_exact_match_factor&quot;: 2.0
-}'
+<pre><code class="bash">Q=&quot;${1:-'cannot access my account'}&quot;
+S=&quot;${2:-0.0}&quot;
+B=&quot;${3:-100.0}&quot;
+PORT=${4:-8888}
+INDEX_NAME=${5:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/decisiontable_search -d &quot;{
+        \&quot;queries\&quot;: \&quot;${Q}\&quot;,
+        \&quot;min_score\&quot;: ${S},
+        \&quot;boost_exact_match_factor\&quot;: ${B},
+        \&quot;from\&quot;: 0,
+        \&quot;size\&quot;: 10
+}&quot;
 </code></pre>
 
 <p>Sample response </p>
 <pre><code class="json">{
-   &quot;max_score&quot; : 0.930855453014374,
+   &quot;max_score&quot; : 140.38037109375,
+   &quot;total&quot; : 1,
    &quot;hits&quot; : [
       {
+         &quot;score&quot; : 140.38037109375,
          &quot;document&quot; : {
-            &quot;action_input&quot; : {
-               &quot;I want to call an operator&quot; : &quot;call_operator&quot;,
-               &quot;Forgot Password&quot; : &quot;forgot_password&quot;,
-               &quot;None of the above&quot; : &quot;start&quot;,
-               &quot;Account locked&quot; : &quot;account_locked&quot;,
-               &quot;Specify your problem&quot; : &quot;specify_problem&quot;
-            },
-            &quot;bubble&quot; : &quot;Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?&quot;,
-            &quot;success_value&quot; : &quot;eval(show_buttons)&quot;,
             &quot;action&quot; : &quot;show_buttons&quot;,
+            &quot;state_data&quot; : {
+               &quot;verification&quot; : &quot;did you mean you can't access to your account?&quot;
+            },
+            &quot;success_value&quot; : &quot;eval(show_buttons)&quot;,
+            &quot;execution_order&quot; : 1,
+            &quot;bubble&quot; : &quot;Can you specify which of the following problems you have? [NB works only if buttons can be shown!]&quot;,
+            &quot;action_input&quot; : {
+               &quot;None of the above&quot; : &quot;start&quot;,
+               &quot;Forgot Password&quot; : &quot;forgot_password&quot;,
+               &quot;I want to call an operator&quot; : &quot;call_operator&quot;,
+               &quot;Specify your problem&quot; : &quot;specify_problem&quot;,
+               &quot;Account locked&quot; : &quot;account_locked&quot;
+            },
             &quot;queries&quot; : [
                &quot;cannot access account&quot;,
                &quot;problem access account&quot;
             ],
-            &quot;execution_order&quot; : 1,
-            &quot;max_state_count&quot; : 0,
             &quot;failure_value&quot; : &quot;dont_understand&quot;,
-            &quot;state_data&quot; : {
-               &quot;verification&quot; : &quot;did you mean you can't access to your account?&quot;
-            },
-            &quot;analyzer&quot; : &quot;or(and(or(keyword(\&quot;problem.*\&quot;),keyword(\&quot;issue.*\&quot;),keyword(\&quot;trouble.*\&quot;)),keyword(\&quot;account\&quot;)),search(\&quot;further_details_access_question\&quot;))&quot;,
+            &quot;max_state_count&quot; : 0,
+            &quot;analyzer&quot; : &quot;or(and(or(keyword(\&quot;problem.*\&quot;),keyword(\&quot;issue.*\&quot;),keyword(\&quot;trouble.*\&quot;)),keyword(\&quot;account\&quot;)))&quot;,
             &quot;state&quot; : &quot;further_details_access_question&quot;
-         },
-         &quot;score&quot; : 0.930855453014374
+         }
       }
-   ],
-   &quot;total&quot; : 1
+   ]
 }
 </code></pre>
 
 <h2 id="get-decisiontable_analyzer"><code>GET /decisiontable_analyzer</code></h2>
-<p>(WORK IN PROGRESS, PARTIALLY IMPLEMENTED)</p>
 <p>Get and return the map of analyzer for each state</p>
 <p>Output JSON</p>
-<h3 id="return-codes_6">Return codes</h3>
+<h3 id="requirements_14">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_7">Return codes</h3>
 <h4 id="200_4">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:8888/decisiontable_analyzer&quot;
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer&quot;
 </code></pre>
 
 <p>Sample response</p>
 <pre><code class="json">{
    &quot;analyzer_map&quot; : {
-      &quot;account_locked&quot; : {
-         &quot;analyzer&quot; : &quot;booleanand(keyword(\&quot;locked\&quot;), keyword(\&quot;account\&quot;), )&quot;,
-         &quot;execution_order&quot; : 1,
-         &quot;build&quot; : true
-      },
-      &quot;call_operator&quot; : {
-         &quot;analyzer&quot; : &quot;and(or(keyword(\&quot;call\&quot;),keyword(\&quot;talk\&quot;),keyword(\&quot;speak\&quot;)),keyword(\&quot;operator\&quot;))&quot;,
-         &quot;execution_order&quot; : 1,
-         &quot;build&quot; : true
-      },
-      &quot;forgot_password&quot; : {
+      &quot;help&quot; : {
          &quot;execution_order&quot; : 1,
          &quot;build&quot; : true,
-         &quot;analyzer&quot; : &quot;and(or(keyword(\&quot;reset\&quot;),keyword(\&quot;forgot\&quot;)),keyword(\&quot;password\&quot;))&quot;
+         &quot;analyzer&quot; : &quot;band(keyword(\&quot;help\&quot;))&quot;
       },
-      &quot;terrible_feedback&quot; : {
+      &quot;contribute&quot; : {
          &quot;build&quot; : true,
-         &quot;execution_order&quot; : 1,
-         &quot;analyzer&quot; : &quot;booleanor(keyword(\&quot;idiot\&quot;), keyword(\&quot;fuck.*\&quot;), keyword(\&quot;screw\&quot;), keyword(\&quot;damn.*\&quot;), keyword(\&quot;asshole\&quot;))&quot;
+         &quot;analyzer&quot; : &quot;bor(keyword(\&quot;contribute\&quot;))&quot;,
+         &quot;execution_order&quot; : 1
       },
-      &quot;test_state&quot; : {
-         &quot;analyzer&quot; : &quot;booleanAnd(booleanNot(booleanOr(keyword(\&quot;dont\&quot;),keyword(\&quot;don't\&quot;))), keyword(\&quot;test\&quot;), booleanOr(keyword(\&quot;send\&quot;), keyword(\&quot;get\&quot;)))&quot;,
-         &quot;execution_order&quot; : 1,
-         &quot;build&quot; : true
+      &quot;index_analyzer&quot; : {
+         &quot;analyzer&quot; : &quot;band(bor(keyword(\&quot;index\&quot;),keyword(\&quot;load\&quot;)), keyword(\&quot;analyzer\&quot;))&quot;,
+         &quot;build&quot; : true,
+         &quot;execution_order&quot; : 1
       },
       &quot;further_details_access_question&quot; : {
+         &quot;analyzer&quot; : &quot;or(and(or(keyword(\&quot;problem.*\&quot;),keyword(\&quot;issue.*\&quot;),keyword(\&quot;trouble.*\&quot;)),keyword(\&quot;account\&quot;)))&quot;,
+         &quot;build&quot; : true,
+         &quot;execution_order&quot; : 1
+      },
+      &quot;create_es_indices&quot; : {
+         &quot;analyzer&quot; : &quot;band(keyword(\&quot;create\&quot;), keyword(\&quot;elastic.*\&quot;),  bor(keyword(\&quot;index\&quot;),  keyword(\&quot;indices\&quot;),  keyword(\&quot;indeces\&quot;),  keyword(\&quot;indexes\&quot;)))&quot;,
+         &quot;build&quot; : true,
+         &quot;execution_order&quot; : 1
+      },
+      &quot;create_es_indexes&quot; : {
+         &quot;build&quot; : true,
+         &quot;analyzer&quot; : &quot;band(keyword(\&quot;create\&quot;), bor(keyword(\&quot;index.*\&quot;), keyword(\&quot;indic.*\&quot;)))&quot;,
+         &quot;execution_order&quot; : 1
+      },
+      &quot;call_operator&quot; : {
+         &quot;analyzer&quot; : &quot;band(bor(keyword(\&quot;call\&quot;),keyword(\&quot;talk\&quot;),keyword(\&quot;speak\&quot;)),keyword(\&quot;operator\&quot;))&quot;,
+         &quot;build&quot; : true,
+         &quot;execution_order&quot; : 1
+      },
+      &quot;index_data&quot; : {
+         &quot;execution_order&quot; : 1,
+         &quot;analyzer&quot; : &quot;band(keyword(\&quot;index\&quot;), keyword(\&quot;data\&quot;))&quot;,
+         &quot;build&quot; : true
+      },
+      &quot;install&quot; : {
          &quot;execution_order&quot; : 1,
          &quot;build&quot; : true,
-         &quot;analyzer&quot; : &quot;or(and(or(keyword(\&quot;problem.*\&quot;),keyword(\&quot;issue.*\&quot;),keyword(\&quot;trouble.*\&quot;)),keyword(\&quot;account\&quot;)),search(\&quot;further_details_access_question\&quot;))&quot;
+         &quot;analyzer&quot; : &quot;band(bor(keyword(\&quot;setup\&quot;), keyword(\&quot;install.*\&quot;)), bnot(bor(keyword(\&quot;standalone\&quot;), keyword(\&quot;docker\&quot;))))&quot;
+      },
+      &quot;load_conf_file&quot; : {
+         &quot;execution_order&quot; : 1,
+         &quot;analyzer&quot; : &quot;band(keyword(\&quot;load.*\&quot;), bor(keyword(\&quot;config.*\&quot;), band(keyword(\&quot;decision\&quot;), keyword(\&quot;table\&quot;))), keyword(\&quot;file.*\&quot;))&quot;,
+         &quot;build&quot; : true
+      },
+      &quot;docker_install&quot; : {
+         &quot;execution_order&quot; : 1,
+         &quot;analyzer&quot; : &quot;band(keyword(\&quot;docker\&quot;), keyword(\&quot;install.*\&quot;))&quot;,
+         &quot;build&quot; : true
+      },
+      &quot;delete_es_indexes&quot; : {
+         &quot;execution_order&quot; : 1,
+         &quot;build&quot; : true,
+         &quot;analyzer&quot; : &quot;band(keyword(\&quot;delete\&quot;), bor(keyword(\&quot;index.*\&quot;), keyword(\&quot;indic.*\&quot;)))&quot;
+      },
+      &quot;code_78&quot; : {
+         &quot;analyzer&quot; : &quot;band(keyword(\&quot;code\&quot;),keyword(\&quot;78\&quot;))&quot;,
+         &quot;build&quot; : true,
+         &quot;execution_order&quot; : 1
+      },
+      &quot;terrible_feedback&quot; : {
+         &quot;execution_order&quot; : 1,
+         &quot;build&quot; : true,
+         &quot;analyzer&quot; : &quot;booleanor(keyword(\&quot;idiot\&quot;), keyword(\&quot;fuck.*\&quot;), keyword(\&quot;screw\&quot;), keyword(\&quot;damn.*\&quot;), keyword(\&quot;asshole\&quot;))&quot;
+      },
+      &quot;standalone_install&quot; : {
+         &quot;analyzer&quot; : &quot;band(keyword(\&quot;standal.*\&quot;), keyword(\&quot;install\&quot;))&quot;,
+         &quot;build&quot; : true,
+         &quot;execution_order&quot; : 1
+      },
+      &quot;quickstart&quot; : {
+         &quot;execution_order&quot; : 1,
+         &quot;build&quot; : true,
+         &quot;analyzer&quot; : &quot;band(bor(keyword(\&quot;start\&quot;), keyword(\&quot;quickstart\&quot;)), keyword(\&quot;starchat\&quot;))&quot;
+      },
+      &quot;licence&quot; : {
+         &quot;build&quot; : true,
+         &quot;analyzer&quot; : &quot;bor(band(keyword(\&quot;open\&quot;), keyword(\&quot;source\&quot;)), keyword(\&quot;opensource\&quot;), keyword(\&quot;licence\&quot;))&quot;,
+         &quot;execution_order&quot; : 1
       }
    }
 }
@@ -464,24 +997,43 @@ curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:88
 <h2 id="post-decisiontable_analyzer"><code>POST /decisiontable_analyzer</code></h2>
 <p>Load/reload the map of analyzer from ES</p>
 <p>Output JSON</p>
-<h3 id="return-codes_7">Return codes</h3>
+<h3 id="requirements_15">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h3 id="return-codes_8">Return codes</h3>
 <h4 id="200_5">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/decisiontable_analyzer&quot;
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer&quot;
 </code></pre>
 
 <p>Sample response</p>
-<pre><code class="json">{&quot;num_of_entries&quot;:1}
+<pre><code class="json">{
+   &quot;num_of_entries&quot; : 17
+}
 </code></pre>
 
 <h2 id="get-knowledgebase"><code>GET /knowledgebase</code></h2>
 <p>Return a document by ID</p>
 <p>Output JSON</p>
-<h3 id="return-codes_8">Return codes</h3>
+<h3 id="requirements_16">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_9">Return codes</h3>
 <h4 id="200_6">200</h4>
 <p>Sample call</p>
-<pre><code class="bash"># retrieve one or more entries with given ids; ids can be specified multiple times
-curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:8888/knowledgebase?ids=0&quot;
+<pre><code class="bash">ID=${1:-0}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+# retrieve one or more entries with given ids; ids can be specified multiple times
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; &quot;http://localhost:${PORT}/${INDEX_NAME}/knowledgebase?ids=${ID}&quot;
 </code></pre>
 
 <p>Sample response</p>
@@ -519,19 +1071,51 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <h2 id="post-knowledgebase"><code>POST /knowledgebase</code></h2>
 <p>Insert a new document</p>
-<h3 id="return-codes_9">Return codes</h3>
-<h4 id="201_2">201</h4>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/knowledgebase -d '{
+<h3 id="requirements_17">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h3 id="return-codes_10">Return codes</h3>
+<h4 id="201_3">201</h4>
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/knowledgebase -d '{
     &quot;id&quot;: &quot;0&quot;,
     &quot;conversation&quot;: &quot;id:1000&quot;,
     &quot;index_in_conversation&quot;: 1,
     &quot;question&quot;: &quot;thank you&quot;,
-    &quot;question_negative&quot;: [&quot;thank you anyway&quot;],
+        &quot;question_negative&quot;: [&quot;ok, I will not talk with you anymore&quot;, &quot;thank you anyway&quot;],
     &quot;answer&quot;: &quot;you are welcome!&quot;,
     &quot;question_scored_terms&quot;: [
         [
-            &quot;thank&quot;,
-            1.9
+            &quot;currently&quot;,
+            1.0901874131103333
+        ],
+        [
+            &quot;installing&quot;,
+            2.11472759638322
+        ],
+        [
+            &quot;mac&quot;,
+            9.000484252244254
+        ],
+        [
+            &quot;reset&quot;,
+            4.34483238516225
+        ],
+        [
+            &quot;app&quot;,
+            1.2219061535961406
+        ],
+        [
+            &quot;device&quot;,
+            2.1679468390743414E-213
+        ],
+        [
+            &quot;devices&quot;,
+            4.1987625801077624E-268
         ]
     ],
     &quot;verified&quot;: true,
@@ -543,143 +1127,188 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 </code></pre>
 
 <p>Sample response</p>
-<pre><code class="json">{   &quot;dtype&quot;: &quot;question&quot;,
-    &quot;version&quot;: 1,
-    &quot;id&quot;: &quot;1&quot;,
-    &quot;index&quot;: &quot;jenny-en-0&quot;,
-    &quot;created&quot;:true
+<pre><code class="json">{
+   &quot;created&quot; : true,
+   &quot;dtype&quot; : &quot;question&quot;,
+   &quot;version&quot; : 1,
+   &quot;index&quot; : &quot;index_english_0.question&quot;,
+   &quot;id&quot; : &quot;0&quot;
 }
 </code></pre>
 
 <h2 id="delete-knowledgebase"><code>DELETE /knowledgebase</code></h2>
 <p>Delete a document by ID</p>
 <p>Output JSON</p>
-<h3 id="return-codes_10">Return codes</h3>
+<h3 id="requirements_18">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h3 id="return-codes_11">Return codes</h3>
 <h4 id="200_7">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/knowledgebase/0
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/knowledgebase/0
 </code></pre>
 
 <p>Sample output</p>
 <pre><code class="bash">{
-   &quot;id&quot; : &quot;0&quot;,
-   &quot;version&quot; : 5,
-   &quot;index&quot; : &quot;jenny-en-0&quot;,
-   &quot;dtype&quot; : &quot;question&quot;,
-   &quot;found&quot; : true
+    &quot;dtype&quot; : &quot;question&quot;,
+    &quot;version&quot; : 5,
+    &quot;found&quot; : false,
+    &quot;id&quot; : &quot;0&quot;,
+    &quot;index&quot; : &quot;index_english_0.question&quot;
 }
 </code></pre>
 
 <p>Sample call: delete all</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/knowledgebase
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+ -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/knowledgebase
 </code></pre>
 
 <p>Sample output: delete all</p>
 <pre><code class="json">{
    &quot;message&quot; : &quot;delete&quot;,
-   &quot;deleted&quot; : 10
+   &quot;deleted&quot; : 2
 }
 </code></pre>
 
 <h2 id="put-knowledgebase"><code>PUT /knowledgebase</code></h2>
 <p>Update an existing document</p>
 <p>Output JSON</p>
-<h3 id="return-codes_11">Return codes</h3>
+<h3 id="requirements_19">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h3 id="return-codes_12">Return codes</h3>
 <h4 id="200_8">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:8888/knowledgebase/0 -d '{
-    &quot;question_scored_terms&quot;: [
-                [
-                        &quot;thank&quot;,
-                        1.9
-                ],
-                [
-                        &quot;thanks&quot;,
-                        1.9
-                ]
-    ]
-}'
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/${INDEX_NAME}/knowledgebase/0 -d '{
+        &quot;conversation&quot;: &quot;id:1001&quot;,
+        &quot;question&quot;: &quot;thank you&quot;,
+        &quot;answer&quot;: &quot;you are welcome!&quot;,
+        &quot;verified&quot;: true,
+        &quot;topics&quot;: &quot;t1 t2&quot;,
+        &quot;doctype&quot;: &quot;normal&quot;,
+        &quot;state&quot;: &quot;&quot;,
+        &quot;status&quot;: 0
+}' 
 </code></pre>
 
 <p>Sample response</p>
 <pre><code class="json">{
-   &quot;index&quot; : &quot;jenny-en-0&quot;,
    &quot;dtype&quot; : &quot;question&quot;,
+   &quot;index&quot; : &quot;index_english_0.question&quot;,
    &quot;id&quot; : &quot;0&quot;,
-   &quot;version&quot; : 3,
+   &quot;version&quot; : 4,
    &quot;created&quot; : false
 }
 </code></pre>
 
 <h2 id="post-knowledgebase_search"><code>POST /knowledgebase_search</code></h2>
 <p>Output JSON</p>
-<h3 id="return-codes_12">Return codes</h3>
+<h3 id="requirements_20">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_13">Return codes</h3>
 <h4 id="200_9">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/knowledgebase_search -d '{
-  &quot;question&quot;: &quot;thank you&quot;,
-  &quot;verified&quot;: true,
-  &quot;doctype&quot;: &quot;normal&quot;
-}'
+<pre><code class="bash">QUERY=${1:-&quot;how are you?&quot;}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/knowledgebase_search -d &quot;{
+        \&quot;question\&quot;: \&quot;${QUERY}\&quot;,
+        \&quot;doctype\&quot;: \&quot;normal\&quot;,
+        \&quot;min_score\&quot;: 0.0
+}&quot;
 </code></pre>
 
 <p>Sample output</p>
 <pre><code class="json">{
-   &quot;max_score&quot; : 1.15013706684113,
-   &quot;total&quot; : 2,
    &quot;hits&quot; : [
       {
          &quot;document&quot; : {
-            &quot;id&quot; : &quot;1&quot;,
-            &quot;doctype&quot; : &quot;normal&quot;,
             &quot;question_scored_terms&quot; : [
                [
-                  &quot;validation&quot;,
-                  0.0343148699683119
+                  &quot;currently&quot;,
+                  1.09018741311033
                ],
                [
-                  &quot;imac&quot;,
-                  1.12982760046835
+                  &quot;installing&quot;,
+                  2.11472759638322
                ],
                [
-                  &quot;aware&quot;,
-                  3.15048958129597
+                  &quot;mac&quot;,
+                  9.00048425224425
                ],
                [
-                  &quot;ios&quot;,
-                  6.14545226791214
+                  &quot;reset&quot;,
+                  4.34483238516225
                ],
                [
-                  &quot;activation&quot;,
-                  4.92133804309887
+                  &quot;app&quot;,
+                  1.22190615359614
+               ],
+               [
+                  &quot;device&quot;,
+                  2.16794683907434e-213
+               ],
+               [
+                  &quot;devices&quot;,
+                  4.19876258010776e-268
                ]
             ],
-            &quot;answer&quot; : &quot;fine thanks&quot;,
-            &quot;conversation&quot; : &quot;id:1000&quot;,
+            &quot;question&quot; : &quot;thank you&quot;,
+            &quot;id&quot; : &quot;0&quot;,
             &quot;state&quot; : &quot;&quot;,
-            &quot;question_negative&quot;: [
-              &quot;thank you anyway&quot;
-            ],
-            &quot;question&quot; : &quot;how are you?&quot;,
-            &quot;status&quot; : 0,
-            &quot;index_in_conversation&quot; : 1,
+            &quot;conversation&quot; : &quot;id:1001&quot;,
+            &quot;answer&quot; : &quot;you are welcome!&quot;,
             &quot;topics&quot; : &quot;t1 t2&quot;,
-            &quot;verified&quot; : true
+            &quot;index_in_conversation&quot; : 1,
+            &quot;doctype&quot; : &quot;normal&quot;,
+            &quot;status&quot; : 0,
+            &quot;verified&quot; : true,
+            &quot;question_negative&quot; : [
+               &quot;ok, I will not talk with you anymore&quot;,
+               &quot;thank you anyway&quot;
+            ]
          },
-         &quot;score&quot; : 1.15013706684113
+         &quot;score&quot; : 0.287682086229324
       }
-   ]
+   ],
+   &quot;total&quot; : 1,
+   &quot;max_score&quot; : 0.287682086229324
 }
 </code></pre>
 
 <h2 id="post-language_guesser"><code>POST /language_guesser</code></h2>
 <p>Output JSON</p>
-<h3 id="return-codes_13">Return codes</h3>
+<h3 id="requirements_21">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_14">Return codes</h3>
 <h4 id="200_10">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/language_guesser&quot; -d &quot;
+<pre><code class="bash">QUERY=${1:-&quot;good morning, may I ask you a question?&quot;}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/language_guesser&quot; -d &quot;
 {
-    \&quot;input_text\&quot;: \&quot;good morning, may I ask you a question?\&quot;
+        \&quot;input_text\&quot;: \&quot;${QUERY}\&quot;
 }&quot;
 </code></pre>
 
@@ -693,91 +1322,182 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 </code></pre>
 
 <h2 id="get-language_guesser"><code>GET /language_guesser</code></h2>
+<p>Check if a language is recognizable by the guesser</p>
 <p>Output JSON</p>
-<h3 id="return-codes_14">Return codes</h3>
+<h3 id="requirements_22">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_15">Return codes</h3>
 <h4 id="200_11">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:8888/language_guesser/en&quot;
-</code></pre>
-
-<p>Sample output</p>
-<pre><code class="json">{&quot;message&quot;:&quot;updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)&quot;}
-
-</code></pre>
-
-<h2 id="post-index_managementcreate"><code>POST /index_management/create</code></h2>
-<p>Output JSON</p>
-<h3 id="return-codes_15">Return codes</h3>
-<h4 id="200_12">200</h4>
-<p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/index_management&quot;
-</code></pre>
-
-<p>Sample output</p>
-<pre><code class="json">{&quot;message&quot;:&quot;create index: jenny-en-0 create_index_ack(true)&quot;}
-</code></pre>
-
-<h2 id="post-index_managementrefresh"><code>POST /index_management/refresh</code></h2>
-<p>Output JSON</p>
-<h3 id="return-codes_16">Return codes</h3>
-<h4 id="200_13">200</h4>
-<p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/index_management/refresh&quot;
+<pre><code class="bash">LANG=${1:-en} 
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/language_guesser/${LANG}&quot;
 </code></pre>
 
 <p>Sample output</p>
 <pre><code class="json">{
-   &quot;failed_shards_n&quot; : 0,
-   &quot;total_shards_n&quot; : 10,
-   &quot;failed_shards&quot; : [],
-   &quot;successful_shards_n&quot; : 5
+   &quot;supported_languages&quot; : {
+      &quot;languages&quot; : {
+         &quot;en&quot; : true
+      }
+   }
+}
+</code></pre>
+
+<h2 id="post-index_managementcreate"><code>POST /index_management/create</code></h2>
+<p>Output JSON</p>
+<h3 id="requirements_23">Requirements</h3>
+<ul>
+<li>Index name must start with the "index_" prefix followed by a sequence of alphanumeric characters plus underscore</li>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="return-codes_16">Return codes</h3>
+<h4 id="200_12">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/index_management/create&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;message&quot; : &quot;IndexCreation: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)&quot;
+}
+</code></pre>
+
+<h2 id="post-index_managementrefresh"><code>POST /index_management/refresh</code></h2>
+<p>Output JSON</p>
+<h3 id="requirements_24">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h3 id="return-codes_17">Return codes</h3>
+<h4 id="200_13">200</h4>
+<p>Sample call</p>
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/index_management/refresh&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;results&quot; : [
+      {
+         &quot;failed_shards&quot; : [],
+         &quot;successful_shards_n&quot; : 5,
+         &quot;failed_shards_n&quot; : 0,
+         &quot;index_name&quot; : &quot;index_english_0.state&quot;,
+         &quot;total_shards_n&quot; : 10
+      },
+      {
+         &quot;failed_shards&quot; : [],
+         &quot;total_shards_n&quot; : 10,
+         &quot;index_name&quot; : &quot;index_english_0.question&quot;,
+         &quot;failed_shards_n&quot; : 0,
+         &quot;successful_shards_n&quot; : 5
+      },
+      {
+         &quot;failed_shards&quot; : [],
+         &quot;successful_shards_n&quot; : 5,
+         &quot;index_name&quot; : &quot;index_english_0.term&quot;,
+         &quot;failed_shards_n&quot; : 0,
+         &quot;total_shards_n&quot; : 10
+      }
+   ]
 }
 </code></pre>
 
 <h2 id="get-index_management"><code>GET /index_management</code></h2>
 <p>Output JSON</p>
-<h3 id="return-codes_17">Return codes</h3>
+<h3 id="requirements_25">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_18">Return codes</h3>
 <h4 id="200_14">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:8888/index_management&quot;
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/index_management&quot;
 </code></pre>
 
 <p>Sample output</p>
-<pre><code class="json">{&quot;message&quot;:&quot;settings index: jenny-en-0 dt_type_check(state:true) kb_type_check(question:true) term_type_name(term:true)&quot;}
+<pre><code class="json">{
+   &quot;message&quot; : &quot;IndexCheck: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)&quot;
+}
 </code></pre>
 
 <h2 id="put-index_management"><code>PUT /index_management</code></h2>
 <p>Output JSON</p>
-<h3 id="return-codes_18">Return codes</h3>
+<h3 id="requirements_26">Requirements</h3>
+<ul>
+<li>Index must exists</li>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="return-codes_19">Return codes</h3>
 <h4 id="200_15">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X PUT &quot;http://localhost:8888/index_management&quot;
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+LANGUAGE=${3:-english}
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+ -H &quot;Content-Type: application/json&quot; -X PUT &quot;http://localhost:${PORT}/${INDEX_NAME}/${LANGUAGE}/index_management&quot;
 </code></pre>
 
 <p>Sample output</p>
-<pre><code class="json">{&quot;message&quot;:&quot;updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)&quot;}
+<pre><code class="json">{
+   &quot;message&quot; : &quot;IndexCheck: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)&quot;
+}
 </code></pre>
 
 <h2 id="delete-index_management"><code>DELETE /index_management</code></h2>
 <p>Output JSON</p>
-<h3 id="return-codes_19">Return codes</h3>
+<h3 id="requirements_27">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires admin credentials</li>
+</ul>
+<h3 id="return-codes_20">Return codes</h3>
 <h4 id="200_16">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE &quot;http://localhost:8888/index_management&quot;
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X DELETE &quot;http://localhost:${PORT}/${INDEX_NAME}/index_management&quot;
 </code></pre>
 
 <p>Sample output</p>
-<pre><code class="json">{&quot;message&quot;:&quot;removed index: jenny-en-0 index_ack(true)&quot;}
+<pre><code class="json">{
+   &quot;message&quot; : &quot;IndexDeletion: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)&quot;
+}
 </code></pre>
 
 <h2 id="post-termindex"><code>POST /term/index</code></h2>
 <p>Index the term as indicated in the JSON. </p>
-<h3 id="return-codes_20">Return codes</h3>
+<h3 id="requirements_28">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h3 id="return-codes_21">Return codes</h3>
 <h4 id="200_17">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/term/index -d '{
-     &quot;terms&quot;: [
-         {
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/term/index -d '{
+    &quot;terms&quot;: [
+        {
             &quot;term&quot;: &quot;मराठी&quot;,
             &quot;frequency_base&quot;: 1.0,
             &quot;frequency_stem&quot;: 1.0,
@@ -798,8 +1518,8 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
                 &quot;NUM&quot;: &quot;S&quot;,
                 &quot;GEN&quot;: &quot;M&quot;
             }
-            },
-            {
+        },
+        {
             &quot;term&quot;: &quot;term2&quot;,
             &quot;frequency_base&quot;: 1.0,
             &quot;frequency_stem&quot;: 1.0,
@@ -820,10 +1540,9 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
                 &quot;NUM&quot;: &quot;P&quot;,
                 &quot;GEN&quot;: &quot;F&quot;
             }
-            }
+        }
    ]
 }'
-
 </code></pre>
 
 <p>Sample output</p>
@@ -849,12 +1568,21 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <h2 id="post-termget"><code>POST /term/get</code></h2>
 <p>Get one or more terms entry.</p>
-<h3 id="return-codes_21">Return codes</h3>
+<h3 id="requirements_29">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_22">Return codes</h3>
 <h4 id="200_18">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/term/get -d '{
-     &quot;ids&quot;: [&quot;मराठी&quot;, &quot;term2&quot;]
-}'
+<pre><code class="bash">QUERY=${1:-&quot;\&quot;term\&quot;&quot;}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/term/get -d &quot;{
+        \&quot;ids\&quot;: [${QUERY}]
+}&quot;
 </code></pre>
 
 <p>Sample output</p>
@@ -913,11 +1641,19 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <h2 id="delete-term"><code>DELETE /term</code></h2>
 <p>Delete the term.</p>
-<h3 id="return-codes_22">Return codes</h3>
+<h3 id="requirements_30">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h3 id="return-codes_23">Return codes</h3>
 <h4 id="200_19">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/term -d '{
-     &quot;ids&quot;: [&quot;मराठी&quot;, &quot;term2&quot;]
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/term -d '{
+        &quot;ids&quot;: [&quot;मराठी&quot;, &quot;term2&quot;]
 }'
 </code></pre>
 
@@ -944,7 +1680,10 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 </code></pre>
 
 <p>Sample call: delete all</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/term -d'{
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/term -d'{
         &quot;ids&quot;: []
 }'
 </code></pre>
@@ -952,22 +1691,30 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 <p>Sample call: delete all</p>
 <pre><code class="json">{
   &quot;message&quot;:&quot;delete&quot;,
-  &quot;deleted&quot;:2000
+  &quot;deleted&quot;:2
 }
 </code></pre>
 
 <h2 id="put-term"><code>PUT /term</code></h2>
 <p>Update the entry.</p>
-<h3 id="return-codes_23">Return codes</h3>
+<h3 id="requirements_31">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h3 id="return-codes_24">Return codes</h3>
 <h4 id="200_20">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:8888/term -d '{
-     &quot;terms&quot;: [
-         {
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/${INDEX_NAME}/term -d '{
+    &quot;terms&quot;: [
+        {
             &quot;term&quot;: &quot;मराठी&quot;,
             &quot;frequency_base&quot;: 1.0,
             &quot;frequency_stem&quot;: 1.0,
-            &quot;vector&quot;: [1.0, 2.0, 3.0, 4.0],
+            &quot;vector&quot;: [1.2, 2.3, 3.4, 4.5],
             &quot;synonyms&quot;:
             {
                 &quot;bla1&quot;: 0.1,
@@ -984,12 +1731,12 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
                 &quot;FEATURE_NEW1&quot;: &quot;V&quot;,
                 &quot;GEN&quot;: &quot;M&quot;
             }
-            },
-            {
+        },
+        {
             &quot;term&quot;: &quot;term2&quot;,
             &quot;frequency_base&quot;: 1.0,
             &quot;frequency_stem&quot;: 1.0,
-            &quot;vector&quot;: [1.0, 2.0, 3.0, 5.0],
+            &quot;vector&quot;: [1.6, 2.7, 3.8, 5.9],
             &quot;synonyms&quot;:
             {
                 &quot;bla1&quot;: 0.1,
@@ -1006,7 +1753,7 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
                 &quot;FEATURE_NEW1&quot;: &quot;N&quot;,
                 &quot;GEN&quot;: &quot;F&quot;
             }
-            }
+        }
    ]
 }'
 </code></pre>
@@ -1035,12 +1782,21 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <h2 id="get-termterm"><code>GET /term/term</code></h2>
 <p>Search for term (using Elasticsearch).</p>
-<h3 id="return-codes_24">Return codes</h3>
+<h3 id="requirements_32">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_25">Return codes</h3>
 <h4 id="200_21">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET http://localhost:8888/term/term -d '{
-    &quot;term&quot;: &quot;मराठी&quot;
-}'
+<pre><code class="bash">QUERY=${1:-&quot;term2&quot;}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET http://localhost:${PORT}/${INDEX_NAME}/term/term -d &quot;{
+    \&quot;term\&quot;: \&quot;${QUERY}\&quot;
+}&quot;
 </code></pre>
 
 <p>Sample output</p>
@@ -1081,10 +1837,18 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <h2 id="get-termtext"><code>GET /term/text</code></h2>
 <p>Search for all the terms in the text and return the entries.</p>
-<h3 id="return-codes_25">Return codes</h3>
+<h3 id="requirements_33">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_26">Return codes</h3>
 <h4 id="200_22">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET http://localhost:8888/term/text -d 'term2 मराठी'
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET http://localhost:${PORT}/${INDEX_NAME}/term/text -d 'term2 मराठी'
 </code></pre>
 
 <p>Sample output</p>
@@ -1150,10 +1914,18 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <h2 id="get-tokenizers"><code>GET /tokenizers</code></h2>
 <p>Show a list of supported methods for tokenization and stemming</p>
-<h3 id="return-codes_26">Return codes</h3>
+<h3 id="requirements_34">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_27">Return codes</h3>
 <h4 id="200_23">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:8888/tokenizers&quot;
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/tokenizers&quot;
 </code></pre>
 
 <p>Sample output</p>
@@ -1171,14 +1943,24 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <h2 id="post-tokenizers"><code>POST /tokenizers</code></h2>
 <p>get a list of token using the selected analyzer</p>
-<h3 id="return-codes_27">Return codes</h3>
+<h3 id="requirements_35">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_28">Return codes</h3>
 <h4 id="200_24">200</h4>
 <p>Sample call</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/tokenizers&quot; -d &quot;
+<pre><code class="bash">ANALYZER=${1:-&quot;stop&quot;}
+QUERY=${2:-&quot;good morning, may I ask you a question?&quot;}
+PORT=${3:-8888}
+INDEX_NAME=${4:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/tokenizers&quot; -d &quot;
 {
-    \&quot;text\&quot;: \&quot;good morning, may I ask you a question?\&quot;,
-          \&quot;tokenizer\&quot;: \&quot;stop\&quot;
-          }&quot;
+        \&quot;text\&quot;: \&quot;${QUERY}\&quot;,
+        \&quot;tokenizer\&quot;: \&quot;${ANALYZER}\&quot;
+}&quot;
 </code></pre>
 
 <p>Sample output</p>
@@ -1239,16 +2021,26 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <h2 id="post-analyzers_playground"><code>POST /analyzers_playground</code></h2>
 <p>used to test analyzers on the fly</p>
-<h3 id="return-codes_28">Return codes</h3>
+<h3 id="requirements_36">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h3 id="return-codes_29">Return codes</h3>
 <h4 id="200_25">200</h4>
 <p>Sample call keyword</p>
-<pre><code class="bash">curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d '
+<pre><code class="bash">ANALYZER=${1:-&quot;keyword(\\\&quot;test\\\&quot;)&quot;}
+QUERY=${2:-&quot;this is a test&quot;}
+DATA=${3:-&quot;{\&quot;item_list\&quot;: [], \&quot;extracted_variables\&quot;:{}}&quot;}
+PORT=${4:-8888}
+INDEX_NAME=${5:-index_english_0}
+curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/analyzers_playground&quot; -d &quot;
 {
-        &quot;analyzer&quot;: &quot;keyword(\&quot;test\&quot;)&quot;,
-        &quot;query&quot;: &quot;this is a test&quot;,
-        &quot;data&quot;: {&quot;item_list&quot;: [], &quot;extracted_variables&quot;:{}}
-}
-'
+        \&quot;analyzer\&quot;: \&quot;${ANALYZER}\&quot;,
+        \&quot;query\&quot;: \&quot;${QUERY}\&quot;,
+        \&quot;data\&quot;: ${DATA}
+}&quot;
 </code></pre>
 
 <p>Sample output keyword</p>
@@ -1260,7 +2052,8 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 </code></pre>
 
 <p>Sample states analyzers</p>
-<pre><code class="bash">curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d '
+<pre><code class="bash">curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H 'Content-Type: application/json' -X POST http://localhost:${PORT}/${INDEX_NAME}/analyzers_playground -d '
 {
         &quot;analyzer&quot;: &quot;hasTravState(\&quot;one\&quot;)&quot;,
         &quot;query&quot;: &quot;query&quot;,
@@ -1278,7 +2071,8 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 </code></pre>
 
 <p>Sample of pattern extraction through analyzers</p>
-<pre><code class="json">curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d' 
+<pre><code class="bash">curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H 'Content-Type: application/json' -X POST http://localhost:${PORT}/${INDEX_NAME}/analyzers_playground -d '
 {
         &quot;analyzer&quot;: &quot;band(keyword(\&quot;on\&quot;), matchPatternRegex(\&quot;[day,month,year](?:(0[1-9]|[12][0-9]|3[01])(?:[- \\\/\\.])(0[1-9]|1[012])(?:[- \\\/\\.])((?:19|20)\\d\\d))\&quot;))&quot;,
         &quot;query&quot;: &quot;on 31-11-1900&quot;
@@ -1303,15 +2097,24 @@ curl -v -H &quot;Content-Type: application/json&quot; &quot;http://localhost:888
 
 <h2 id="post-spellcheckterms"><code>POST /spellcheck/terms</code></h2>
 <p>terms spellchecker based on knowledgebase text </p>
-<h3 id="return-codes_29">Return codes</h3>
+<h3 id="requirements_37">Requirements</h3>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+<li>the knowledge base must contain data</li>
+</ul>
+<h3 id="return-codes_30">Return codes</h3>
 <h4 id="200_26">200</h4>
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;this is a tes for splellchecker&quot;}
-curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/spellcheck/terms -d &quot;{
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/spellcheck/terms -d &quot;{
   \&quot;text\&quot;: \&quot;${QUERY}\&quot;,
-    \&quot;prefix_length\&quot;: 3,
-      \&quot;min_doc_freq\&quot;: 1
-      }&quot;
+  \&quot;prefix_length\&quot;: 3,
+  \&quot;min_doc_freq\&quot;: 1
+}&quot;
 </code></pre>
 
 <pre><code class="json">{
@@ -1401,38 +2204,46 @@ curl -v -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8
    ]
 }
 </code></pre></div>
+            
         </div>
 
         <footer class="col-md-12">
             <hr>
+            
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
         <script>var base_url = '..';</script>
         <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
-        <script src="../js/base.js"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
-                <form role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+        <script src="../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
                     </div>
-                </form>
-                <div id="mkdocs-search-results"></div>
-            </div>
-            <div class="modal-footer">
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
     </body>
 </html>

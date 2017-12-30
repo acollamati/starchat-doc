@@ -4,24 +4,25 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="None">
+        
         
         
         <link rel="shortcut icon" href="./img/favicon.ico">
-        <title>StarChat Documentation</title>
+
+	<title>StarChat Documentation</title>
+
         <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="./css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
         <link href="./css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="./css/highlight.css">
+
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-	
-	<script src="./js/jquery-1.10.2.min.js"></script>
-        <script src="./js/bootstrap-3.0.3.min.js"></script>
-        <script src="./js/highlight.pack.js"></script> 
+
+        
     </head>
 
     <body class="homepage">
@@ -31,6 +32,7 @@
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
+            
             <!-- Expander button -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -38,23 +40,38 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            
+
+            <!-- Main title -->
             <a class="navbar-brand" href=".">StarChat Documentation</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
+            
                 <!-- Main navigation -->
                 <ul class="nav navbar-nav">
+                
+                
                     <li class="active">
                         <a href=".">Home</a>
                     </li>
+                
+                
+                
                     <li >
                         <a href="apis/">APIs</a>
                     </li>
+                
+                
+                
                     <li >
                         <a href="about/">About</a>
                     </li>
+                
+                
                 </ul>
+            
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -62,6 +79,7 @@
                         <i class="fa fa-search"></i> Search
                     </a>
                 </li>
+                
                     <li class="disabled">
                         <a rel="next" >
                             <i class="fa fa-arrow-left"></i> Previous
@@ -72,41 +90,79 @@
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
+                
+                
             </ul>
         </div>
     </div>
 </div>
 
         <div class="container">
+            
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
+    
         <li class="main active"><a href="#welcome">Welcome!</a></li>
+        
+    
         <li class="main "><a href="#how-to-contribute">How to contribute</a></li>
+        
+    
         <li class="main "><a href="#quick-start">Quick Start</a></li>
+        
             <li><a href="#requirements">Requirements</a></li>
+        
             <li><a href="#setup-with-docker-recommended">Setup with Docker (recommended)</a></li>
+        
             <li><a href="#install-without-docker">Install without Docker</a></li>
+        
             <li><a href="#install-local-docker-for-testing-branches">Install local Docker (for testing branches)</a></li>
+        
             <li><a href="#test-the-installation">Test the installation</a></li>
+        
             <li><a href="#configuration-of-the-chatbot-decision-table">Configuration of the chatbot (Decision Table)</a></li>
+        
             <li><a href="#nlp-processing">NLP processing</a></li>
+        
             <li><a href="#configuration-of-the-answer-recommender-knowledge-base">Configuration of the answer recommender (Knowledge Base)</a></li>
+        
             <li><a href="#manaus">Manaus</a></li>
+        
+    
         <li class="main "><a href="#technology">Technology</a></li>
+        
             <li><a href="#how-does-starchat-work">How does StarChat work?</a></li>
+        
             <li><a href="#configuration-of-the-decisiontable">Configuration of the DecisionTable</a></li>
+        
             <li><a href="#client-functions">Client functions</a></li>
+        
             <li><a href="#mechanics">Mechanics</a></li>
+        
             <li><a href="#scalability">Scalability</a></li>
+        
             <li><a href="#security">Security</a></li>
+        
+    
         <li class="main "><a href="#indexing-terms-on-term-table">Indexing terms on term table</a></li>
+        
+    
         <li class="main "><a href="#test">Test</a></li>
+        
             <li><a href="#unit-tests">Unit tests</a></li>
+        
             <li><a href="#test-scripts-with-sample-api-calls">test scripts with sample API calls</a></li>
+        
+    
         <li class="main "><a href="#troubleshooting">Troubleshooting</a></li>
+        
             <li><a href="#docker-start-from-scratch">Docker: start from scratch</a></li>
+        
             <li><a href="#docker-compose-analyzers-are-not-loaded">docker-compose: Analyzers are not loaded</a></li>
+        
             <li><a href="#docker-size-of-virtual-memory">Docker: Size of virtual memory</a></li>
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -126,7 +182,7 @@ minumum requirements of the code contributions.</p>
 <li><a href="https://docs.docker.com/engine/installation/">docker</a></li>
 <li><a href="https://docs.docker.com/compose/install/">docker compose</a></li>
 </ul>
-<p>In this way, you will put all the indices in the Elasticsearch (version 5.4) image, and StarChat itself in the Java (8) image.</p>
+<p>In this way, you will put all the indices in the Elasticsearch (version 6.1) image, and StarChat itself in the Java (8) image.</p>
 <p><em>If you do not use docker</em> you therefore need on your machine:</p>
 <ol>
 <li><a href="http://scala-lang.org">Scala 12.2</a></li>
@@ -145,24 +201,8 @@ minumum requirements of the code contributions.</p>
 
 <p>And you will have a running instance on port 8888. (If you want to change ports, go to <code>starchat-docker/starchat/config/application.conf</code>)</p>
 <p>(Problems like <code>elastisearch exited with code 78</code>? have a look at <a href="#troubleshooting">troubleshooting</a>!)</p>
-<h4 id="change-language">Change Language</h4>
-<p>If you are using another language than English, change in the file <code>starchat-docker/starchat/config/application.conf</code>:</p>
-<pre><code class="json">es {
-  index_language = &quot;english&quot;
-  index_name = &quot;jenny-en-0&quot;
-  ...
-  }
-</code></pre>
-
-<p>to your language (here <code>italian</code>, no <code>*</code> of course):</p>
-<pre><code class="json">es {
-  index_language = &quot;***italian***&quot;
-  index_name = &quot;jenny-***it***-0&quot;
-  ...
-  }
-</code></pre>
-
-<p>And in the file <code>docker-compose.yml</code> change:</p>
+<h4 id="change-manaus-language">Change Manaus Language</h4>
+<p>In the file <code>docker-compose.yml</code> change:</p>
 <pre><code class="json">    command: [&quot;/manaus/scripts/wait-for-it.sh&quot;, 
     &quot;getjenny-es&quot;, &quot;9200&quot;, &quot;5&quot;, 
     &quot;/manaus/bin/continuous-keywords-update&quot;, &quot;--temp_data_folder&quot;, 
@@ -185,22 +225,55 @@ minumum requirements of the code contributions.</p>
 
 <h3 id="2-create-elasticsearch-indices">2. Create Elasticsearch indices</h3>
 <p>Run from a terminal:</p>
-<pre><code class="bash"># create the indices in Elasticsearch
-curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/index_management/create&quot;
+<pre><code class="bash"># create the system indices in Elasticsearch
+PORT=${1:-8888}
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/system_index_management/create&quot;
+</code></pre>
+
+<p>If you are using another language than English, replace english in the name of the index:</p>
+<pre><code class="bash"># create the application indices on Elasticsearch
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/index_management/create&quot;
+</code></pre>
+
+<pre><code class="bash"># add a user to the system associated to the application index index_english_0 previously created
+PORT=${1:-8888}
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/user -d '{
+        &quot;id&quot;: &quot;test_user&quot;,
+        &quot;password&quot;: &quot;3c98bf19cb962ac4cd0227142b3495ab1be46534061919f792254b80c0f3e566f7819cae73bdc616af0ff555f7460ac96d88d56338d659ebd93e2be858ce1cf9&quot;, 
+        &quot;salt&quot;: &quot;salt&quot;,
+        &quot;permissions&quot;: {
+                &quot;index_english_0&quot;: [&quot;read&quot;, &quot;write&quot;]
+        }
+}'
 </code></pre>
 
 <h3 id="3-load-the-configuration-file">3. Load the configuration file</h3>
 <p>Now you have to load the configuration file for the actual chat, aka <a href="#services">decision table</a>. We have provided an <a href="https://github.com/GetJenny/starchat/tree/master/doc">example configuration file in English</a>, therefore:</p>
 <pre><code class="bash">cd $STARCHAT  # so we have doc/decision_table_starchat_doc.csv
-curl -v --form &quot;csv=@doc/decision_table_starchat_doc.csv&quot; http://localhost:8888/decisiontable_upload_csv
+PORT=${1:-8888}
+INDEX_NAME=${2:-'index_english_0'}
+FILENAME=${3:-&quot;`readlink -e doc/decision_table_starchat_doc.csv`&quot;}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  --form &quot;csv=@${FILENAME}&quot; http://localhost:8888/${INDEX_NAME}/decisiontable_upload_csv
 </code></pre>
 
 <p>and then you need to index the analyzer:</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:8888/decisiontable_analyzer&quot;
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer&quot;
 </code></pre>
 
 <p>In case you want to delete all states previously loaded, this endpoint deletes all the states:</p>
-<pre><code class="bash">curl -v -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:8888/decisiontable
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable
 </code></pre>
 
 <h3 id="4-load-external-corpus-optional">4. Load external corpus (optional)</h3>
@@ -251,7 +324,10 @@ ln -s starchat-4ee..../  starchat
 <p>Is the service working? But first: <em>did you load a configuration file</em>? If yes, try:</p>
 <p><code>curl -X GET localhost:8888 | python -mjson.tool</code></p>
 <p>Get the <code>test_state</code></p>
-<pre><code class="bash">curl  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:8888/get_next_response -d '{
+<pre><code class="bash">PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
+ -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d '{
  &quot;conversation_id&quot;: &quot;1234&quot;,
   &quot;user_input&quot;: { &quot;text&quot;: &quot;install starchat&quot; },
   &quot;values&quot;: {
@@ -264,21 +340,21 @@ ln -s starchat-4ee..../  starchat
 <p>You should get:</p>
 <pre><code class="json">[
    {
-      &quot;conversation_id&quot; : &quot;1234&quot;,
-      &quot;max_state_count&quot; : 0,
-      &quot;analyzer&quot; : &quot;band(bor(keyword(\&quot;setup\&quot;), keyword(\&quot;install.*\&quot;)), bnot(bor(keyword(\&quot;standalone\&quot;), keyword(\&quot;docker\&quot;))))&quot;,
-      &quot;success_value&quot; : &quot;&quot;,
-      &quot;data&quot; : {},
-      &quot;bubble&quot; : &quot;Just choose one of the two:\n&lt;ul&gt;\n&lt;li&gt;docker install (recommended)&lt;/li&gt;\n&lt;li&gt;standalone install&lt;/li&gt;\n&lt;/ul&gt;&quot;,
       &quot;state&quot; : &quot;install&quot;,
+      &quot;data&quot; : {},
       &quot;action&quot; : &quot;&quot;,
-      &quot;failure_value&quot; : &quot;&quot;,
+      &quot;success_value&quot; : &quot;&quot;,
       &quot;state_data&quot; : {},
+      &quot;score&quot; : 1,
+      &quot;conversation_id&quot; : &quot;1234&quot;,
       &quot;traversed_states&quot; : [
          &quot;install&quot;
       ],
+      &quot;max_state_count&quot; : 0,
       &quot;action_input&quot; : {},
-      &quot;score&quot; : 1
+      &quot;analyzer&quot; : &quot;band(bor(keyword(\&quot;setup\&quot;), keyword(\&quot;install.*\&quot;)), bnot(bor(keyword(\&quot;standalone\&quot;), keyword(\&quot;docker\&quot;))))&quot;,
+      &quot;bubble&quot; : &quot;Just choose one of the two:\n&lt;ul&gt;\n&lt;li&gt;docker install (recommended)&lt;/li&gt;\n&lt;li&gt;standalone install&lt;/li&gt;\n&lt;/ul&gt;&quot;,
+      &quot;failure_value&quot; : &quot;&quot;
    }
 ]
 </code></pre>
@@ -396,6 +472,7 @@ for any NLP task.</p>
 <p>StarChat was design with the following goals in mind:</p>
 <ol>
 <li>easy deployment</li>
+<li>multi-tenancy: starchat can handle different KnowledBase and DecisionTable configurations </li>
 <li>horizontally scalability without any service interruption.</li>
 <li>modularity</li>
 <li>statelessness</li>
@@ -485,23 +562,23 @@ call again the system to get instructions on what to do next</li>
 <h2 id="scalability">Scalability</h2>
 <p>StarChat consists of two different services: StarChat itself and an Elasticsearch cluster. </p>
 <h3 id="scaling-starchat-instances">Scaling StarChat instances</h3>
-<p>StarChat can scale horizontally by simple replication. Because StarChat is stateless, instances looking 
-at the same Elasticsearch index will behave identically. New instances can then be added together
-with a load balancing service.</p>
+<p>Since StarChat is stateless it can scale horizontally by replication.
+All the instances can access to all the configured indexes on ElasticSearch and can answer to the 
+APIs call enforcing authentication and authorization rules. A load balancer will be responsible
+of scheduling the requests to the instances transparently.</p>
 <p>In the diagram below, a load balancer forward requests coming from the front-end to StarChat instances 
-1, 2 or 3. These instances, as said, behave identically because they all refer to <code>Index 0</code> in the 
-Elasticsearch cluster.</p>
+which access to the indices created on the Elasticsearch cluster.</p>
 <p><img alt="Image" src="./img/scalability_diagram_starchat.png?raw=true" /></p>
 <h3 id="scaling-elasticsearch">Scaling Elasticsearch</h3>
 <p>Similarly, Elasticsearch can easily scale horizontally adding new nodes to the cluster, as explained
  in <a href="https://www.elastic.co/guide/en/elasticsearch/guide/master/_scale_horizontally.html">Elasticsearch Documentation</a>.</p>
 <h2 id="security">Security</h2>
-<p>StarChat is a backend service and <em>should never</em> be exposed to the internet,
-it should be placed behind a firewall.
-One of the most effective and flexible method to add an access control layer is to use 
-<a href="https://getkong.org">Kong</a> in front of StarChat as a gateway, in this way
-StarChat can be shield by unwanted accesses.</p>
-<p>In addition StarChat support TLS connections, the configuration file allow to
+<p>StarChat is a backend service which supports authentication and authorization with salted SHA512 hashed
+password and differentiated permissions.</p>
+<p>The admin hashed password and salt are stored on the StarChat configuration file, the user credentials 
+(hashed password, salt, permissions) are instead saved on ElasticSearch (further backend for 
+authentication/authorization can be implemented by specialization of the Auth. classes).</p>
+<p>StarChat support TLS connections, the configuration file allow to
 choose if the service should expose an https connection or an http connection
 or both.
 In order to use the https connection the user must do the following things:</p>
@@ -591,43 +668,51 @@ elastisearch exited with code 78
 <p>run:</p>
 <pre><code class="bash">sysctl -w vm.max_map_count=262144
 </code></pre></div>
+            
         </div>
 
         <footer class="col-md-12">
             <hr>
+            
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
+
+        <script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>
         <script>var base_url = '.';</script>
         <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
-        <script src="./js/base.js"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
-                <form role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+        <script src="./js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
                     </div>
-                </form>
-                <div id="mkdocs-search-results"></div>
-            </div>
-            <div class="modal-footer">
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
     </body>
 </html>
 
 <!--
-MkDocs version : 0.16.3
-Build Date UTC : 2017-11-13 17:12:15
+MkDocs version : 0.14.0
+Build Date UTC : 2017-12-30 10:35:08.833662
 -->
