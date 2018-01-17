@@ -345,7 +345,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
         &quot;password&quot;: &quot;plain text password&quot;,
         &quot;permissions&quot;: {
                 &quot;index_english_0&quot;: [&quot;read&quot;],
-                &quot;index_1&quot;: [&quot;read&quot;, &quot;write&quot;]
+                &quot;index_finnish_1&quot;: [&quot;read&quot;, &quot;write&quot;]
         }
 }'
 </code></pre>
@@ -356,7 +356,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
    &quot;salt&quot; : &quot;qoKJUyUwpvWM53PI&quot;,
    &quot;id&quot; : &quot;test_user&quot;,
    &quot;permissions&quot; : {
-      &quot;index_1&quot; : [
+      &quot;index_finnish_1&quot; : [
          &quot;read&quot;,
          &quot;write&quot;
       ],
@@ -1353,7 +1353,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>Output JSON</p>
 <h3 id="requirements_23">Requirements</h3>
 <ul>
-<li>Index name must start with the "index_" prefix followed by a sequence of alphanumeric characters plus underscore</li>
+<li>Index name must start with the "index_" prefix followed by a language, and a sequence of alphanumeric characters separated by underscore e.g. index_<LANG>_<SUFFIX></li>
 <li>The function requires "admin" credentials</li>
 </ul>
 <h3 id="return-codes_16">Return codes</h3>
