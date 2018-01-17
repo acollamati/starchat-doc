@@ -206,7 +206,7 @@ curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
         "password": "plain text password",
         "permissions": {
                 "index_english_0": ["read"],
-                "index_1": ["read", "write"]
+                "index_finnish_1": ["read", "write"]
         }
 }'
 ```
@@ -219,7 +219,7 @@ Sample response:
    "salt" : "qoKJUyUwpvWM53PI",
    "id" : "test_user",
    "permissions" : {
-      "index_1" : [
+      "index_finnish_1" : [
          "read",
          "write"
       ],
@@ -1374,7 +1374,7 @@ Output JSON
 
 ### Requirements
 
-* Index name must start with the "index_" prefix followed by a sequence of alphanumeric characters plus underscore
+* Index name must start with the "index_" prefix followed by a language, and a sequence of alphanumeric characters separated by underscore e.g. index_<LANG>_<SUFFIX>
 * The function requires "admin" credentials
 
 ### Return codes 
