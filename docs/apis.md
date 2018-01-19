@@ -1,6 +1,6 @@
 # APIs
 
-## `POST /system_index_management/create`
+## POST /system_index_management/create
 
 Create a new system index, this operation init. a new system index and is required 
 to start using starchat.
@@ -27,7 +27,7 @@ Sample response:
 }
 ```
 
-## `GET /system_index_management`
+## GET /system_index_management
 
 Fetch and returns the informations about the system index
 
@@ -53,7 +53,7 @@ Sample response:
 }
 ```
 
-## `DELETE /system_index_management`
+## DELETE /system_index_management
 
 Delete a system index, this operation destroy any user created
 
@@ -79,7 +79,7 @@ Sample response:
 }
 ```
 
-## `POST /user`
+## POST /user
 
 Insert a new user to the system, the user record can be generated 
 using the '/user_gen/test_user' endpoint
@@ -117,7 +117,7 @@ Sample response:
 }
 ```
 
-## `GET /user`
+## GET /user
 
 Fetch the informations about a user
 
@@ -151,7 +151,7 @@ Sample response:
 }
 ```
 
-## `PUT /user`
+## PUT /user
 
 Update a user record
 
@@ -185,7 +185,7 @@ Sample response:
 }
 ```
 
-## `DELETE /user/<user_id>`
+## DELETE /user/user_id
 
 Delete an existing user
 
@@ -215,7 +215,7 @@ Sample response:
 }
 ```
 
-## `POST /user_gen/test_user `
+## POST /user_gen/test_user
 
 Generate the record for a user with hashed password and a randomly generated salt.
 The user must be then inserted into the system.
@@ -260,7 +260,7 @@ Sample response:
 }
 ```
 
-## `POST /get_next_response` 
+## POST /get_next_response
 
 Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction 
 about the next state.
@@ -415,7 +415,7 @@ Bad request:
 * meaning: not found
 * output data: no data returned
 
-## `GET /decisiontable` 
+## GET /decisiontable
 
 Get a document by ID
 
@@ -479,7 +479,7 @@ Sample output
 }
 ```
 
-## `PUT /decisiontable`
+## PUT /decisiontable
  
 Output JSON
 
@@ -516,7 +516,7 @@ Sample output
 }
 ```
 
-## `POST /decisiontable`
+## POST /decisiontable
 
 Insert a new document.
 
@@ -564,7 +564,7 @@ Sample output
 }
 ```
 
-## `DELETE /decisiontable`
+## DELETE /decisiontable
 
 Delete a document by ID
 
@@ -618,7 +618,7 @@ Sample output: delete all
 ```
 
 
-## `POST /decisiontable_upload_csv`
+## POST /decisiontable_upload_csv
 
 upload load a csv file on decisiontable
 
@@ -785,7 +785,7 @@ Sample output
 }
 ```
 
-## `POST /decisiontable_search`
+## POST /decisiontable_search
 
 Update a document
 
@@ -855,7 +855,7 @@ Sample response
 }
 ```
 
-## `GET /decisiontable_analyzer` 
+## GET /decisiontable_analyzer
 
 Get and return the map of analyzer for each state
 
@@ -972,7 +972,7 @@ Sample response
 }
 ```
 
-## `POST /decisiontable_analyzer`
+## POST /decisiontable_analyzer
 
 Load/reload the map of analyzer from ES
 
@@ -1004,7 +1004,7 @@ Sample response
 }
 ```
 
-## `GET /knowledgebase`
+## GET /knowledgebase
 
 Return a document by ID
 
@@ -1064,7 +1064,7 @@ Sample response
 }
 ```
 
-## `POST /knowledgebase`
+## POST /knowledgebase
 
 Insert a new document
 
@@ -1138,7 +1138,7 @@ Sample response
 }
 ```
 
-## `DELETE /knowledgebase`
+## DELETE /knowledgebase
 
 Delete a document by ID
 
@@ -1192,7 +1192,7 @@ Sample output: delete all
 }
 ```
 
-## `PUT /knowledgebase`
+## PUT /knowledgebase
 
 Update an existing document
 
@@ -1237,7 +1237,7 @@ Sample response
 }
 ```
 
-## `POST /knowledgebase_search`
+## POST /knowledgebase_search
 
 Output JSON
 
@@ -1324,7 +1324,7 @@ Sample output
 }
 ```
 
-## `POST /language_guesser`
+## POST /language_guesser
 
 Output JSON
 
@@ -1361,7 +1361,7 @@ Sample output
 }
 ```
 
-## `GET /language_guesser`
+## GET /language_guesser
 
 Check if a language is recognizable by the guesser
 
@@ -1398,7 +1398,7 @@ Sample output
 }
 ```
 
-## `POST /index_management/create`
+## POST /index_management/create
 
 Output JSON
 
@@ -1428,7 +1428,7 @@ Sample output
 }
 ```
 
-## `POST /index_management/refresh`
+## POST /index_management/refresh
 
 Output JSON
 
@@ -1480,7 +1480,7 @@ Sample output
 }
 ```
 
-## `GET /index_management`
+## GET /index_management
 
 Output JSON
 
@@ -1510,7 +1510,7 @@ Sample output
 }
 ```
 
-## `PUT /index_management`
+## PUT /index_management
 
 Output JSON
 
@@ -1541,7 +1541,7 @@ Sample output
 }
 ```
 
-## `DELETE /index_management`
+## DELETE /index_management
 
 Output JSON
 
@@ -1571,7 +1571,7 @@ Sample output
 }
 ```
 
-## `POST /term/index`
+## POST /term/index
 
 Index the term as indicated in the JSON. 
 
@@ -1663,7 +1663,7 @@ Sample output
 }
 ```
 
-## `POST /term/get`
+## POST /term/get
 
 Get one or more terms entry.
 
@@ -1744,7 +1744,7 @@ Sample output
 
 ```
 
-## `DELETE /term`
+## DELETE /term
 
 Delete the term.
 
@@ -1811,7 +1811,7 @@ Sample call: delete all
 }
 ```
 
-## `PUT /term`
+## PUT /term
 
 Update the entry.
 
@@ -1904,7 +1904,7 @@ Sample output
 
 ```
 
-## `GET /term/term`
+## GET /term/term
 
 Search for term (using Elasticsearch).
 
@@ -1967,7 +1967,7 @@ Sample output
 }
 ```
 
-## `GET /term/text`
+## GET /term/text
 
 Search for all the terms in the text and return the entries.
 
@@ -2053,7 +2053,7 @@ Sample output
 ```
 
 
-## `GET /tokenizers`
+## GET /tokenizers
 
 Show a list of supported methods for tokenization and stemming
 
@@ -2090,7 +2090,7 @@ Sample output
 }
 ```
 
-## `POST /tokenizers`
+## POST /tokenizers
 
 get a list of token using the selected analyzer
 
@@ -2176,7 +2176,7 @@ Sample output
 }
 ```
 
-## `POST /analyzers_playground`
+## POST /analyzers_playground
 
 used to test analyzers on the fly
 
@@ -2268,7 +2268,7 @@ Sample output
 }
 ```
 
-## `POST /spellcheck/terms`
+## POST /spellcheck/terms
 
 terms spellchecker based on knowledgebase text 
 
