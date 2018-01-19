@@ -185,6 +185,35 @@ Sample response:
 }
 ```
 
+## `DELETE /user/<user_id>`
+
+Delete an existing user
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/user/test_user 
+
+Sample response:
+
+```json
+{
+   "version" : 10,
+   "dtype" : "user",
+   "id" : "test_user",
+   "index" : "starchat_system_0.user",
+   "found" : true
+}
+```
+
 ## `POST /user_gen/test_user `
 
 Generate the record for a user with hashed password and a randomly generated salt.
