@@ -185,7 +185,7 @@ Sample response:
 }
 ```
 
-## `DELETE /user/<user_id>`
+## `DELETE /user/\<user_id\>`
 
 Delete an existing user
 
