@@ -116,6 +116,8 @@
         
             <li><a href="#put-user">PUT /user</a></li>
         
+            <li><a href="#delete-useruser_id">DELETE /user/<user_id></a></li>
+        
             <li><a href="#post-user_gentest_user">POST /user_gen/test_user</a></li>
         
             <li><a href="#post-get_next_response">POST /get_next_response</a></li>
@@ -329,15 +331,39 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-user_gentest_user"><code>POST /user_gen/test_user</code></h2>
-<p>Generate the record for a user with hashed password and a randomly generated salt.
-The user must be then inserted into the system.</p>
+<h2 id="delete-useruser_id"><code>DELETE /user/&lt;user_id&gt;</code></h2>
+<p>Delete an existing user</p>
 <p>Output JSON</p>
 <h3 id="requirements_6">Requirements</h3>
 <ul>
 <li>The function requires "admin" credentials</li>
 </ul>
 <h3 id="sample-call_6">Sample call</h3>
+<pre><code class="bash">PORT=&quot;${1:-8888}&quot;
+curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
+  -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/user/test_user 
+
+Sample response:
+
+```json
+{
+   &quot;version&quot; : 10,
+   &quot;dtype&quot; : &quot;user&quot;,
+   &quot;id&quot; : &quot;test_user&quot;,
+   &quot;index&quot; : &quot;starchat_system_0.user&quot;,
+   &quot;found&quot; : true
+}
+</code></pre>
+
+<h2 id="post-user_gentest_user"><code>POST /user_gen/test_user</code></h2>
+<p>Generate the record for a user with hashed password and a randomly generated salt.
+The user must be then inserted into the system.</p>
+<p>Output JSON</p>
+<h3 id="requirements_7">Requirements</h3>
+<ul>
+<li>The function requires "admin" credentials</li>
+</ul>
+<h3 id="sample-call_7">Sample call</h3>
 <pre><code class="bash">PORT=${1:-8888}
 
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
@@ -384,7 +410,7 @@ about the next state.</p>
 
 </code></pre>
 
-<h3 id="requirements_7">Requirements</h3>
+<h3 id="requirements_8">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -503,7 +529,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="get-decisiontable"><code>GET /decisiontable</code></h2>
 <p>Get a document by ID</p>
 <p>Output JSON</p>
-<h3 id="requirements_8">Requirements</h3>
+<h3 id="requirements_9">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -557,7 +583,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="put-decisiontable"><code>PUT /decisiontable</code></h2>
 <p>Output JSON</p>
-<h3 id="requirements_9">Requirements</h3>
+<h3 id="requirements_10">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -588,7 +614,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="post-decisiontable"><code>POST /decisiontable</code></h2>
 <p>Insert a new document.</p>
 <p>Output JSON</p>
-<h3 id="requirements_10">Requirements</h3>
+<h3 id="requirements_11">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -627,7 +653,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="delete-decisiontable"><code>DELETE /decisiontable</code></h2>
 <p>Delete a document by ID</p>
 <p>Output JSON</p>
-<h3 id="requirements_11">Requirements</h3>
+<h3 id="requirements_12">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -668,7 +694,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="post-decisiontable_upload_csv"><code>POST /decisiontable_upload_csv</code></h2>
 <p>upload load a csv file on decisiontable</p>
 <p>Output JSON</p>
-<h3 id="requirements_12">Requirements</h3>
+<h3 id="requirements_13">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -826,7 +852,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="post-decisiontable_search"><code>POST /decisiontable_search</code></h2>
 <p>Update a document</p>
 <p>Output JSON</p>
-<h3 id="requirements_13">Requirements</h3>
+<h3 id="requirements_14">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -888,7 +914,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="get-decisiontable_analyzer"><code>GET /decisiontable_analyzer</code></h2>
 <p>Get and return the map of analyzer for each state</p>
 <p>Output JSON</p>
-<h3 id="requirements_14">Requirements</h3>
+<h3 id="requirements_15">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -997,7 +1023,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="post-decisiontable_analyzer"><code>POST /decisiontable_analyzer</code></h2>
 <p>Load/reload the map of analyzer from ES</p>
 <p>Output JSON</p>
-<h3 id="requirements_15">Requirements</h3>
+<h3 id="requirements_16">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -1020,7 +1046,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="get-knowledgebase"><code>GET /knowledgebase</code></h2>
 <p>Return a document by ID</p>
 <p>Output JSON</p>
-<h3 id="requirements_16">Requirements</h3>
+<h3 id="requirements_17">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -1071,7 +1097,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="post-knowledgebase"><code>POST /knowledgebase</code></h2>
 <p>Insert a new document</p>
-<h3 id="requirements_17">Requirements</h3>
+<h3 id="requirements_18">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -1139,7 +1165,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="delete-knowledgebase"><code>DELETE /knowledgebase</code></h2>
 <p>Delete a document by ID</p>
 <p>Output JSON</p>
-<h3 id="requirements_18">Requirements</h3>
+<h3 id="requirements_19">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -1180,7 +1206,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="put-knowledgebase"><code>PUT /knowledgebase</code></h2>
 <p>Update an existing document</p>
 <p>Output JSON</p>
-<h3 id="requirements_19">Requirements</h3>
+<h3 id="requirements_20">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -1215,7 +1241,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="post-knowledgebase_search"><code>POST /knowledgebase_search</code></h2>
 <p>Output JSON</p>
-<h3 id="requirements_20">Requirements</h3>
+<h3 id="requirements_21">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -1294,7 +1320,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="post-language_guesser"><code>POST /language_guesser</code></h2>
 <p>Output JSON</p>
-<h3 id="requirements_21">Requirements</h3>
+<h3 id="requirements_22">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -1324,7 +1350,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h2 id="get-language_guesser"><code>GET /language_guesser</code></h2>
 <p>Check if a language is recognizable by the guesser</p>
 <p>Output JSON</p>
-<h3 id="requirements_22">Requirements</h3>
+<h3 id="requirements_23">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -1351,7 +1377,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="post-index_managementcreate"><code>POST /index_management/create</code></h2>
 <p>Output JSON</p>
-<h3 id="requirements_23">Requirements</h3>
+<h3 id="requirements_24">Requirements</h3>
 <ul>
 <li>Index name must start with the "index_" prefix followed by a language, and a sequence of alphanumeric characters separated by underscore e.g. index_<LANG>_<SUFFIX></li>
 <li>The function requires "admin" credentials</li>
@@ -1373,7 +1399,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 
 <h2 id="post-index_managementrefresh"><code>POST /index_management/refresh</code></h2>
 <p>Output JSON</p>
-<h3 id="requirements_24">Requirements</h3>
+<h3 id="requirements_25">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -1417,7 +1443,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="get-index_management"><code>GET /index_management</code></h2>
 <p>Output JSON</p>
-<h3 id="requirements_25">Requirements</h3>
+<h3 id="requirements_26">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -1439,7 +1465,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="put-index_management"><code>PUT /index_management</code></h2>
 <p>Output JSON</p>
-<h3 id="requirements_26">Requirements</h3>
+<h3 id="requirements_27">Requirements</h3>
 <ul>
 <li>Index must exists</li>
 <li>The function requires "admin" credentials</li>
@@ -1462,7 +1488,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 
 <h2 id="delete-index_management"><code>DELETE /index_management</code></h2>
 <p>Output JSON</p>
-<h3 id="requirements_27">Requirements</h3>
+<h3 id="requirements_28">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires admin credentials</li>
@@ -1484,7 +1510,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 
 <h2 id="post-termindex"><code>POST /term/index</code></h2>
 <p>Index the term as indicated in the JSON. </p>
-<h3 id="requirements_28">Requirements</h3>
+<h3 id="requirements_29">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -1568,7 +1594,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="post-termget"><code>POST /term/get</code></h2>
 <p>Get one or more terms entry.</p>
-<h3 id="requirements_29">Requirements</h3>
+<h3 id="requirements_30">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -1641,7 +1667,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="delete-term"><code>DELETE /term</code></h2>
 <p>Delete the term.</p>
-<h3 id="requirements_30">Requirements</h3>
+<h3 id="requirements_31">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -1697,7 +1723,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="put-term"><code>PUT /term</code></h2>
 <p>Update the entry.</p>
-<h3 id="requirements_31">Requirements</h3>
+<h3 id="requirements_32">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
@@ -1782,7 +1808,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="get-termterm"><code>GET /term/term</code></h2>
 <p>Search for term (using Elasticsearch).</p>
-<h3 id="requirements_32">Requirements</h3>
+<h3 id="requirements_33">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -1837,7 +1863,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="get-termtext"><code>GET /term/text</code></h2>
 <p>Search for all the terms in the text and return the entries.</p>
-<h3 id="requirements_33">Requirements</h3>
+<h3 id="requirements_34">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -1914,7 +1940,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="get-tokenizers"><code>GET /tokenizers</code></h2>
 <p>Show a list of supported methods for tokenization and stemming</p>
-<h3 id="requirements_34">Requirements</h3>
+<h3 id="requirements_35">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -1943,7 +1969,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="post-tokenizers"><code>POST /tokenizers</code></h2>
 <p>get a list of token using the selected analyzer</p>
-<h3 id="requirements_35">Requirements</h3>
+<h3 id="requirements_36">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -2021,7 +2047,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <h2 id="post-analyzers_playground"><code>POST /analyzers_playground</code></h2>
 <p>used to test analyzers on the fly</p>
-<h3 id="requirements_36">Requirements</h3>
+<h3 id="requirements_37">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
@@ -2097,7 +2123,7 @@ curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot;
 
 <h2 id="post-spellcheckterms"><code>POST /spellcheck/terms</code></h2>
 <p>terms spellchecker based on knowledgebase text </p>
-<h3 id="requirements_37">Requirements</h3>
+<h3 id="requirements_38">Requirements</h3>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
