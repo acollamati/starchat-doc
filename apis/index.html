@@ -116,7 +116,7 @@
         
             <li><a href="#put-user">PUT /user</a></li>
         
-            <li><a href="#delete-useruser_id">DELETE /user/\<user_id\></a></li>
+            <li><a href="#delete-useruser_id">DELETE /user/<user_id></a></li>
         
             <li><a href="#post-user_gentest_user">POST /user_gen/test_user</a></li>
         
@@ -331,7 +331,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="delete-useruser_id"><code>DELETE /user/\&lt;user_id\&gt;</code></h2>
+<h2 id="delete-useruser_id"><code>DELETE /user/&lt;user_id&gt;</code></h2>
 <p>Delete an existing user</p>
 <p>Output JSON</p>
 <h3 id="requirements_6">Requirements</h3>
@@ -342,11 +342,10 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 <pre><code class="bash">PORT=&quot;${1:-8888}&quot;
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/user/test_user 
+</code></pre>
 
-Sample response:
-
-```json
-{
+<p>Sample response:</p>
+<pre><code class="json">{
    &quot;version&quot; : 10,
    &quot;dtype&quot; : &quot;user&quot;,
    &quot;id&quot; : &quot;test_user&quot;,
