@@ -185,7 +185,7 @@ Sample response:
 }
 ```
 
-## `DELETE /user/\<user_id\>`
+## `DELETE /user/<user_id>`
 
 Delete an existing user
 
@@ -201,6 +201,7 @@ Output JSON
 PORT="${1:-8888}"
 curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
   -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/user/test_user 
+```
 
 Sample response:
 
