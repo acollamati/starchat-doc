@@ -116,7 +116,7 @@
         
             <li><a href="#put-user">PUT /user</a></li>
         
-            <li><a href="#delete-useruser_id">DELETE /user/<user_id></a></li>
+            <li><a href="#delete-useruser_id">DELETE /user/user_id</a></li>
         
             <li><a href="#post-user_gentest_user">POST /user_gen/test_user</a></li>
         
@@ -188,7 +188,7 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="apis">APIs</h1>
-<h2 id="post-system_index_managementcreate"><code>POST /system_index_management/create</code></h2>
+<h2 id="post-system_index_managementcreate">POST /system_index_management/create</h2>
 <p>Create a new system index, this operation init. a new system index and is required 
 to start using starchat.</p>
 <p>Output JSON</p>
@@ -208,7 +208,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="get-system_index_management"><code>GET /system_index_management</code></h2>
+<h2 id="get-system_index_management">GET /system_index_management</h2>
 <p>Fetch and returns the informations about the system index</p>
 <p>Output JSON</p>
 <h3 id="requirements_1">Requirements</h3>
@@ -227,7 +227,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="delete-system_index_management"><code>DELETE /system_index_management</code></h2>
+<h2 id="delete-system_index_management">DELETE /system_index_management</h2>
 <p>Delete a system index, this operation destroy any user created</p>
 <p>Output JSON</p>
 <h3 id="requirements_2">Requirements</h3>
@@ -246,7 +246,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-user"><code>POST /user</code></h2>
+<h2 id="post-user">POST /user</h2>
 <p>Insert a new user to the system, the user record can be generated 
 using the '/user_gen/test_user' endpoint</p>
 <p>Output JSON</p>
@@ -277,7 +277,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="get-user"><code>GET /user</code></h2>
+<h2 id="get-user">GET /user</h2>
 <p>Fetch the informations about a user</p>
 <p>Output JSON</p>
 <h3 id="requirements_4">Requirements</h3>
@@ -304,7 +304,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="put-user"><code>PUT /user</code></h2>
+<h2 id="put-user">PUT /user</h2>
 <p>Update a user record</p>
 <p>Output JSON</p>
 <h3 id="requirements_5">Requirements</h3>
@@ -331,7 +331,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="delete-useruser_id"><code>DELETE /user/&lt;user_id&gt;</code></h2>
+<h2 id="delete-useruser_id">DELETE /user/user_id</h2>
 <p>Delete an existing user</p>
 <p>Output JSON</p>
 <h3 id="requirements_6">Requirements</h3>
@@ -354,7 +354,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-user_gentest_user"><code>POST /user_gen/test_user</code></h2>
+<h2 id="post-user_gentest_user">POST /user_gen/test_user</h2>
 <p>Generate the record for a user with hashed password and a randomly generated salt.
 The user must be then inserted into the system.</p>
 <p>Output JSON</p>
@@ -392,7 +392,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-get_next_response"><code>POST /get_next_response</code></h2>
+<h2 id="post-get_next_response">POST /get_next_response</h2>
 <p>Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction 
 about the next state.</p>
 <p>Data to post:</p>
@@ -525,7 +525,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <li>meaning: not found</li>
 <li>output data: no data returned</li>
 </ul>
-<h2 id="get-decisiontable"><code>GET /decisiontable</code></h2>
+<h2 id="get-decisiontable">GET /decisiontable</h2>
 <p>Get a document by ID</p>
 <p>Output JSON</p>
 <h3 id="requirements_9">Requirements</h3>
@@ -580,7 +580,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="put-decisiontable"><code>PUT /decisiontable</code></h2>
+<h2 id="put-decisiontable">PUT /decisiontable</h2>
 <p>Output JSON</p>
 <h3 id="requirements_10">Requirements</h3>
 <ul>
@@ -610,7 +610,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-decisiontable"><code>POST /decisiontable</code></h2>
+<h2 id="post-decisiontable">POST /decisiontable</h2>
 <p>Insert a new document.</p>
 <p>Output JSON</p>
 <h3 id="requirements_11">Requirements</h3>
@@ -649,7 +649,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="delete-decisiontable"><code>DELETE /decisiontable</code></h2>
+<h2 id="delete-decisiontable">DELETE /decisiontable</h2>
 <p>Delete a document by ID</p>
 <p>Output JSON</p>
 <h3 id="requirements_12">Requirements</h3>
@@ -690,7 +690,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-decisiontable_upload_csv"><code>POST /decisiontable_upload_csv</code></h2>
+<h2 id="post-decisiontable_upload_csv">POST /decisiontable_upload_csv</h2>
 <p>upload load a csv file on decisiontable</p>
 <p>Output JSON</p>
 <h3 id="requirements_13">Requirements</h3>
@@ -848,7 +848,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-decisiontable_search"><code>POST /decisiontable_search</code></h2>
+<h2 id="post-decisiontable_search">POST /decisiontable_search</h2>
 <p>Update a document</p>
 <p>Output JSON</p>
 <h3 id="requirements_14">Requirements</h3>
@@ -910,7 +910,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-decisiontable_analyzer"><code>GET /decisiontable_analyzer</code></h2>
+<h2 id="get-decisiontable_analyzer">GET /decisiontable_analyzer</h2>
 <p>Get and return the map of analyzer for each state</p>
 <p>Output JSON</p>
 <h3 id="requirements_15">Requirements</h3>
@@ -1019,7 +1019,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-decisiontable_analyzer"><code>POST /decisiontable_analyzer</code></h2>
+<h2 id="post-decisiontable_analyzer">POST /decisiontable_analyzer</h2>
 <p>Load/reload the map of analyzer from ES</p>
 <p>Output JSON</p>
 <h3 id="requirements_16">Requirements</h3>
@@ -1042,7 +1042,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-knowledgebase"><code>GET /knowledgebase</code></h2>
+<h2 id="get-knowledgebase">GET /knowledgebase</h2>
 <p>Return a document by ID</p>
 <p>Output JSON</p>
 <h3 id="requirements_17">Requirements</h3>
@@ -1094,7 +1094,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-knowledgebase"><code>POST /knowledgebase</code></h2>
+<h2 id="post-knowledgebase">POST /knowledgebase</h2>
 <p>Insert a new document</p>
 <h3 id="requirements_18">Requirements</h3>
 <ul>
@@ -1161,7 +1161,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="delete-knowledgebase"><code>DELETE /knowledgebase</code></h2>
+<h2 id="delete-knowledgebase">DELETE /knowledgebase</h2>
 <p>Delete a document by ID</p>
 <p>Output JSON</p>
 <h3 id="requirements_19">Requirements</h3>
@@ -1202,7 +1202,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="put-knowledgebase"><code>PUT /knowledgebase</code></h2>
+<h2 id="put-knowledgebase">PUT /knowledgebase</h2>
 <p>Update an existing document</p>
 <p>Output JSON</p>
 <h3 id="requirements_20">Requirements</h3>
@@ -1238,7 +1238,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-knowledgebase_search"><code>POST /knowledgebase_search</code></h2>
+<h2 id="post-knowledgebase_search">POST /knowledgebase_search</h2>
 <p>Output JSON</p>
 <h3 id="requirements_21">Requirements</h3>
 <ul>
@@ -1317,7 +1317,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-language_guesser"><code>POST /language_guesser</code></h2>
+<h2 id="post-language_guesser">POST /language_guesser</h2>
 <p>Output JSON</p>
 <h3 id="requirements_22">Requirements</h3>
 <ul>
@@ -1346,7 +1346,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-language_guesser"><code>GET /language_guesser</code></h2>
+<h2 id="get-language_guesser">GET /language_guesser</h2>
 <p>Check if a language is recognizable by the guesser</p>
 <p>Output JSON</p>
 <h3 id="requirements_23">Requirements</h3>
@@ -1374,7 +1374,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-index_managementcreate"><code>POST /index_management/create</code></h2>
+<h2 id="post-index_managementcreate">POST /index_management/create</h2>
 <p>Output JSON</p>
 <h3 id="requirements_24">Requirements</h3>
 <ul>
@@ -1396,7 +1396,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-index_managementrefresh"><code>POST /index_management/refresh</code></h2>
+<h2 id="post-index_managementrefresh">POST /index_management/refresh</h2>
 <p>Output JSON</p>
 <h3 id="requirements_25">Requirements</h3>
 <ul>
@@ -1440,7 +1440,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-index_management"><code>GET /index_management</code></h2>
+<h2 id="get-index_management">GET /index_management</h2>
 <p>Output JSON</p>
 <h3 id="requirements_26">Requirements</h3>
 <ul>
@@ -1462,7 +1462,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="put-index_management"><code>PUT /index_management</code></h2>
+<h2 id="put-index_management">PUT /index_management</h2>
 <p>Output JSON</p>
 <h3 id="requirements_27">Requirements</h3>
 <ul>
@@ -1485,7 +1485,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="delete-index_management"><code>DELETE /index_management</code></h2>
+<h2 id="delete-index_management">DELETE /index_management</h2>
 <p>Output JSON</p>
 <h3 id="requirements_28">Requirements</h3>
 <ul>
@@ -1507,7 +1507,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-termindex"><code>POST /term/index</code></h2>
+<h2 id="post-termindex">POST /term/index</h2>
 <p>Index the term as indicated in the JSON. </p>
 <h3 id="requirements_29">Requirements</h3>
 <ul>
@@ -1591,7 +1591,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-termget"><code>POST /term/get</code></h2>
+<h2 id="post-termget">POST /term/get</h2>
 <p>Get one or more terms entry.</p>
 <h3 id="requirements_30">Requirements</h3>
 <ul>
@@ -1664,7 +1664,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 </code></pre>
 
-<h2 id="delete-term"><code>DELETE /term</code></h2>
+<h2 id="delete-term">DELETE /term</h2>
 <p>Delete the term.</p>
 <h3 id="requirements_31">Requirements</h3>
 <ul>
@@ -1720,7 +1720,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="put-term"><code>PUT /term</code></h2>
+<h2 id="put-term">PUT /term</h2>
 <p>Update the entry.</p>
 <h3 id="requirements_32">Requirements</h3>
 <ul>
@@ -1805,7 +1805,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 </code></pre>
 
-<h2 id="get-termterm"><code>GET /term/term</code></h2>
+<h2 id="get-termterm">GET /term/term</h2>
 <p>Search for term (using Elasticsearch).</p>
 <h3 id="requirements_33">Requirements</h3>
 <ul>
@@ -1860,7 +1860,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-termtext"><code>GET /term/text</code></h2>
+<h2 id="get-termtext">GET /term/text</h2>
 <p>Search for all the terms in the text and return the entries.</p>
 <h3 id="requirements_34">Requirements</h3>
 <ul>
@@ -1937,7 +1937,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-tokenizers"><code>GET /tokenizers</code></h2>
+<h2 id="get-tokenizers">GET /tokenizers</h2>
 <p>Show a list of supported methods for tokenization and stemming</p>
 <h3 id="requirements_35">Requirements</h3>
 <ul>
@@ -1966,7 +1966,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-tokenizers"><code>POST /tokenizers</code></h2>
+<h2 id="post-tokenizers">POST /tokenizers</h2>
 <p>get a list of token using the selected analyzer</p>
 <h3 id="requirements_36">Requirements</h3>
 <ul>
@@ -2044,7 +2044,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-analyzers_playground"><code>POST /analyzers_playground</code></h2>
+<h2 id="post-analyzers_playground">POST /analyzers_playground</h2>
 <p>used to test analyzers on the fly</p>
 <h3 id="requirements_37">Requirements</h3>
 <ul>
@@ -2120,7 +2120,7 @@ curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot;
 }
 </code></pre>
 
-<h2 id="post-spellcheckterms"><code>POST /spellcheck/terms</code></h2>
+<h2 id="post-spellcheckterms">POST /spellcheck/terms</h2>
 <p>terms spellchecker based on knowledgebase text </p>
 <h3 id="requirements_38">Requirements</h3>
 <ul>
