@@ -626,7 +626,7 @@ Sample call
 
 ```bash
 curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/knowledgebase_search -d '{
-  "question": "thank you",
+  "question": "how can activate my iphone?",
   "verified": true,
   "doctype": "normal"
 }'
@@ -645,33 +645,21 @@ Sample output
             "doctype" : "normal",
             "question_scored_terms" : [
                [
-                  "validation",
+                  "activate",
                   0.0343148699683119
                ],
                [
-                  "imac",
+                  "iphone",
                   1.12982760046835
-               ],
-               [
-                  "aware",
-                  3.15048958129597
-               ],
-               [
-                  "ios",
-                  6.14545226791214
-               ],
-               [
-                  "activation",
-                  4.92133804309887
                ]
             ],
-            "answer" : "fine thanks",
+            "answer" : "Instructions here: example.com/iphone",
             "conversation" : "id:1000",
             "state" : "",
             "question_negative": [
               "thank you anyway"
             ],
-            "question" : "how are you?",
+            "question" : "how to activate the iphone",
             "status" : 0,
             "index_in_conversation" : 1,
             "topics" : "t1 t2",
