@@ -4,25 +4,24 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+        <meta name="description" content="None">
         
         
         <link rel="shortcut icon" href="./img/favicon.ico">
-
-	<title>StarChat Documentation</title>
-
+        <title>StarChat Documentation</title>
         <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.5.0.css" rel="stylesheet">
         <link href="./css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="./css/highlight.css">
-
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-
-        
+	
+	<script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script> 
     </head>
 
     <body class="homepage">
@@ -32,7 +31,6 @@
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
-            
             <!-- Expander button -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -40,38 +38,23 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            
-
-            <!-- Main title -->
             <a class="navbar-brand" href=".">StarChat Documentation</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
-            
                 <!-- Main navigation -->
                 <ul class="nav navbar-nav">
-                
-                
                     <li class="active">
                         <a href=".">Home</a>
                     </li>
-                
-                
-                
                     <li >
                         <a href="apis/">APIs</a>
                     </li>
-                
-                
-                
                     <li >
                         <a href="about/">About</a>
                     </li>
-                
-                
                 </ul>
-            
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -79,7 +62,6 @@
                         <i class="fa fa-search"></i> Search
                     </a>
                 </li>
-                
                     <li class="disabled">
                         <a rel="next" >
                             <i class="fa fa-arrow-left"></i> Previous
@@ -90,79 +72,42 @@
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
-                
-                
             </ul>
         </div>
     </div>
 </div>
 
         <div class="container">
-            
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-    
         <li class="main active"><a href="#welcome">Welcome!</a></li>
-        
-    
         <li class="main "><a href="#how-to-contribute">How to contribute</a></li>
-        
-    
         <li class="main "><a href="#quick-start">Quick Start</a></li>
-        
             <li><a href="#requirements">Requirements</a></li>
-        
             <li><a href="#setup-with-docker-recommended">Setup with Docker (recommended)</a></li>
-        
             <li><a href="#install-without-docker">Install without Docker</a></li>
-        
             <li><a href="#install-local-docker-for-testing-branches">Install local Docker (for testing branches)</a></li>
-        
             <li><a href="#test-the-installation">Test the installation</a></li>
-        
             <li><a href="#configuration-of-the-chatbot-decision-table">Configuration of the chatbot (Decision Table)</a></li>
-        
             <li><a href="#nlp-processing">NLP processing</a></li>
-        
+            <li><a href="#analyzer">Analyzer</a></li>
             <li><a href="#configuration-of-the-answer-recommender-knowledge-base">Configuration of the answer recommender (Knowledge Base)</a></li>
-        
             <li><a href="#manaus">Manaus</a></li>
-        
-    
         <li class="main "><a href="#technology">Technology</a></li>
-        
             <li><a href="#how-does-starchat-work">How does StarChat work?</a></li>
-        
             <li><a href="#configuration-of-the-decisiontable">Configuration of the DecisionTable</a></li>
-        
             <li><a href="#client-functions">Client functions</a></li>
-        
             <li><a href="#mechanics">Mechanics</a></li>
-        
             <li><a href="#scalability">Scalability</a></li>
-        
             <li><a href="#security">Security</a></li>
-        
-    
         <li class="main "><a href="#indexing-terms-on-term-table">Indexing terms on term table</a></li>
-        
-    
         <li class="main "><a href="#test">Test</a></li>
-        
             <li><a href="#unit-tests">Unit tests</a></li>
-        
             <li><a href="#test-scripts-with-sample-api-calls">test scripts with sample API calls</a></li>
-        
-    
         <li class="main "><a href="#troubleshooting">Troubleshooting</a></li>
-        
             <li><a href="#docker-start-from-scratch">Docker: start from scratch</a></li>
-        
             <li><a href="#docker-compose-analyzers-are-not-loaded">docker-compose: Analyzers are not loaded</a></li>
-        
             <li><a href="#docker-size-of-virtual-memory">Docker: Size of virtual memory</a></li>
-        
-    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -369,33 +314,73 @@ you only have to configure a conversation flow and eventually a front-end client
 <p>NLP processing is of course the core of any chatbot. As you have noted in the  <a href="https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv">CSV provided in the doc/ directory</a> there are two fields defining when StarChat should trigger a state -<code>analyzer</code> and <code>queries</code>.</p>
 <h3 id="queries">Queries</h3>
 <p>If the <code>analyzer</code> field is empty, StarChat will query Elasticsearch for the state containing the most similar sentence in the field <code>queries</code>. We have carefully configured Elasticsearch in order to provide good answers (e.g. boosting results where the same words appear etc), and results are... acceptable. But you are encouraged to use the <code>analyzer</code> field, documented below.</p>
-<h3 id="analyzer">Analyzer</h3>
-<p>Through the <code>analyzer</code>s, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the  <a href="https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv">CSV provided in the doc/ directory</a> for the state <code>forgot_password</code>:</p>
-<p><code>and(or(keyword("reset"),keyword("forgot")),keyword("password"))</code></p>
-<p>The <em>expression</em> <code>and</code> and <code>or</code> are called the <em>operators</em>, while <code>keyword</code> is an <em>atom</em> </p>
-<h4 id="expressions-atoms">Expressions: Atoms</h4>
-<p>Presently, the <code>keyword("reset")</code> in the example provides a very simple score: occurrence of the word <em>reset</em> in the user's query divided by the total number of words. If evaluated agains the sentence "Want to reset my password", <code>keyword("reset")</code> will currently return 0.2.  <em>NB</em> This is just a temporary score used while our NLP library <a href="https://github.com/GetJenny/manaus">manaus</a> is not integrated into StarChat.</p>
+<h2 id="analyzer">Analyzer</h2>
+<p>The <code>analyzers</code> are a Domain Specific Language which allow to put together various functions using logical operators.</p>
+<p>Through the <code>analyzers</code>, you can leverage on various NLP algorithms included in StarChat and combine the results of those algorithms with other rules. For instance you might want to get into the state which asks for the email only if a variable "email" is not set. Or you want to escalate to a human operator after you detect swearing for three times. Or you want to escalate only on working days. You can do all that with the <code>analyzers</code>.</p>
+<p>We can have a look at the simple example included in the  <a href="https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv">CSV provided in the doc/ directory</a> for the state <code>forgot_password</code>:</p>
+<pre><code>booleanAnd(keyword(&quot;password&quot;),booleanOr(keyword(&quot;reset&quot;),keyword(&quot;forgot&quot;)))
+</code></pre>
+
+<p>Another example. Imagine we have a state <code>send-updates</code>. In this state StarChat proposes the question "Where can we send you updates?". In the config file:</p>
+<pre><code>state           | ... | bubble                              | ...
+send-updates    | ... | &quot;Where can we send you updates?&quot;    |
+</code></pre>
+
+<p>In the state <code>send-email</code> we have the anlyzer field with:</p>
+<pre><code>booleanAnd(lastTravStateIs(&quot;send-updates&quot;), matchEmailAddress(&quot;verification_&quot;))
+</code></pre>
+
+<p>this means <code>send-email</code> will be triggered only after <code>send-updates</code> (because of <code>lastTravStateIs</code>) <em>and</em> if an email address is detected (because of <code>matchEmailAddress</code>). This will also set the variable <code>verification_email</code>.</p>
+<p>In addition to that, an <code>analayzer</code> could be developed (we haven't) which accepts others arguments, for example:</p>
+<p><code>sendVerificationEmail("verification_", "Email about Verification", "Here is your verification link {temp_verification_link})</code></p>
+<p>and retrieve the <code>temp_verification_link</code> from an API.</p>
+<p><strong>TODO</strong> It is fundamental here to build a set of metadata which allows any other component to receive all needed information about the analyzer. For instance, the <code>sendVerificationEmail</code> could have something like:</p>
+<pre><code class="json">[
+    &quot;documentation&quot;: &quot;Send an email with subject and body. If successful returns 1.0 and sets the variables. If not returns 0 and does not set the variables.&quot;
+    &quot;argument_list&quot;: [&quot;'prefix' of the variable 'prefix_email'&quot;, 
+                      &quot;Subject of the email to be sent&quot;, &quot;Body of the mail&quot;],
+    &quot;created_variables&quot;: {  // Variables it creates
+        &quot;__temp__verification_link&quot;: &quot;Link provided by the brand's API&quot;, //will after usage because starts with __temp__
+        &quot;prefix_email&quot;: &quot;email address&quot;
+        },
+    &quot;used_variables&quot;: {  // Variables it expects to find in the state (none here)
+        }
+
+</code></pre>
+
+<h3 id="how-the-analyzers-are-organized">How the <code>analyzers</code> are organized</h3>
+<p>The <code>analyzer</code> DSL building blocks are the <em>expression</em>. For instance, 
+<code>or</code>, <code>and</code>, <code>keyword</code> are all <em>expressions</em>. </p>
+<p>Espressions are then divided into <em>operators</em> (<code>or</code>...) and <em>atoms</em> (<code>keyword</code>).</p>
+<h3 id="expressions-atoms">Expressions: Atoms</h3>
+<p>Presently, the <code>keyword("reset")</code> in the example provides a very simple score: occurrence of the word <em>reset</em> in the user's query divided by the total number of words. If evaluated agains the sentence "Want to reset my password", <code>keyword("reset")</code> will currently return 0.2.  </p>
+<p><strong>TODO</strong>: This is just a temporary score used while our NLP library <a href="https://github.com/GetJenny/manaus">manaus</a> is not integrated into the decision table.</p>
 <p>These are currently the expression you can use to evaluate the goodness of a query (see <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/DefaultFactoryAtomic.scala">DefaultFactoryAtomic</a> and <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/starchat/analyzer/atoms/StarchatFactoryAtomic.scala">StarchatFactoryAtomic</a>:</p>
 <ul>
-<li><em>keyword("word")</em>: as explained above, normalized</li>
-<li><em>regex</em>: evaluate a regular expression, not normalized</li>
-<li><em>search(state_name)</em>: takes a state name as argument, queries elastic search and returns the score of the most similar query in the field  <code>queries</code> of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g. <code>search("lost_password_state")</code> </li>
-<li><em>synonym("word")</em>: gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this <a href="http://bionlp-www.utu.fi/wv_demo/">word2vec demo</a> by <a href="http://bionlp.utu.fi/">Turku University</a></li>
-<li><em>similar("a whole sentence")</em>:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)</li>
-<li><em>similarState(state_name)</em>:  same as above, but for the sentences in the field "queries" of the state in the argument.</li>
-<li><em>similarEucEmd("a whole sentence")</em>: gives a non-normalized euclidean distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)</li>
-<li><em>similarEucEmdState(state_name)</em>: same as above, but for the sentences in the field "queries" of the state in the argument.</li>
-<li><em>similarCosEmd("a whole sentence")</em>: gives a normalized cosine distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)</li>
-<li><em>similarCosEmdState(state_name)</em>: same as above, but for the sentences in the field "queries" of the state in the argument.</li>
+<li><em>keyword("pass.*")</em>: as explained above, detects any word starting with "pass". Normalized.</li>
+<li><em>regex(regex)</em>: evaluate a regular expression, not normalized</li>
+<li><em>search(state-name)</em>: take a state name as argument, queries elastic search and returns the score of the most similar query in the field  <code>queries</code> of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g. <code>search("lost_password_state")</code> </li>
 <li><em>matchPatternRegex(regex)</em>: A generic pattern extraction analyzer, it extract named patterns matching a given regex e.g. the following will match tree numbers separated by semicolumn: [first,second,third](?:([0-9]+:[0-9]:[0-9]+) if the regex matches it will create the entries into the state variables dictionary e.g.: 10:11:12 will result in Map("first.0" -&gt; "10", "second.0" -&gt; "11", "third.0" -&gt; "12") the number at the end of the name is an index incremented for multiple occurrences of the pattern in the query</li>
-<li><em>matchDateDDMMYYYY(prefix)</em>: parse a date in DDMMYYYY format is built using the matchPatternRegex with the following regex: "(?:(?:[^0-9]+|\A)(0[1-9]|[12][0-9]|3[01])(?:[- \/.])(0[1-9]|1[012])(?:[- \/.])((?:19|20)\d\d)(?:[^0-9]+|$))"</li>
-<li><em>existsVariable(variable_name)</em>: check whether a variable exists or not </li>
-<li><em>hasTravState</em>(state_name): check if a state_name is present into the history of traversed states</li>
-<li><em>lastTravStateIs</em>(state_name): check if the last traversed state is state_name</li>
-<li><em>prevTravStateIs(state_name)</em>: check if the last but one traversed state is state_name</li>
-<li><em>distance("keyword1", ..., "keyword N")</em>: calculate the cosine distance between the query and the list of keywords, this analyzer can be called using <code>cosDistanceKeywords</code></li>
+<li><em>matchDateDDMMYYYY(prefix)</em>: parse a date in DDMMYYYY format and set <code>prefixday.0</code>, <code>prefixmonth.0</code>, <code>prefixyear.0</code>.</li>
+<li><em>existsVariable(variable-name)</em>: check whether a variable exists or not </li>
+<li><em>hasTravState(state-name)</em>: check if a state_name is present into the history of traversed states</li>
+<li><em>lastTravStateIs(state-name)</em>: check if the last traversed state is state_name</li>
+<li><em>prevTravStateIs(state-name)</em>: check if the last but one traversed state is state_name</li>
+<li><em>distance("forget.<em>", ..., "pass.</em>")</em>: score based on the (cosine) distance between the query and the list of words in the argument. </li>
 </ul>
-<h4 id="expressions-operators">Expressions: Operators</h4>
+<!--Only if you have loaded a Word2Vec model:
+
+* _synonym("word")_: gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this [word2vec demo](http://bionlp-www.utu.fi/wv_demo/) by [Turku University](http://bionlp.utu.fi/)
+* _similar("a whole sentence")_:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)
+* _similarState(state-name)_ :  same as above, but for the sentences in the field "queries" of the state in the argument.
+* _similarEucEmd("a whole sentence")_: gives a non-normalized euclidean distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)
+* _similarEucEmdState(state-name)_: same as above, but for the sentences in the field "queries" of the state in the argument.
+* _similarCosEmd("a whole sentence")_: gives a normalized cosine distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)
+* _similarCosEmdState(state-name)_: same as above, but for the sentences in the field "queries" of the state in the argument.
+
+-->
+
+<h3 id="expressions-operators">Expressions: Operators</h3>
 <p>Operators evaluate the output of one or more expression and return a value. Currently, the following operators are implemented (the the <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/operators/DefaultFactoryOperator.scala">source code</a>):</p>
 <ul>
 <li><em>boolean or</em>:   calles matches of all the exprassions it contains and returns true or false. It can be called using <code>bor</code></li>
@@ -405,7 +390,7 @@ you only have to configure a conversation flow and eventually a front-end client
 <li><em>disjunction</em>:  as above, the probability that at least one is true (<code>1-(1-P(A))*(1-P(B))</code>)</li>
 <li><em>max</em>: takes the max score of returned by the expression arguments</li>
 </ul>
-<h4 id="technical-corner-expressions">Technical corner: <code>expressions</code></h4>
+<h3 id="technical-corner-expressions">Technical corner: <code>expressions</code></h3>
 <p><a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/expressions/Expression.scala">Expressions</a>, like <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/KeywordAtomic.scala#L18">keywords</a> in the example, are called <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/AbstractAtomic.scala">atoms</a>, and have the following methods/members:</p>
 <ol>
 <li><code>def evaluate(query: String): Double</code>: produce a score. It might be normalized to 1 or not (set <code>val isEvaluateNormalized: Boolean</code> accordingly)</li>
@@ -668,51 +653,43 @@ elastisearch exited with code 78
 <p>run:</p>
 <pre><code class="bash">sysctl -w vm.max_map_count=262144
 </code></pre></div>
-            
         </div>
 
         <footer class="col-md-12">
             <hr>
-            
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-
-        <script src="./js/jquery-1.10.2.min.js"></script>
-        <script src="./js/bootstrap-3.0.3.min.js"></script>
-        <script src="./js/highlight.pack.js"></script>
         <script>var base_url = '.';</script>
         <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
-        <script src="./js/base.js"></script>
-
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+        <script src="./js/base.js"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
                     </div>
-                    <div class="modal-body">
-                        <p>
-                            From here you can search these documents. Enter
-                            your search terms below.
-                        </p>
-                        <form role="form">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
-                            </div>
-                        </form>
-                        <div id="mkdocs-search-results"></div>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
+    </div>
+</div>
 
     </body>
 </html>
 
 <!--
-MkDocs version : 0.14.0
-Build Date UTC : 2018-01-19 13:21:19.505936
+MkDocs version : 0.16.3
+Build Date UTC : 2018-05-24 17:52:54
 -->
