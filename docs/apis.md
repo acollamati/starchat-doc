@@ -1,6 +1,266 @@
 # APIs
 
-## `POST /get_next_response` 
+## POST /system_index_management/create
+
+Create a new system index, this operation init. a new system index and is required 
+to start using starchat.
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/system_index_management/create"
+```
+
+Sample response:
+
+```json
+{
+   "message" : "IndexCreation: user(starchat_system_0.user, true) refresh_decisiontable(starchat_system_0.refresh_decisiontable, true)"
+}
+```
+
+## GET /system_index_management
+
+Fetch and returns the informations about the system index
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET "http://localhost:${PORT}/system_index_management"
+```
+
+Sample response:
+
+```json
+{
+   "message" : "IndexCheck: user(starchat_system_0.user, true) refresh_decisiontable(starchat_system_0.refresh_decisiontable, true)"
+}
+```
+
+## DELETE /system_index_management
+
+Delete a system index, this operation destroy any user created
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X DELETE "http://localhost:${PORT}/system_index_management"
+```
+
+Sample response:
+
+```json
+{
+   "message" : "IndexDeletion: user(starchat_system_0.user, true) refresh_decisiontable(starchat_system_0.refresh_decisiontable, true)"
+}
+```
+
+## POST /user
+
+Insert a new user to the system, the user record can be generated 
+using the '/user_gen/test_user' endpoint
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/user -d '{
+        "id": "test_user",
+        "password": "3c98bf19cb962ac4cd0227142b3495ab1be46534061919f792254b80c0f3e566f7819cae73bdc616af0ff555f7460ac96d88d56338d659ebd93e2be858ce1cf9", 
+        "salt": "salt",
+        "permissions": {
+                "index_english_0": ["read", "write"]
+        }
+}'
+```
+
+Sample response:
+
+```json
+{
+   "version" : 1,
+   "created" : true,
+   "index" : "starchat_system_0.user",
+   "dtype" : "user",
+   "id" : "test_user"
+}
+```
+
+## GET /user
+
+Fetch the informations about a user
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+USERNAME=${2:-"admin"}
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET http://localhost:${PORT}/user/${USERNAME}
+```
+
+Sample response:
+
+```json
+{
+   "permissions" : {
+      "admin" : [
+         "admin"
+      ]
+   },
+   "salt" : "salt2",
+   "id" : "admin",
+   "password" : "ce822ea3bd2ac45ed908f0fac0c81d95df7e59ad554ebed5e173113f5fb97a6c585803233136dd6b16b02742f50dd8cff6fac97ff827394e694f63198618e02c"
+}
+```
+
+## PUT /user
+
+Update a user record
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+ -H "Content-Type: application/json" -X PUT http://localhost:${PORT}/user/test_user -d '{
+        "permissions": {
+                "index_english_0": ["read"]
+        }
+}'
+```
+
+Sample response:
+
+```json
+{
+   "version" : 2,
+   "created" : false,
+   "dtype" : "user",
+   "index" : "starchat_system_0.user",
+   "id" : "test_user"
+}
+```
+
+## DELETE /user/user_id
+
+Delete an existing user
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT="${1:-8888}"
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/user/test_user 
+```
+
+Sample response:
+
+```json
+{
+   "version" : 10,
+   "dtype" : "user",
+   "id" : "test_user",
+   "index" : "starchat_system_0.user",
+   "found" : true
+}
+```
+
+## POST /user_gen/test_user
+
+Generate the record for a user with hashed password and a randomly generated salt.
+The user must be then inserted into the system.
+
+Output JSON
+
+### Requirements
+
+* The function requires "admin" credentials
+
+### Sample call 
+
+```bash
+PORT=${1:-8888}
+
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/user_gen/test_user -d '{
+        "password": "plain text password",
+        "permissions": {
+                "index_english_0": ["read"],
+                "index_finnish_1": ["read", "write"]
+        }
+}'
+```
+
+Sample response:
+
+```json
+{
+   "password" : "d4cc0586d5d9116e755f5011d2c03e627821c2596820236ef230ff094176586d05fbfa98a198aaa08935df2849196d2648012f1e40ff2e40ca8c3f627b41e9db",
+   "salt" : "qoKJUyUwpvWM53PI",
+   "id" : "test_user",
+   "permissions" : {
+      "index_finnish_1" : [
+         "read",
+         "write"
+      ],
+      "index_english_0" : [
+         "read"
+      ]
+   }
+}
+```
+
+## POST /get_next_response
 
 Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction 
 about the next state.
@@ -20,6 +280,12 @@ Data to post:
 }
 
 ```
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
 ### Return codes
 
 ####200
@@ -28,19 +294,23 @@ Similar Json, see examples below
 
 ##### Example 1
 
-User input is "I forgot my password":
+User input is "how to install starchat":
 
 ```bash
-curl  -H "Content-Type: application/json" -X POST http://localhost:8888/get_next_response -d '{   
-    "conversation_id": "1234",
-    "user_input": { "text": "I forgot my password" },
-    "values": {
-        "return_value": "",
-        "data": {}
-    },
-    "threshold": 0.0,
-    "max_results": 4
-}'
+QUERY=${1:-"how to install starchat"}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+ -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d "{
+        \"conversation_id\": \"1234\",
+        \"user_input\": { \"text\": \"${QUERY}\" },
+        \"values\": {
+                \"return_value\": \"\",
+                \"data\": {\"varname1\": \"value1\", \"varname2\": \"value2\"}
+        },
+        \"threshold\": 0.0,
+        \"max_results\": 4
+}"
 ```
 
 returns:
@@ -48,69 +318,72 @@ returns:
 ```json
 [
    {
-      "analyzer" : "and(or(keyword(\"reset\"),keyword(\"forgot\")),keyword(\"password\"))",
-      "state" : "forgot_password",
-      "score" : 0.25,
-      "action" : "input_form",
-      "action_input" : {
-         "email" : "email"
+      "bubble" : "Just choose one of the two:\n<ul>\n<li>docker install (recommended)</li>\n<li>standalone install</li>\n</ul>",
+      "analyzer" : "band(bor(keyword(\"setup\"), keyword(\"install.*\")), bnot(bor(keyword(\"standalone\"), keyword(\"docker\"))))",
+      "state_data" : {},
+      "data" : {
+         "varname1" : "value1",
+         "varname2" : "value2"
       },
+      "failure_value" : "",
+      "state" : "install",
       "traversed_states" : [
-         "forgot_password"
+         "install"
       ],
-      "success_value" : "send_password_generation_link",
-      "data" : {},
-      "bubble" : "We can reset your password by sending you a message to your registered e-mail address. Please type your email address:",
-      "state_data" : {
-         "verification" : "did you mean you forgot the password?"
-      },
+      "conversation_id" : "1234",
+      "action" : "",
+      "action_input" : {},
+      "score" : 1,
       "max_state_count" : 0,
-      "failure_value" : "dont_understand",
-      "conversation_id" : "1234"
+      "success_value" : ""
    }
 ]
 ```
 
 ##### Example 2
 
-User inserts their email after having been in `forgot_password`. 
-The client sends:
+User input is: "how can I contribute to starchat?"
 
 ```bash
-curl  -H "Content-Type: application/json" -X POST http://localhost:8888/get_next_response -d '
-{
-    "conversation_id": "1234",
-    "user_input": { "text": "" },
-    "values": {
-        "return_value": "send_password_generation_link",
-        "data": { "email": "john@example.com" }
-    }
-}'
+QUERY=${1:-"how can I contribute to starchat?"}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+ -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d "{
+        \"conversation_id\": \"1234\",
+        \"user_input\": { \"text\": \"${QUERY}\" },
+        \"values\": {
+                \"return_value\": \"\",
+                \"data\": {\"varname1\": \"value1\", \"varname2\": \"value2\"}
+        },
+        \"threshold\": 0.0,
+        \"max_results\": 4
+}"
 ```
+
 and gets:
 
 ```json
 [
    {
-      "traversed_states" : [],
-      "failure_value" : "call_operator",
-      "success_value" : "any_further",
-      "action" : "send_password_generation_link",
-      "state" : "send_password_generation_link",
-      "max_state_count" : 0,
+      "analyzer" : "bor(keyword(\"contribute\"))",
       "state_data" : {},
-      "conversation_id" : "1234",
       "data" : {
-         "email" : "john@example.com"
+         "varname2" : "value2",
+         "varname1" : "value1"
       },
+      "traversed_states" : [
+         "contribute"
+      ],
+      "conversation_id" : "1234",
+      "bubble" : "To contribute to <a href=\"http://git.io/*chat\">StarChat</a>, please send us a pull request from your fork of this repository.\n<br>Our concise contribution guideline contains the bare minimum requirements of the code contributions.\n<br>Before contributing (or opening issues), you might want to email us at starchat@getjenny.com.",
+      "action" : "",
+      "state" : "contribute",
+      "max_state_count" : 0,
       "score" : 1,
-      "analyzer" : "",
-      "action_input" : {
-         "email" : "john@example.com",
-         "subject" : "New password",
-         "template" : "Hi,\nSomeone requested a new password for your account. You can set a new password here: %link%\nIf you did not request this, just ignore this message."
-      },
-      "bubble" : "Thank you. An e-mail will be sent to this address: john@example.com with your account details and the necessary steps for you to reset your password."
+      "failure_value" : "",
+      "action_input" : {},
+      "success_value" : ""
    }
 ]
 ```
@@ -142,11 +415,16 @@ Bad request:
 * meaning: not found
 * output data: no data returned
 
-## `GET /decisiontable` 
+## GET /decisiontable
 
 Get a document by ID
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -156,50 +434,59 @@ Sample call
 
 ```bash
 # retrieve one or more entries with given ids; ids can be specified multiple times
-curl -v -H "Content-Type: application/json" "http://localhost:8888/decisiontable?ids=further_details_access_question"
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+# retrieve one or more entries with given ids; ids can be specified multiple times
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" "http://localhost:${PORT}/${INDEX_NAME}/decisiontable?ids=further_details_access_question"
 ```
 
 Sample output
 
 ```json
 {
+   "total" : 1,
    "hits" : [
       {
-         "score" : 0,
          "document" : {
-            "execution_order" : 1,
-            "bubble" : "Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?",
+            "failure_value" : "dont_understand",
             "state" : "further_details_access_question",
+            "bubble" : "Can you specify which of the following problems you have? [NB works only if buttons can be shown!]",
+            "success_value" : "eval(show_buttons)",
+            "action_input" : {
+               "I want to call an operator" : "call_operator",
+               "Forgot Password" : "forgot_password",
+               "Specify your problem" : "specify_problem",
+               "None of the above" : "start",
+               "Account locked" : "account_locked"
+            },
             "max_state_count" : 0,
+            "analyzer" : "or(and(or(keyword(\"problem.*\"),keyword(\"issue.*\"),keyword(\"trouble.*\")),keyword(\"account\")))",
             "queries" : [
                "cannot access account",
                "problem access account"
             ],
+            "action" : "show_buttons",
             "state_data" : {
                "verification" : "did you mean you can't access to your account?"
             },
-            "action_input" : {
-               "None of the above" : "start",
-               "Account locked" : "account_locked",
-               "Forgot Password" : "forgot_password",
-               "Specify your problem" : "specify_problem",
-               "I want to call an operator" : "call_operator"
-            },
-            "analyzer" : "or(and(or(keyword(\"problem.*\"),keyword(\"issue.*\"),keyword(\"trouble.*\")),keyword(\"account\")),search(\"further_details_access_question\"))",
-            "success_value" : "eval(show_buttons)",
-            "action" : "show_buttons",
-            "failure_value" : "dont_understand"
-         }
+            "execution_order" : 1
+         },
+         "score" : 0
       }
    ],
-   "total" : 1,
    "max_score" : 0
 }
 ```
 
-## `PUT /decisiontable`
+## PUT /decisiontable
  
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes
 
@@ -209,27 +496,36 @@ Sample call
 
 ```bash
 # update the "further_details_access_question" entry in the DT
-curl -v -H "Content-Type: application/json" -X PUT http://localhost:8888/decisiontable/further_details_access_question -d '{
-  "queries": ["cannot access account", "problem access account", "unable to access to my account"]
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+# update the "further_details_access_question" entry in the DT
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X PUT http://localhost:${PORT}/${INDEX_NAME}/decisiontable/further_details_access_question -d '{
+        "queries": ["cannot access account", "problem access account", "unable to access to my account", "completely forgot my password"]
 }'
 ```
 
 Sample output
 ```json
 {
-    "created": false,
-    "dtype": "state",
-    "id": "further_details_access_question",
-    "index": "jenny-en-0",
-    "version": 2
+   "dtype" : "state",
+   "created" : false,
+   "index" : "index_english_0.state",
+   "version" : 2,
+   "id" : "further_details_access_question"
 }
 ```
 
-## `POST /decisiontable`
+## POST /decisiontable
 
 Insert a new document.
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with write permissions on the index
 
 ### Return codes
 
@@ -238,17 +534,21 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/decisiontable -d '{
-  "state": "further_details_access_question",
-  "execution_order": 1,
-  "max_state_count": 0,
-  "analyzer": "",
-  "queries": ["cannot access account", "problem access account"],
-  "bubble": "What seems to be the problem exactly?",
-  "action": "show_buttons",
-  "action_input": {"Forgot Password": "forgot_password", "Account locked": "account_locked", "Payment problem": "payment_problem", "Specify your problem": "specify_problem", "I want to call an operator": "call_operator", "None of the above": "start"},
-  "success_value": "eval(show_buttons)",
-  "failure_value": "dont_understand"
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/decisiontable -d '{
+        "state": "further_details_access_question",
+        "max_state_count": 0,
+        "execution_order": 0,
+        "analyzer": "",
+        "queries": ["cannot access account", "problem access account"],
+        "bubble": "What seems to be the problem exactly?",
+        "action": "show_buttons",
+        "action_input": {"Forgot Password": "forgot_password", "Account locked": "account_locked", "Payment problem": "payment_problem", "Specify your problem": "specify_problem", "I want to call an operator": "call_operator", "None of the above": "start"},
+    "state_data": {},
+        "success_value": "eval(show_buttons)",
+        "failure_value": "dont_understand"
 }'
 ```
 
@@ -259,16 +559,21 @@ Sample output
     "created": true,
     "dtype": "state",
     "id": "further_details_access_question",
-    "index": "jenny-en-0",
+    "index": "index_english_0.state",
     "version": 1
 }
 ```
 
-## `DELETE /decisiontable`
+## DELETE /decisiontable
 
 Delete a document by ID
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with write permissions on the index
 
 ### Return codes 
 
@@ -276,25 +581,31 @@ Output JSON
 
 Sample call
 ```bash
-curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/decisiontable/further_details_access_question
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+ -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable/further_details_access_question
 ```
 
 Sample output
 
 ```json
 {
-    "dtype": "state",
-    "found": true,
-    "id": "further_details_access_question",
-    "index": "jenny-en-0",
-    "version": 3
+  "dtype": "state",
+  "version": 7,
+  "found": true,
+  "id": "further_details_access_question",
+  "index":"index_english_0.state"
 }
 ```
 
 Sample call: delete all
 
 ```bash
-curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/decisiontable
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+ -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable
 ```
 
 Sample output: delete all
@@ -302,15 +613,188 @@ Sample output: delete all
 ```json
 {
    "message" : "delete",
-   "deleted" : 120
+   "deleted" : 18
 }
 ```
 
-## `POST /decisiontable_search`
+
+## POST /decisiontable_upload_csv
+
+upload load a csv file on decisiontable
+
+Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with write permissions on the index
+
+### Return codes
+
+#### 201
+
+Sample call
+
+```bash
+PORT=${1:-8888}
+INDEX_NAME=${2:-'index_english_0'}
+FILENAME=${3:-"`readlink -e ../../doc/decision_table_starchat_doc.csv`"}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+ -X POST --form "csv=@${FILENAME}" http://localhost:8888/${INDEX_NAME}/decisiontable_upload_csv
+```
+
+Sample output
+
+```json
+{
+   "data" : [
+      {
+         "index" : "index_english_0.state",
+         "id" : "help",
+         "created" : true,
+         "dtype" : "state",
+         "version" : 1
+      },
+      {
+         "dtype" : "state",
+         "version" : 1,
+         "created" : true,
+         "id" : "further_details_access_question",
+         "index" : "index_english_0.state"
+      },
+      {
+         "id" : "contribute",
+         "created" : true,
+         "index" : "index_english_0.state",
+         "dtype" : "state",
+         "version" : 1
+      },
+      {
+         "version" : 1,
+         "dtype" : "state",
+         "index" : "index_english_0.state",
+         "created" : true,
+         "id" : "quickstart"
+      },
+      {
+         "dtype" : "state",
+         "version" : 1,
+         "index" : "index_english_0.state",
+         "created" : true,
+         "id" : "docker_install"
+      },
+      {
+         "dtype" : "state",
+         "version" : 1,
+         "index" : "index_english_0.state",
+         "id" : "create_es_indices",
+         "created" : true
+      },
+      {
+         "dtype" : "state",
+         "version" : 1,
+         "id" : "delete_es_indexes",
+         "created" : true,
+         "index" : "index_english_0.state"
+      },
+      {
+         "version" : 1,
+         "dtype" : "state",
+         "index" : "index_english_0.state",
+         "created" : true,
+         "id" : "create_es_indexes"
+      },
+      {
+         "created" : true,
+         "id" : "index_data",
+         "index" : "index_english_0.state",
+         "dtype" : "state",
+         "version" : 1
+      },
+      {
+         "version" : 1,
+         "dtype" : "state",
+         "id" : "index_analyzer",
+         "created" : true,
+         "index" : "index_english_0.state"
+      },
+      {
+         "index" : "index_english_0.state",
+         "id" : "load_conf_file",
+         "created" : true,
+         "dtype" : "state",
+         "version" : 1
+      },
+      {
+         "dtype" : "state",
+         "version" : 1,
+         "created" : true,
+         "id" : "install",
+         "index" : "index_english_0.state"
+      },
+      {
+         "index" : "index_english_0.state",
+         "id" : "standalone_install",
+         "created" : true,
+         "dtype" : "state",
+         "version" : 1
+      },
+      {
+         "dtype" : "state",
+         "version" : 1,
+         "index" : "index_english_0.state",
+         "id" : "code_78",
+         "created" : true
+      },
+      {
+         "index" : "index_english_0.state",
+         "id" : "licence",
+         "created" : true,
+         "dtype" : "state",
+         "version" : 1
+      },
+      {
+         "index" : "index_english_0.state",
+         "created" : true,
+         "id" : "terrible_feedback",
+         "version" : 1,
+         "dtype" : "state"
+      },
+      {
+         "id" : "call_operator",
+         "created" : true,
+         "index" : "index_english_0.state",
+         "dtype" : "state",
+         "version" : 1
+      },
+      {
+         "version" : 1,
+         "dtype" : "state",
+         "id" : "any_further",
+         "created" : true,
+         "index" : "index_english_0.state"
+      },
+      {
+         "index" : "index_english_0.state",
+         "id" : "dont_understand",
+         "created" : true,
+         "version" : 1,
+         "dtype" : "state"
+      }
+   ]
+}
+```
+
+## POST /decisiontable_search
 
 Update a document
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -318,58 +802,69 @@ Output JSON
 
 Sample call
 ```bash
-curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/decisiontable_search -d '{
-  "queries": "cannot access my account",
-  "min_score": 0.1,
-  "boost_exact_match_factor": 2.0
-}'
+Q="${1:-'cannot access my account'}"
+S="${2:-0.0}"
+B="${3:-100.0}"
+PORT=${4:-8888}
+INDEX_NAME=${5:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/decisiontable_search -d "{
+        \"queries\": \"${Q}\",
+        \"min_score\": ${S},
+        \"boost_exact_match_factor\": ${B},
+        \"from\": 0,
+        \"size\": 10
+}"
 ```
 
 Sample response 
 
 ```json
 {
-   "max_score" : 0.930855453014374,
+   "max_score" : 140.38037109375,
+   "total" : 1,
    "hits" : [
       {
+         "score" : 140.38037109375,
          "document" : {
-            "action_input" : {
-               "I want to call an operator" : "call_operator",
-               "Forgot Password" : "forgot_password",
-               "None of the above" : "start",
-               "Account locked" : "account_locked",
-               "Specify your problem" : "specify_problem"
-            },
-            "bubble" : "Hello and welcome to our customer service chat. Please note that while I am not a human operator, I will do my very best to assist You today. How may I help you?",
-            "success_value" : "eval(show_buttons)",
             "action" : "show_buttons",
+            "state_data" : {
+               "verification" : "did you mean you can't access to your account?"
+            },
+            "success_value" : "eval(show_buttons)",
+            "execution_order" : 1,
+            "bubble" : "Can you specify which of the following problems you have? [NB works only if buttons can be shown!]",
+            "action_input" : {
+               "None of the above" : "start",
+               "Forgot Password" : "forgot_password",
+               "I want to call an operator" : "call_operator",
+               "Specify your problem" : "specify_problem",
+               "Account locked" : "account_locked"
+            },
             "queries" : [
                "cannot access account",
                "problem access account"
             ],
-            "execution_order" : 1,
-            "max_state_count" : 0,
             "failure_value" : "dont_understand",
-            "state_data" : {
-               "verification" : "did you mean you can't access to your account?"
-            },
-            "analyzer" : "or(and(or(keyword(\"problem.*\"),keyword(\"issue.*\"),keyword(\"trouble.*\")),keyword(\"account\")),search(\"further_details_access_question\"))",
+            "max_state_count" : 0,
+            "analyzer" : "or(and(or(keyword(\"problem.*\"),keyword(\"issue.*\"),keyword(\"trouble.*\")),keyword(\"account\")))",
             "state" : "further_details_access_question"
-         },
-         "score" : 0.930855453014374
+         }
       }
-   ],
-   "total" : 1
+   ]
 }
 ```
 
-## `GET /decisiontable_analyzer` 
-
-(WORK IN PROGRESS, PARTIALLY IMPLEMENTED)
+## GET /decisiontable_analyzer
 
 Get and return the map of analyzer for each state
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -377,7 +872,10 @@ Output JSON
 
 Sample call
 ```bash
-curl -v -H "Content-Type: application/json" -X GET "http://localhost:8888/decisiontable_analyzer"
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET "http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer"
 ```
 
 Sample response
@@ -385,66 +883,137 @@ Sample response
 ```json
 {
    "analyzer_map" : {
-      "account_locked" : {
-         "analyzer" : "booleanand(keyword(\"locked\"), keyword(\"account\"), )",
-         "execution_order" : 1,
-         "build" : true
-      },
-      "call_operator" : {
-         "analyzer" : "and(or(keyword(\"call\"),keyword(\"talk\"),keyword(\"speak\")),keyword(\"operator\"))",
-         "execution_order" : 1,
-         "build" : true
-      },
-      "forgot_password" : {
+      "help" : {
          "execution_order" : 1,
          "build" : true,
-         "analyzer" : "and(or(keyword(\"reset\"),keyword(\"forgot\")),keyword(\"password\"))"
+         "analyzer" : "band(keyword(\"help\"))"
       },
-      "terrible_feedback" : {
+      "contribute" : {
          "build" : true,
-         "execution_order" : 1,
-         "analyzer" : "booleanor(keyword(\"idiot\"), keyword(\"fuck.*\"), keyword(\"screw\"), keyword(\"damn.*\"), keyword(\"asshole\"))"
+         "analyzer" : "bor(keyword(\"contribute\"))",
+         "execution_order" : 1
       },
-      "test_state" : {
-         "analyzer" : "booleanAnd(booleanNot(booleanOr(keyword(\"dont\"),keyword(\"don't\"))), keyword(\"test\"), booleanOr(keyword(\"send\"), keyword(\"get\")))",
-         "execution_order" : 1,
-         "build" : true
+      "index_analyzer" : {
+         "analyzer" : "band(bor(keyword(\"index\"),keyword(\"load\")), keyword(\"analyzer\"))",
+         "build" : true,
+         "execution_order" : 1
       },
       "further_details_access_question" : {
+         "analyzer" : "or(and(or(keyword(\"problem.*\"),keyword(\"issue.*\"),keyword(\"trouble.*\")),keyword(\"account\")))",
+         "build" : true,
+         "execution_order" : 1
+      },
+      "create_es_indices" : {
+         "analyzer" : "band(keyword(\"create\"), keyword(\"elastic.*\"),  bor(keyword(\"index\"),  keyword(\"indices\"),  keyword(\"indeces\"),  keyword(\"indexes\")))",
+         "build" : true,
+         "execution_order" : 1
+      },
+      "create_es_indexes" : {
+         "build" : true,
+         "analyzer" : "band(keyword(\"create\"), bor(keyword(\"index.*\"), keyword(\"indic.*\")))",
+         "execution_order" : 1
+      },
+      "call_operator" : {
+         "analyzer" : "band(bor(keyword(\"call\"),keyword(\"talk\"),keyword(\"speak\")),keyword(\"operator\"))",
+         "build" : true,
+         "execution_order" : 1
+      },
+      "index_data" : {
+         "execution_order" : 1,
+         "analyzer" : "band(keyword(\"index\"), keyword(\"data\"))",
+         "build" : true
+      },
+      "install" : {
          "execution_order" : 1,
          "build" : true,
-         "analyzer" : "or(and(or(keyword(\"problem.*\"),keyword(\"issue.*\"),keyword(\"trouble.*\")),keyword(\"account\")),search(\"further_details_access_question\"))"
+         "analyzer" : "band(bor(keyword(\"setup\"), keyword(\"install.*\")), bnot(bor(keyword(\"standalone\"), keyword(\"docker\"))))"
+      },
+      "load_conf_file" : {
+         "execution_order" : 1,
+         "analyzer" : "band(keyword(\"load.*\"), bor(keyword(\"config.*\"), band(keyword(\"decision\"), keyword(\"table\"))), keyword(\"file.*\"))",
+         "build" : true
+      },
+      "docker_install" : {
+         "execution_order" : 1,
+         "analyzer" : "band(keyword(\"docker\"), keyword(\"install.*\"))",
+         "build" : true
+      },
+      "delete_es_indexes" : {
+         "execution_order" : 1,
+         "build" : true,
+         "analyzer" : "band(keyword(\"delete\"), bor(keyword(\"index.*\"), keyword(\"indic.*\")))"
+      },
+      "code_78" : {
+         "analyzer" : "band(keyword(\"code\"),keyword(\"78\"))",
+         "build" : true,
+         "execution_order" : 1
+      },
+      "terrible_feedback" : {
+         "execution_order" : 1,
+         "build" : true,
+         "analyzer" : "booleanor(keyword(\"idiot\"), keyword(\"fuck.*\"), keyword(\"screw\"), keyword(\"damn.*\"), keyword(\"asshole\"))"
+      },
+      "standalone_install" : {
+         "analyzer" : "band(keyword(\"standal.*\"), keyword(\"install\"))",
+         "build" : true,
+         "execution_order" : 1
+      },
+      "quickstart" : {
+         "execution_order" : 1,
+         "build" : true,
+         "analyzer" : "band(bor(keyword(\"start\"), keyword(\"quickstart\")), keyword(\"starchat\"))"
+      },
+      "licence" : {
+         "build" : true,
+         "analyzer" : "bor(band(keyword(\"open\"), keyword(\"source\")), keyword(\"opensource\"), keyword(\"licence\"))",
+         "execution_order" : 1
       }
    }
 }
 ```
 
-## `POST /decisiontable_analyzer`
+## POST /decisiontable_analyzer
 
 Load/reload the map of analyzer from ES
 
 Output JSON
 
+### Requirements
+
+* Index must exists
+* The function requires user credentials with write permissions on the index
+
 ### Return codes 
 
 #### 200
 
 Sample call
+
 ```bash
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/decisiontable_analyzer"
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer"
 ```
 
 Sample response
 
 ```json
-{"num_of_entries":1}
+{
+   "num_of_entries" : 17
+}
 ```
 
-## `GET /knowledgebase`
+## GET /knowledgebase
 
 Return a document by ID
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -452,8 +1021,12 @@ Output JSON
 
 Sample call
 ```bash
+ID=${1:-0}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
 # retrieve one or more entries with given ids; ids can be specified multiple times
-curl -v -H "Content-Type: application/json" "http://localhost:8888/knowledgebase?ids=0"
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" "http://localhost:${PORT}/${INDEX_NAME}/knowledgebase?ids=${ID}"
 ```
 
 Sample response
@@ -491,26 +1064,58 @@ Sample response
 }
 ```
 
-## `POST /knowledgebase`
+## POST /knowledgebase
 
 Insert a new document
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with write permissions on the index
 
 ### Return codes 
 
 #### 201
 
 ```bash
-curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/knowledgebase -d '{
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/knowledgebase -d '{
 	"id": "0",
 	"conversation": "id:1000",
 	"index_in_conversation": 1,
 	"question": "thank you",
-	"question_negative": ["thank you anyway"],
+        "question_negative": ["ok, I will not talk with you anymore", "thank you anyway"],
 	"answer": "you are welcome!",
 	"question_scored_terms": [
 		[
-			"thank",
-			1.9
+			"currently",
+			1.0901874131103333
+		],
+		[
+			"installing",
+			2.11472759638322
+		],
+		[
+			"mac",
+			9.000484252244254
+		],
+		[
+			"reset",
+			4.34483238516225
+		],
+		[
+			"app",
+			1.2219061535961406
+		],
+		[
+			"device",
+			2.1679468390743414E-213
+		],
+		[
+			"devices",
+			4.1987625801077624E-268
 		]
 	],
 	"verified": true,
@@ -524,19 +1129,25 @@ curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/knowle
 Sample response
 
 ```json
-{   "dtype": "question",
-    "version": 1,
-    "id": "1",
-    "index": "jenny-en-0",
-    "created":true
+{
+   "created" : true,
+   "dtype" : "question",
+   "version" : 1,
+   "index" : "index_english_0.question",
+   "id" : "0"
 }
 ```
 
-## `DELETE /knowledgebase`
+## DELETE /knowledgebase
 
 Delete a document by ID
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with write permissions on the index
 
 ### Return codes 
 
@@ -545,25 +1156,31 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/knowledgebase/0
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/knowledgebase/0
 ```
 
 Sample output
 
 ```bash
 {
-   "id" : "0",
-   "version" : 5,
-   "index" : "jenny-en-0",
-   "dtype" : "question",
-   "found" : true
+    "dtype" : "question",
+    "version" : 5,
+    "found" : false,
+    "id" : "0",
+    "index" : "index_english_0.question"
 }
 ```
 
 Sample call: delete all
 
 ```bash
-curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/knowledgebase
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+ -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/knowledgebase
 ```
 
 Sample output: delete all
@@ -571,15 +1188,20 @@ Sample output: delete all
 ```json
 {
    "message" : "delete",
-   "deleted" : 10
+   "deleted" : 2
 }
 ```
 
-## `PUT /knowledgebase`
+## PUT /knowledgebase
 
 Update an existing document
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with write permissions on the index
 
 ### Return codes 
 
@@ -588,35 +1210,41 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X PUT http://localhost:8888/knowledgebase/0 -d '{
-    "question_scored_terms": [
-                [
-                        "thank",
-                        1.9
-                ],
-                [
-                        "thanks",
-                        1.9
-                ]
-    ]
-}'
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X PUT http://localhost:${PORT}/${INDEX_NAME}/knowledgebase/0 -d '{
+        "conversation": "id:1001",
+        "question": "thank you",
+        "answer": "you are welcome!",
+        "verified": true,
+        "topics": "t1 t2",
+        "doctype": "normal",
+        "state": "",
+        "status": 0
+}' 
 ```
 
 Sample response
 
 ```json
 {
-   "index" : "jenny-en-0",
    "dtype" : "question",
+   "index" : "index_english_0.question",
    "id" : "0",
-   "version" : 3,
+   "version" : 4,
    "created" : false
 }
 ```
 
-## `POST /knowledgebase_search`
+## POST /knowledgebase_search
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -625,55 +1253,85 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/knowledgebase_search -d '{
-  "question": "how can activate my iphone?",
-  "verified": true,
-  "doctype": "normal"
-}'
+QUERY=${1:-"how are you?"}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/knowledgebase_search -d "{
+        \"question\": \"${QUERY}\",
+        \"doctype\": \"normal\",
+        \"min_score\": 0.0
+}"
 ```
 
 Sample output
 
 ```json
 {
-   "max_score" : 1.15013706684113,
-   "total" : 2,
    "hits" : [
       {
          "document" : {
-            "id" : "1",
-            "doctype" : "normal",
             "question_scored_terms" : [
                [
-                  "activate",
-                  0.0343148699683119
+                  "currently",
+                  1.09018741311033
                ],
                [
-                  "iphone",
-                  1.12982760046835
+                  "installing",
+                  2.11472759638322
+               ],
+               [
+                  "mac",
+                  9.00048425224425
+               ],
+               [
+                  "reset",
+                  4.34483238516225
+               ],
+               [
+                  "app",
+                  1.22190615359614
+               ],
+               [
+                  "device",
+                  2.16794683907434e-213
+               ],
+               [
+                  "devices",
+                  4.19876258010776e-268
                ]
             ],
-            "answer" : "Instructions here: example.com/iphone",
-            "conversation" : "id:1000",
+            "question" : "thank you",
+            "id" : "0",
             "state" : "",
-            "question_negative": [
-              "thank you anyway"
-            ],
-            "question" : "how to activate the iphone",
-            "status" : 0,
-            "index_in_conversation" : 1,
+            "conversation" : "id:1001",
+            "answer" : "you are welcome!",
             "topics" : "t1 t2",
-            "verified" : true
+            "index_in_conversation" : 1,
+            "doctype" : "normal",
+            "status" : 0,
+            "verified" : true,
+            "question_negative" : [
+               "ok, I will not talk with you anymore",
+               "thank you anyway"
+            ]
          },
-         "score" : 1.15013706684113
+         "score" : 0.287682086229324
       }
-   ]
+   ],
+   "total" : 1,
+   "max_score" : 0.287682086229324
 }
 ```
 
-## `POST /language_guesser`
+## POST /language_guesser
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -682,9 +1340,13 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/language_guesser" -d "
+QUERY=${1:-"good morning, may I ask you a question?"}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/language_guesser" -d "
 {
-	\"input_text\": \"good morning, may I ask you a question?\"
+        \"input_text\": \"${QUERY}\"
 }"
 ```
 
@@ -699,9 +1361,16 @@ Sample output
 }
 ```
 
-## `GET /language_guesser`
+## GET /language_guesser
+
+Check if a language is recognizable by the guesser
 
 Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -710,64 +1379,33 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X GET "http://localhost:8888/language_guesser/en"
-```
-
-Sample output
-
-```json
-{"message":"updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)"}
-
-```
-
-## `POST /index_management/create`
-
-Output JSON
-
-### Return codes 
-
-#### 200
-
-Sample call
-
-```bash
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/index_management"
-```
-
-Sample output
-
-```json
-{"message":"create index: jenny-en-0 create_index_ack(true)"}
-```
-
-## `POST /index_management/refresh`
-
-Output JSON
-
-### Return codes 
-
-#### 200
-
-Sample call
-
-```bash
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/index_management/refresh"
+LANG=${1:-en} 
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET "http://localhost:${PORT}/${INDEX_NAME}/language_guesser/${LANG}"
 ```
 
 Sample output
 
 ```json
 {
-   "failed_shards_n" : 0,
-   "total_shards_n" : 10,
-   "failed_shards" : [],
-   "successful_shards_n" : 5
+   "supported_languages" : {
+      "languages" : {
+         "en" : true
+      }
+   }
 }
 ```
 
-## `GET /index_management`
+## POST /index_management/create
 
 Output JSON
+
+### Requirements
+
+* Index name must start with the "index_" prefix followed by a language, and a sequence of alphanumeric characters separated by underscore e.g. index_<LANG>_<SUFFIX>
+* The function requires "admin" credentials
 
 ### Return codes 
 
@@ -776,18 +1414,28 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X GET "http://localhost:8888/index_management"
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/index_management/create"
 ```
 
 Sample output
 
 ```json
-{"message":"settings index: jenny-en-0 dt_type_check(state:true) kb_type_check(question:true) term_type_name(term:true)"}
+{
+   "message" : "IndexCreation: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)"
+}
 ```
 
-## `PUT /index_management`
+## POST /index_management/refresh
 
 Output JSON
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with write permissions on the index
 
 ### Return codes 
 
@@ -796,18 +1444,50 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X PUT "http://localhost:8888/index_management"
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/index_management/refresh"
 ```
 
 Sample output
 
 ```json
-{"message":"updated index: jenny-en-0 dt_type_ack(true) kb_type_ack(true) kb_type_ack(true)"}
+{
+   "results" : [
+      {
+         "failed_shards" : [],
+         "successful_shards_n" : 5,
+         "failed_shards_n" : 0,
+         "index_name" : "index_english_0.state",
+         "total_shards_n" : 10
+      },
+      {
+         "failed_shards" : [],
+         "total_shards_n" : 10,
+         "index_name" : "index_english_0.question",
+         "failed_shards_n" : 0,
+         "successful_shards_n" : 5
+      },
+      {
+         "failed_shards" : [],
+         "successful_shards_n" : 5,
+         "index_name" : "index_english_0.term",
+         "failed_shards_n" : 0,
+         "total_shards_n" : 10
+      }
+   ]
+}
 ```
 
-## `DELETE /index_management`
+## GET /index_management
 
 Output JSON
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -816,19 +1496,90 @@ Output JSON
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X DELETE "http://localhost:8888/index_management"
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET "http://localhost:${PORT}/${INDEX_NAME}/index_management"
 ```
 
 Sample output
 
 ```json
-{"message":"removed index: jenny-en-0 index_ack(true)"}
+{
+   "message" : "IndexCheck: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)"
+}
 ```
 
-## `POST /term/index`
+## PUT /index_management
+
+Output JSON
+
+### Requirements
+
+* Index must exists
+* The function requires "admin" credentials
+
+### Return codes 
+
+#### 200
+
+Sample call
+
+```bash
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+LANGUAGE=${3:-english}
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+ -H "Content-Type: application/json" -X PUT "http://localhost:${PORT}/${INDEX_NAME}/${LANGUAGE}/index_management"
+```
+
+Sample output
+
+```json
+{
+   "message" : "IndexCheck: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)"
+}
+```
+
+## DELETE /index_management
+
+Output JSON
+
+### Requirements
+
+* The index must exists
+* The function requires admin credentials
+
+### Return codes 
+
+#### 200
+
+Sample call
+
+```bash
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X DELETE "http://localhost:${PORT}/${INDEX_NAME}/index_management"
+```
+
+Sample output
+
+```json
+{
+   "message" : "IndexDeletion: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)"
+}
+```
+
+## POST /term/index
 
 Index the term as indicated in the JSON. 
 
+### Requirements
+
+* The index must exists
+* The function requires user credentials with write permissions on the index
+
 ### Return codes 
 
 #### 200
@@ -836,9 +1587,12 @@ Index the term as indicated in the JSON.
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/term/index -d '{
-     "terms": [
-         {
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/term/index -d '{
+	"terms": [
+	    {
             "term": "मराठी",
             "frequency_base": 1.0,
             "frequency_stem": 1.0,
@@ -859,8 +1613,8 @@ curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/term/i
                 "NUM": "S",
                 "GEN": "M"
             }
-	        },
-		    {
+	    },
+	    {
             "term": "term2",
             "frequency_base": 1.0,
             "frequency_stem": 1.0,
@@ -881,10 +1635,9 @@ curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/term/i
                 "NUM": "P",
                 "GEN": "F"
             }
-	        }
+	    }
    ]
 }'
-
 ```
 
 Sample output
@@ -910,9 +1663,14 @@ Sample output
 }
 ```
 
-## `POST /term/get`
+## POST /term/get
 
 Get one or more terms entry.
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -921,9 +1679,13 @@ Get one or more terms entry.
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/term/get -d '{
-     "ids": ["मराठी", "term2"]
-}'
+QUERY=${1:-"\"term\""}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/term/get -d "{
+        \"ids\": [${QUERY}]
+}"
 ```
 
 Sample output
@@ -982,9 +1744,14 @@ Sample output
 
 ```
 
-## `DELETE /term`
+## DELETE /term
 
 Delete the term.
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with write permissions on the index
 
 ### Return codes 
 
@@ -993,8 +1760,11 @@ Delete the term.
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/term -d '{
-     "ids": ["मराठी", "term2"]
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/term -d '{
+        "ids": ["मराठी", "term2"]
 }'
 ```
 
@@ -1025,7 +1795,10 @@ Sample output
 Sample call: delete all
 
 ```bash
-curl -v -H "Content-Type: application/json" -X DELETE http://localhost:8888/term -d'{
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/term -d'{
         "ids": []
 }'
 ```
@@ -1034,13 +1807,18 @@ Sample call: delete all
 ```json
 {
   "message":"delete",
-  "deleted":2000
+  "deleted":2
 }
 ```
 
-## `PUT /term`
+## PUT /term
 
 Update the entry.
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with write permissions on the index
 
 ### Return codes 
 
@@ -1049,13 +1827,16 @@ Update the entry.
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X PUT http://localhost:8888/term -d '{
-     "terms": [
-         {
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X PUT http://localhost:${PORT}/${INDEX_NAME}/term -d '{
+	"terms": [
+	    {
             "term": "मराठी",
             "frequency_base": 1.0,
             "frequency_stem": 1.0,
-            "vector": [1.0, 2.0, 3.0, 4.0],
+            "vector": [1.2, 2.3, 3.4, 4.5],
             "synonyms":
             {
                 "bla1": 0.1,
@@ -1072,12 +1853,12 @@ curl -v -H "Content-Type: application/json" -X PUT http://localhost:8888/term -d
                 "FEATURE_NEW1": "V",
                 "GEN": "M"
             }
-	        },
-		    {
+	    },
+	    {
             "term": "term2",
             "frequency_base": 1.0,
             "frequency_stem": 1.0,
-            "vector": [1.0, 2.0, 3.0, 5.0],
+            "vector": [1.6, 2.7, 3.8, 5.9],
             "synonyms":
             {
                 "bla1": 0.1,
@@ -1094,7 +1875,7 @@ curl -v -H "Content-Type: application/json" -X PUT http://localhost:8888/term -d
                 "FEATURE_NEW1": "N",
                 "GEN": "F"
             }
-	        }
+	    }
    ]
 }'
 ```
@@ -1123,9 +1904,14 @@ Sample output
 
 ```
 
-## `GET /term/term`
+## GET /term/term
 
 Search for term (using Elasticsearch).
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -1134,9 +1920,13 @@ Search for term (using Elasticsearch).
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X GET http://localhost:8888/term/term -d '{
-    "term": "मराठी"
-}'
+QUERY=${1:-"term2"}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET http://localhost:${PORT}/${INDEX_NAME}/term/term -d "{
+    \"term\": \"${QUERY}\"
+}"
 ```
 
 Sample output
@@ -1177,9 +1967,14 @@ Sample output
 }
 ```
 
-## `GET /term/text`
+## GET /term/text
 
 Search for all the terms in the text and return the entries.
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -1188,7 +1983,10 @@ Search for all the terms in the text and return the entries.
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X GET http://localhost:8888/term/text -d 'term2 मराठी'
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET http://localhost:${PORT}/${INDEX_NAME}/term/text -d 'term2 मराठी'
 ```
 
 Sample output
@@ -1255,9 +2053,14 @@ Sample output
 ```
 
 
-## `GET /tokenizers`
+## GET /tokenizers
 
 Show a list of supported methods for tokenization and stemming
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -1266,7 +2069,10 @@ Show a list of supported methods for tokenization and stemming
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X GET "http://localhost:8888/tokenizers"
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X GET "http://localhost:${PORT}/${INDEX_NAME}/tokenizers"
 ```
 
 Sample output
@@ -1284,9 +2090,14 @@ Sample output
 }
 ```
 
-## `POST /tokenizers`
+## POST /tokenizers
 
 get a list of token using the selected analyzer
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -1295,11 +2106,16 @@ get a list of token using the selected analyzer
 Sample call
 
 ```bash
-curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/tokenizers" -d "
+ANALYZER=${1:-"stop"}
+QUERY=${2:-"good morning, may I ask you a question?"}
+PORT=${3:-8888}
+INDEX_NAME=${4:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/tokenizers" -d "
 {
-	\"text\": \"good morning, may I ask you a question?\",
-		  \"tokenizer\": \"stop\"
-		  }"
+        \"text\": \"${QUERY}\",
+        \"tokenizer\": \"${ANALYZER}\"
+}"
 ```
 
 Sample output
@@ -1360,9 +2176,14 @@ Sample output
 }
 ```
 
-## `POST /analyzers_playground`
+## POST /analyzers_playground
 
 used to test analyzers on the fly
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with read permissions on the index
 
 ### Return codes 
 
@@ -1371,13 +2192,18 @@ used to test analyzers on the fly
 Sample call keyword
 
 ```bash
-curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d '
+ANALYZER=${1:-"keyword(\\\"test\\\")"}
+QUERY=${2:-"this is a test"}
+DATA=${3:-"{\"item_list\": [], \"extracted_variables\":{}}"}
+PORT=${4:-8888}
+INDEX_NAME=${5:-index_english_0}
+curl -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/analyzers_playground" -d "
 {
-        "analyzer": "keyword(\"test\")",
-        "query": "this is a test",
-        "data": {"item_list": [], "extracted_variables":{}}
-}
-'
+        \"analyzer\": \"${ANALYZER}\",
+        \"query\": \"${QUERY}\",
+        \"data\": ${DATA}
+}"
 ```
 
 Sample output keyword
@@ -1393,7 +2219,8 @@ Sample output keyword
 Sample states analyzers
 
 ```bash
-curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d '
+curl -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H 'Content-Type: application/json' -X POST http://localhost:${PORT}/${INDEX_NAME}/analyzers_playground -d '
 {
         "analyzer": "hasTravState(\"one\")",
         "query": "query",
@@ -1414,8 +2241,9 @@ Sample output states analyzers
 
 Sample of pattern extraction through analyzers
  
-```json
-curl -v -H 'Content-Type: application/json' -X POST http://localhost:8888/analyzers_playground -d' 
+```bash
+curl -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H 'Content-Type: application/json' -X POST http://localhost:${PORT}/${INDEX_NAME}/analyzers_playground -d '
 {
         "analyzer": "band(keyword(\"on\"), matchPatternRegex(\"[day,month,year](?:(0[1-9]|[12][0-9]|3[01])(?:[- \\\/\\.])(0[1-9]|1[012])(?:[- \\\/\\.])((?:19|20)\\d\\d))\"))",
         "query": "on 31-11-1900"
@@ -1440,9 +2268,15 @@ Sample output
 }
 ```
 
-## `POST /spellcheck/terms`
+## POST /spellcheck/terms
 
 terms spellchecker based on knowledgebase text 
+
+### Requirements
+
+* The index must exists
+* The function requires user credentials with read permissions on the index
+* the knowledge base must contain data
 
 ### Return codes
 
@@ -1452,11 +2286,14 @@ Sample call
 
 ```bash
 QUERY=${1:-"this is a tes for splellchecker"}
-curl -v -H "Content-Type: application/json" -X POST http://localhost:8888/spellcheck/terms -d "{
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/spellcheck/terms -d "{
   \"text\": \"${QUERY}\",
-    \"prefix_length\": 3,
-      \"min_doc_freq\": 1
-      }"
+  \"prefix_length\": 3,
+  \"min_doc_freq\": 1
+}"
 ```
 
 ```json
