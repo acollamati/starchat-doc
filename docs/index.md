@@ -279,29 +279,40 @@ We can have a look at the simple example included in the  [CSV provided in the d
 booleanAnd(keyword("password"),booleanOr(keyword("reset"),keyword("forgot")))
 ```
 
-Another example. We can ask "Where can we send you updates?" in the state "send-updates". A state with the `analyzer`:
+Another example. Imagine we have a state `send-updates`. In this state StarChat proposes the question "Where can we send you updates?". In the config file:
 
 ```
-booleanAnd(lastTravStateIs("send-updates"), matchEmailAddress("verification"))
+state 			| ... | bubble 								| ...
+send-updates	| ... | "Where can we send you updates?" 	|
 ```
 
-will be triggered immediately after only if an email address is detected. This will also set the variable `verificationemail`.
+In the state `send-email` we have the anlyzer field with:
 
-In addition to that, an `analayzer` could be developed (we haven't) which accept others arguments, for example:
+```
+booleanAnd(lastTravStateIs("send-updates"), matchEmailAddress("verification_"))
+```
 
-`sendVerificationEmail("verification", Map(("subject", "Verification"), 
-("body", "Here is your verification link {verification_link})))`
+this means `send-email` will be triggered only after `send-updates` (because of `lastTravStateIs`) _and_ if an email address is detected (because of `matchEmailAddress`). This will also set the variable `verification_email`.
 
-and retrieve the `verification_link` from an API.
+In addition to that, an `analayzer` could be developed (we haven't) which accepts others arguments, for example:
 
-**TODO** It is fundamental here to build a set of metadata which allows any other component to receive all needed information about the analyzer. For instance, the "extended" `matchEmailAddress` could have something like:
+`sendVerificationEmail("verification_", "Email about Verification", "Here is your verification link {temp_verification_link})`
+
+and retrieve the `temp_verification_link` from an API.
+
+**TODO** It is fundamental here to build a set of metadata which allows any other component to receive all needed information about the analyzer. For instance, the `sendVerificationEmail ` could have something like:
 
 ```json
 [
-	"argument_list": ["Prefix of the variable 'email'"],
-	"argument_map": {"subject": "Subject of the email to be sent",
-						"body": "Body of the mail"},
-	"available_variables": {"verification_link": "Link provided by the brand's API"}
+	"documentation": "Send an email with subject and body. If successful returns 1.0 and sets the variables. If not returns 0 and does not set the variables."
+	"argument_list": ["'prefix' of the variable 'prefix_email'", 
+					  "Subject of the email to be sent", "Body of the mail"],
+	"created_variables": {  // Variables it creates
+		"__temp__verification_link": "Link provided by the brand's API", //will after usage because starts with __temp__
+		"prefix_email": "email address"
+		},
+	"used_variables": {  // Variables it expects to find in the state (none here)
+		}
 
 ```
 
