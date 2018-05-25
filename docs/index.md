@@ -279,26 +279,36 @@ We can have a look at the simple example included in the  [CSV provided in the d
 booleanAnd(keyword("password"),booleanOr(keyword("reset"),keyword("forgot")))
 ```
 
-Another example. Imagine we have a state `send-updates`. In this state StarChat proposes the question "Where can we send you updates?". In the config file:
+The analyzer above says the state must be triggered if the term "password" is detected together with either "reset" or "forgot".
+
+Another example. Imagine we have a state called `send-updates`. In this state StarChat proposes the question "Where can we send you updates?". In the config file:
 
 ```
 state 			| ... | bubble 								| ...
 send-updates	| ... | "Where can we send you updates?" 	|
 ```
 
-In the state `send-email` we have the anlyzer field with:
+In another state, called `send-email`, we have the anlyzer field with:
 
 ```
 booleanAnd(lastTravStateIs("send-updates"), matchEmailAddress("verification_"))
 ```
 
-this means `send-email` will be triggered only after `send-updates` (because of `lastTravStateIs`) _and_ if an email address is detected (because of `matchEmailAddress`). This will also set the variable `verification_email`.
+this means `send-email` will be triggered only after `send-updates` (because of `lastTravStateIs`) _and_ if an email address is detected (because of `matchEmailAddress`). This will also set the variable `verification_email` because the expression `matchEmailAddress` in case of success always sets such variable, with the expression's argument as prefix.
 
-In addition to that, an `analayzer` could be developed (we haven't) which accepts others arguments, for example:
+In addition to that, the expression `sendVerificationEmail` could be developed (we haven't) which accepts others arguments, for example:
 
-`sendVerificationEmail("verification_", "Email about Verification", "Here is your verification link {temp_verification_link})`
+`sendVerificationEmail("verification_", "Email about Verification", "Here is your verification link %__temp__verification_link%)`
 
-and retrieve the `temp_verification_link` from an API.
+In this case, the expression would 
+
+* extract an email address from the user's query
+* set a variable `verification_email` with such address
+* retrieve a verification link from some API 
+* put that link into the temporary variable `__temp__verification_link`. 
+* send an email with subject "Email about Verification" and body "Here is your..."
+* return 1 in case of success
+
 
 **TODO** It is fundamental here to build a set of metadata which allows any other component to receive all needed information about the analyzer. For instance, the `sendVerificationEmail ` could have something like:
 
