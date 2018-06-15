@@ -267,39 +267,106 @@ NLP processing is of course the core of any chatbot. As you have noted in the  [
 
 If the `analyzer` field is empty, StarChat will query Elasticsearch for the state containing the most similar sentence in the field `queries`. We have carefully configured Elasticsearch in order to provide good answers (e.g. boosting results where the same words appear etc), and results are... acceptable. But you are encouraged to use the `analyzer` field, documented below.
 
-### Analyzer
+## Analyzer
 
-Through the `analyzer`s, you can easily leverage on various NLP algorithms included in StarChat, together with NLP capabilities of Elasticsearch. You can also combine the result of those algorithms. The best way is to look at the simple example included in the  [CSV provided in the doc/ directory](https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv) for the state `forgot_password`:
+The `analyzers` are a Domain Specific Language which allow to put together various functions using logical operators.
 
-`and(or(keyword("reset"),keyword("forgot")),keyword("password"))`
+Through the `analyzers`, you can leverage on various NLP algorithms included in StarChat and combine the results of those algorithms with other rules. For instance you might want to get into the state which asks for the email only if a variable "email" is not set. Or you want to escalate to a human operator after you detect swearing for three times. Or you want to escalate only on working days. You can do all that with the `analyzers`.
 
-The *expression* `and` and `or` are called the *operators*, while `keyword` is an *atom* 
+We can have a look at the simple example included in the  [CSV provided in the doc/ directory](https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv) for the state `forgot_password`:
 
-#### Expressions: Atoms
+```
+booleanAnd(keyword("password"),booleanOr(keyword("reset"),keyword("forgot")))
+```
 
-Presently, the `keyword("reset")` in the example provides a very simple score: occurrence of the word *reset* in the user's query divided by the total number of words. If evaluated agains the sentence "Want to reset my password", `keyword("reset")` will currently return 0.2.  _NB_ This is just a temporary score used while our NLP library [manaus](https://github.com/GetJenny/manaus) is not integrated into StarChat.
+The analyzer above says the state must be triggered if the term "password" is detected together with either "reset" or "forgot".
+
+Another example. Imagine we have a state called `send-updates`. In this state StarChat proposes the question "Where can we send you updates?". In the config file:
+
+```
+state 			| ... | bubble 								| ...
+send-updates	| ... | "Where can we send you updates?" 	|
+```
+
+In another state, called `send-email`, we have the anlyzer field with:
+
+```
+booleanAnd(lastTravStateIs("send-updates"), matchEmailAddress("verification_"))
+```
+
+this means `send-email` will be triggered only after `send-updates` (because of `lastTravStateIs`) _and_ if an email address is detected (because of `matchEmailAddress`). This will also set the variable `verification_email` because the expression `matchEmailAddress` in case of success always sets such variable, with the expression's argument as prefix.
+
+In addition to that, the expression `sendVerificationEmail` could be developed (we haven't) which accepts others arguments, for example:
+
+`sendVerificationEmail("verification_", "Email about Verification", "Here is your verification link %__temp__verification_link%)`
+
+In this case, the expression would 
+
+* extract an email address from the user's query
+* set a variable `verification_email` with such address
+* retrieve a verification link from some API 
+* put that link into the temporary variable `__temp__verification_link`. 
+* send an email with subject "Email about Verification" and body "Here is your..."
+* return 1 in case of success
+
+
+**TODO** It is fundamental here to build a set of metadata which allows any other component to receive all needed information about the analyzer. For instance, the `sendVerificationEmail ` could have something like:
+
+```json
+[
+	"documentation": "Send an email with subject and body. If successful returns 1.0 and sets the variables. If not returns 0 and does not set the variables."
+	"argument_list": ["'prefix' of the variable 'prefix_email'", 
+					  "Subject of the email to be sent", "Body of the mail"],
+	"created_variables": {  // Variables it creates
+		"__temp__verification_link": "Link provided by the brand's API", //will after usage because starts with __temp__
+		"prefix_email": "email address"
+		},
+	"used_variables": {  // Variables it expects to find in the state (none here)
+		}
+
+```
+
+
+### How the `analyzers` are organized
+
+The `analyzer` DSL building blocks are the *expression*. For instance, 
+`or`, `and`, `keyword` are all *expressions*. 
+
+Espressions are then divided into *operators* (`or`...) and *atoms* (`keyword`).
+
+### Expressions: Atoms
+
+Presently, the `keyword("reset")` in the example provides a very simple score: occurrence of the word *reset* in the user's query divided by the total number of words. If evaluated agains the sentence "Want to reset my password", `keyword("reset")` will currently return 0.2.  
+
+**TODO**: This is just a temporary score used while our NLP library [manaus](https://github.com/GetJenny/manaus) is not integrated into the decision table.
 
 These are currently the expression you can use to evaluate the goodness of a query (see [DefaultFactoryAtomic](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/DefaultFactoryAtomic.scala) and [StarchatFactoryAtomic](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/starchat/analyzer/atoms/StarchatFactoryAtomic.scala):
 
-* _keyword("word")_: as explained above, normalized
-* _regex_: evaluate a regular expression, not normalized
-*  _search(state_name)_: takes a state name as argument, queries elastic search and returns the score of the most similar query in the field  `queries` of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g. `search("lost_password_state")` 
+* _keyword("pass.*")_: as explained above, detects any word starting with "pass". Normalized.
+* _regex(regex)_: evaluate a regular expression, not normalized
+*  _search(state-name)_: take a state name as argument, queries elastic search and returns the score of the most similar query in the field  `queries` of the argument's state. In other words, it does what it would do without any analyzer, only with a normalized score -e.g. `search("lost_password_state")` 
+* _matchPatternRegex(regex)_: A generic pattern extraction analyzer, it extract named patterns matching a given regex e.g. the following will match tree numbers separated by semicolumn: [first,second,third](?:([0-9]+:[0-9]:[0-9]+) if the regex matches it will create the entries into the state variables dictionary e.g.: 10:11:12 will result in Map("first.0" -> "10", "second.0" -> "11", "third.0" -> "12") the number at the end of the name is an index incremented for multiple occurrences of the pattern in the query
+* _matchDateDDMMYYYY(prefix)_: parse a date in DDMMYYYY format and set `prefixday.0`, `prefixmonth.0`, `prefixyear.0`.
+* _existsVariable(variable-name)_: check whether a variable exists or not 
+* _hasTravState(state-name)_: check if a state_name is present into the history of traversed states
+* _lastTravStateIs(state-name)_: check if the last traversed state is state_name
+* _prevTravStateIs(state-name)_: check if the last but one traversed state is state_name
+* _distance("forget.*", ..., "pass.*")_: score based on the (cosine) distance between the query and the list of words in the argument. 
+
+
+<!--Only if you have loaded a Word2Vec model:
+
 * _synonym("word")_: gives a normalized cosine distance between the argument and the closest word in the user's sentence. We use word2vec, to have an idea of two words distance you can use this [word2vec demo](http://bionlp-www.utu.fi/wv_demo/) by [Turku University](http://bionlp.utu.fi/)
 * _similar("a whole sentence")_:  gives a normalized cosine distance between the argument and the closest word in the user's sentence (word2vec)
-* _similarState(state_name)_:  same as above, but for the sentences in the field "queries" of the state in the argument.
+* _similarState(state-name)_ :  same as above, but for the sentences in the field "queries" of the state in the argument.
 * _similarEucEmd("a whole sentence")_: gives a non-normalized euclidean distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)
-* _similarEucEmdState(state_name)_: same as above, but for the sentences in the field "queries" of the state in the argument.
+* _similarEucEmdState(state-name)_: same as above, but for the sentences in the field "queries" of the state in the argument.
 * _similarCosEmd("a whole sentence")_: gives a normalized cosine distance (calculated using the earth movers distance algorithm) between the argument and the closest sentence in the user's sentence (word2vec)
-* _similarCosEmdState(state_name)_: same as above, but for the sentences in the field "queries" of the state in the argument.
-* _matchPatternRegex(regex)_: A generic pattern extraction analyzer, it extract named patterns matching a given regex e.g. the following will match tree numbers separated by semicolumn: [first,second,third](?:([0-9]+:[0-9]:[0-9]+) if the regex matches it will create the entries into the state variables dictionary e.g.: 10:11:12 will result in Map("first.0" -> "10", "second.0" -> "11", "third.0" -> "12") the number at the end of the name is an index incremented for multiple occurrences of the pattern in the query
-* _matchDateDDMMYYYY(prefix)_: parse a date in DDMMYYYY format is built using the matchPatternRegex with the following regex: "(?:(?:[^0-9]+|\A)(0[1-9]|[12][0-9]|3[01])(?:[- \/\.])(0[1-9]|1[012])(?:[- \/\.])((?:19|20)\d\d)(?:[^0-9]+|$))"
-* _existsVariable(variable_name)_: check whether a variable exists or not 
-* _hasTravState_(state_name): check if a state_name is present into the history of traversed states
-* _lastTravStateIs_(state_name): check if the last traversed state is state_name
-* _prevTravStateIs(state_name)_: check if the last but one traversed state is state_name
-* _distance("keyword1", ..., "keyword N")_: calculate the cosine distance between the query and the list of keywords, this analyzer can be called using `cosDistanceKeywords`
+* _similarCosEmdState(state-name)_: same as above, but for the sentences in the field "queries" of the state in the argument.
 
-#### Expressions: Operators
+-->
+
+### Expressions: Operators
 
 Operators evaluate the output of one or more expression and return a value. Currently, the following operators are implemented (the the [source code](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/operators/DefaultFactoryOperator.scala)):
 
@@ -310,7 +377,7 @@ Operators evaluate the output of one or more expression and return a value. Curr
 * _disjunction_:  as above, the probability that at least one is true (`1-(1-P(A))*(1-P(B))`)
 * _max_: takes the max score of returned by the expression arguments
 
-#### Technical corner: `expressions`
+### Technical corner: `expressions`
 
 [Expressions](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/expressions/Expression.scala), like [keywords](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/KeywordAtomic.scala#L18) in the example, are called [atoms](https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/AbstractAtomic.scala), and have the following methods/members:
 
