@@ -81,59 +81,32 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#apis">APIs</a></li>
-            <li><a href="#post-system_index_managementcreate">POST /system_index_management/create</a></li>
-            <li><a href="#get-system_index_management">GET /system_index_management</a></li>
-            <li><a href="#delete-system_index_management">DELETE /system_index_management</a></li>
-            <li><a href="#post-user">POST /user</a></li>
-            <li><a href="#get-user">GET /user</a></li>
-            <li><a href="#put-user">PUT /user</a></li>
-            <li><a href="#delete-useruser_id">DELETE /user/user_id</a></li>
-            <li><a href="#post-user_gentest_user">POST /user_gen/test_user</a></li>
-            <li><a href="#post-get_next_response">POST /get_next_response</a></li>
-            <li><a href="#get-decisiontable">GET /decisiontable</a></li>
-            <li><a href="#put-decisiontable">PUT /decisiontable</a></li>
-            <li><a href="#post-decisiontable">POST /decisiontable</a></li>
-            <li><a href="#delete-decisiontable">DELETE /decisiontable</a></li>
-            <li><a href="#post-decisiontable_upload_csv">POST /decisiontable_upload_csv</a></li>
-            <li><a href="#post-decisiontable_search">POST /decisiontable_search</a></li>
-            <li><a href="#get-decisiontable_analyzer">GET /decisiontable_analyzer</a></li>
-            <li><a href="#post-decisiontable_analyzer">POST /decisiontable_analyzer</a></li>
-            <li><a href="#get-knowledgebase">GET /knowledgebase</a></li>
-            <li><a href="#post-knowledgebase">POST /knowledgebase</a></li>
-            <li><a href="#delete-knowledgebase">DELETE /knowledgebase</a></li>
-            <li><a href="#put-knowledgebase">PUT /knowledgebase</a></li>
-            <li><a href="#post-knowledgebase_search">POST /knowledgebase_search</a></li>
-            <li><a href="#post-language_guesser">POST /language_guesser</a></li>
-            <li><a href="#get-language_guesser">GET /language_guesser</a></li>
-            <li><a href="#post-index_managementcreate">POST /index_management/create</a></li>
-            <li><a href="#post-index_managementrefresh">POST /index_management/refresh</a></li>
-            <li><a href="#get-index_management">GET /index_management</a></li>
-            <li><a href="#put-index_management">PUT /index_management</a></li>
-            <li><a href="#delete-index_management">DELETE /index_management</a></li>
-            <li><a href="#post-termindex">POST /term/index</a></li>
-            <li><a href="#post-termget">POST /term/get</a></li>
-            <li><a href="#delete-term">DELETE /term</a></li>
-            <li><a href="#put-term">PUT /term</a></li>
-            <li><a href="#get-termterm">GET /term/term</a></li>
-            <li><a href="#get-termtext">GET /term/text</a></li>
-            <li><a href="#get-tokenizers">GET /tokenizers</a></li>
-            <li><a href="#post-tokenizers">POST /tokenizers</a></li>
-            <li><a href="#post-analyzers_playground">POST /analyzers_playground</a></li>
-            <li><a href="#post-spellcheckterms">POST /spellcheck/terms</a></li>
+            <li><a href="#systemindexmanagement">SystemIndexManagement</a></li>
+            <li><a href="#user">User</a></li>
+            <li><a href="#decisiontable">DecisionTable</a></li>
+            <li><a href="#questionanswer-knowledgebase-priordata-conversationlogs">QuestionAnswer (KnowledgeBase, PriorData, ConversationLogs)</a></li>
+            <li><a href="#termsextraction">TermsExtraction</a></li>
+            <li><a href="#languageguesser">LanguageGuesser</a></li>
+            <li><a href="#indexmanagement">IndexManagement</a></li>
+            <li><a href="#term">Term</a></li>
+            <li><a href="#tokenizers">Tokenizers</a></li>
+            <li><a href="#analyzersplayground">AnalyzersPlayground</a></li>
+            <li><a href="#spellcheck">SpellCheck</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
 <h1 id="apis">APIs</h1>
-<h2 id="post-system_index_managementcreate">POST /system_index_management/create</h2>
+<h2 id="systemindexmanagement">SystemIndexManagement</h2>
+<h3 id="post-system_index_managementcreate">POST /system_index_management/create</h3>
 <p>Create a new system index, this operation init. a new system index and is required 
 to start using starchat.</p>
 <p>Output JSON</p>
-<h3 id="requirements">Requirements</h3>
+<h4 id="requirements">Requirements</h4>
 <ul>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="sample-call">Sample call</h3>
+<h4 id="sample-call">Sample call</h4>
 <pre><code class="bash">PORT=&quot;${1:-8888}&quot;
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/system_index_management/create&quot;
@@ -145,14 +118,14 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="get-system_index_management">GET /system_index_management</h2>
+<h3 id="get-system_index_management">GET /system_index_management</h3>
 <p>Fetch and returns the informations about the system index</p>
 <p>Output JSON</p>
-<h3 id="requirements_1">Requirements</h3>
+<h4 id="requirements_1">Requirements</h4>
 <ul>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="sample-call_1">Sample call</h3>
+<h4 id="sample-call_1">Sample call</h4>
 <pre><code class="bash">PORT=&quot;${1:-8888}&quot;
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/system_index_management&quot;
@@ -164,14 +137,14 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="delete-system_index_management">DELETE /system_index_management</h2>
+<h3 id="delete-system_index_management">DELETE /system_index_management</h3>
 <p>Delete a system index, this operation destroy any user created</p>
 <p>Output JSON</p>
-<h3 id="requirements_2">Requirements</h3>
+<h4 id="requirements_2">Requirements</h4>
 <ul>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="sample-call_2">Sample call</h3>
+<h4 id="sample-call_2">Sample call</h4>
 <pre><code class="bash">PORT=&quot;${1:-8888}&quot;
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X DELETE &quot;http://localhost:${PORT}/system_index_management&quot;
@@ -183,15 +156,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-user">POST /user</h2>
+<h2 id="user">User</h2>
+<h3 id="post-user">POST /user</h3>
 <p>Insert a new user to the system, the user record can be generated 
 using the '/user_gen/test_user' endpoint</p>
 <p>Output JSON</p>
-<h3 id="requirements_3">Requirements</h3>
+<h4 id="requirements_3">Requirements</h4>
 <ul>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="sample-call_3">Sample call</h3>
+<h4 id="sample-call_3">Sample call</h4>
 <pre><code class="bash">PORT=&quot;${1:-8888}&quot;
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/user -d '{
@@ -214,14 +188,14 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="get-user">GET /user</h2>
+<h3 id="get-user">GET /user</h3>
 <p>Fetch the informations about a user</p>
 <p>Output JSON</p>
-<h3 id="requirements_4">Requirements</h3>
+<h4 id="requirements_4">Requirements</h4>
 <ul>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="sample-call_4">Sample call</h3>
+<h4 id="sample-call_4">Sample call</h4>
 <pre><code class="bash">PORT=&quot;${1:-8888}&quot;
 USERNAME=${2:-&quot;admin&quot;}
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
@@ -241,14 +215,14 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="put-user">PUT /user</h2>
+<h3 id="put-user">PUT /user</h3>
 <p>Update a user record</p>
 <p>Output JSON</p>
-<h3 id="requirements_5">Requirements</h3>
+<h4 id="requirements_5">Requirements</h4>
 <ul>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="sample-call_5">Sample call</h3>
+<h4 id="sample-call_5">Sample call</h4>
 <pre><code class="bash">PORT=&quot;${1:-8888}&quot;
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
  -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/user/test_user -d '{
@@ -268,14 +242,14 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="delete-useruser_id">DELETE /user/user_id</h2>
+<h3 id="delete-useruser_id">DELETE /user/user_id</h3>
 <p>Delete an existing user</p>
 <p>Output JSON</p>
-<h3 id="requirements_6">Requirements</h3>
+<h4 id="requirements_6">Requirements</h4>
 <ul>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="sample-call_6">Sample call</h3>
+<h4 id="sample-call_6">Sample call</h4>
 <pre><code class="bash">PORT=&quot;${1:-8888}&quot;
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/user/test_user 
@@ -291,15 +265,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-user_gentest_user">POST /user_gen/test_user</h2>
+<h3 id="post-user_gentest_user">POST /user_gen/test_user</h3>
 <p>Generate the record for a user with hashed password and a randomly generated salt.
 The user must be then inserted into the system.</p>
 <p>Output JSON</p>
-<h3 id="requirements_7">Requirements</h3>
+<h4 id="requirements_7">Requirements</h4>
 <ul>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="sample-call_7">Sample call</h3>
+<h4 id="sample-call_7">Sample call</h4>
 <pre><code class="bash">PORT=${1:-8888}
 
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
@@ -329,7 +303,8 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-get_next_response">POST /get_next_response</h2>
+<h2 id="decisiontable">DecisionTable</h2>
+<h3 id="post-get_next_response">POST /get_next_response</h3>
 <p>Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction 
 about the next state.</p>
 <p>Data to post:</p>
@@ -346,15 +321,15 @@ about the next state.</p>
 
 </code></pre>
 
-<h3 id="requirements_8">Requirements</h3>
+<h4 id="requirements_8">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes">Return codes</h3>
-<h4 id="200">200</h4>
+<h4 id="return-codes">Return codes</h4>
+<h5 id="200">200</h5>
 <p>Similar Json, see examples below</p>
-<h5 id="example-1">Example 1</h5>
+<h6 id="example-1">Example 1</h6>
 <p>User input is "how to install starchat":</p>
 <pre><code class="bash">QUERY=${1:-&quot;how to install starchat&quot;}
 PORT=${2:-8888}
@@ -397,7 +372,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 ]
 </code></pre>
 
-<h5 id="example-2">Example 2</h5>
+<h6 id="example-2">Example 2</h6>
 <p>User input is: "how can I contribute to starchat?"</p>
 <pre><code class="bash">QUERY=${1:-&quot;how can I contribute to starchat?&quot;}
 PORT=${2:-8888}
@@ -440,38 +415,38 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 ]
 </code></pre>
 
-<h4 id="204">204</h4>
+<h5 id="204">204</h5>
 <p>No response was found</p>
-<h4 id="500-error">500 (error)</h4>
+<h5 id="500-error">500 (error)</h5>
 <p>Internal server error</p>
-<h4 id="400-error">400 (error)</h4>
+<h5 id="400-error">400 (error)</h5>
 <p>Bad request: </p>
 <ul>
 <li>meaning: the input data structure is not valid</li>
 <li>output data: no data returned</li>
 </ul>
-<h4 id="422-error">422 (error)</h4>
+<h5 id="422-error">422 (error)</h5>
 <ul>
 <li>meaning: bad request data, the input data is formally valid but there is some issue with data interpretation</li>
 <li>output data: the output data structure is a json dictionary with two fields: code and message. The following code are supported:</li>
 <li>code: 100</li>
 <li>message: "error evaluating the template strings, bad values"</li>
 </ul>
-<h4 id="404-error">404 (error)</h4>
+<h5 id="404-error">404 (error)</h5>
 <ul>
 <li>meaning: not found</li>
 <li>output data: no data returned</li>
 </ul>
-<h2 id="get-decisiontable">GET /decisiontable</h2>
+<h3 id="get-decisiontable">GET /decisiontable</h3>
 <p>Get a document by ID</p>
 <p>Output JSON</p>
-<h3 id="requirements_9">Requirements</h3>
+<h4 id="requirements_9">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_1">Return codes</h3>
-<h4 id="200_1">200</h4>
+<h4 id="return-codes_1">Return codes</h4>
+<h5 id="200_1">200</h5>
 <p>Sample call</p>
 <pre><code class="bash"># retrieve one or more entries with given ids; ids can be specified multiple times
 PORT=${1:-8888}
@@ -517,15 +492,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="put-decisiontable">PUT /decisiontable</h2>
+<h3 id="put-decisiontable">PUT /decisiontable</h3>
 <p>Output JSON</p>
-<h3 id="requirements_10">Requirements</h3>
+<h4 id="requirements_10">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_2">Return codes</h3>
-<h4 id="201">201</h4>
+<h4 id="return-codes_2">Return codes</h4>
+<h5 id="201">201</h5>
 <p>Sample call</p>
 <pre><code class="bash"># update the &quot;further_details_access_question&quot; entry in the DT
 PORT=${1:-8888}
@@ -547,16 +522,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-decisiontable">POST /decisiontable</h2>
+<h3 id="post-decisiontable">POST /decisiontable</h3>
 <p>Insert a new document.</p>
 <p>Output JSON</p>
-<h3 id="requirements_11">Requirements</h3>
+<h4 id="requirements_11">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_3">Return codes</h3>
-<h4 id="201_1">201</h4>
+<h4 id="return-codes_3">Return codes</h4>
+<h5 id="201_1">201</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -586,16 +561,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="delete-decisiontable">DELETE /decisiontable</h2>
+<h3 id="delete-decisiontable">DELETE /decisiontable</h3>
 <p>Delete a document by ID</p>
 <p>Output JSON</p>
-<h3 id="requirements_12">Requirements</h3>
+<h4 id="requirements_12">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_4">Return codes</h3>
-<h4 id="200_2">200</h4>
+<h4 id="return-codes_4">Return codes</h4>
+<h5 id="200_2">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -627,16 +602,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-decisiontable_upload_csv">POST /decisiontable_upload_csv</h2>
+<h3 id="post-decisiontable_upload_csv">POST /decisiontable_upload_csv</h3>
 <p>upload load a csv file on decisiontable</p>
 <p>Output JSON</p>
-<h3 id="requirements_13">Requirements</h3>
+<h4 id="requirements_13">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_5">Return codes</h3>
-<h4 id="201_2">201</h4>
+<h4 id="return-codes_5">Return codes</h4>
+<h5 id="201_2">201</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-'index_english_0'}
@@ -785,16 +760,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-decisiontable_search">POST /decisiontable_search</h2>
+<h3 id="post-decisiontable_search">POST /decisiontable_search</h3>
 <p>Update a document</p>
 <p>Output JSON</p>
-<h3 id="requirements_14">Requirements</h3>
+<h4 id="requirements_14">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_6">Return codes</h3>
-<h4 id="200_3">200</h4>
+<h4 id="return-codes_6">Return codes</h4>
+<h5 id="200_3">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">Q=&quot;${1:-'cannot access my account'}&quot;
 S=&quot;${2:-0.0}&quot;
@@ -847,16 +822,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-decisiontable_analyzer">GET /decisiontable_analyzer</h2>
+<h3 id="get-decisiontable_analyzer">GET /decisiontable_analyzer</h3>
 <p>Get and return the map of analyzer for each state</p>
 <p>Output JSON</p>
-<h3 id="requirements_15">Requirements</h3>
+<h4 id="requirements_15">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_7">Return codes</h3>
-<h4 id="200_4">200</h4>
+<h4 id="return-codes_7">Return codes</h4>
+<h5 id="200_4">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -956,16 +931,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-decisiontable_analyzer">POST /decisiontable_analyzer</h2>
+<h3 id="post-decisiontable_analyzer">POST /decisiontable_analyzer</h3>
 <p>Load/reload the map of analyzer from ES</p>
 <p>Output JSON</p>
-<h3 id="requirements_16">Requirements</h3>
+<h4 id="requirements_16">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_8">Return codes</h3>
-<h4 id="200_5">200</h4>
+<h4 id="return-codes_8">Return codes</h4>
+<h5 id="200_5">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -979,16 +954,24 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-knowledgebase">GET /knowledgebase</h2>
+<h2 id="questionanswer-knowledgebase-priordata-conversationlogs">QuestionAnswer (KnowledgeBase, PriorData, ConversationLogs)</h2>
+<p>The following REST endpoints have the same syntax and semantic
+for KnowledgeBase, PriorData, ConversationLogs.</p>
+<p>The only difference is the route path component:
+<em> KnowledgeBase: "knowledgebase"
+</em> Priodata: "prior_data"
+* ConversationLogs: "conversation_logs"</p>
+<p>In the API description we will refer to this path component as <QAPath></p>
+<h3 id="get">GET /<QAPath></h3>
 <p>Return a document by ID</p>
 <p>Output JSON</p>
-<h3 id="requirements_17">Requirements</h3>
+<h4 id="requirements_17">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_9">Return codes</h3>
-<h4 id="200_6">200</h4>
+<h4 id="return-codes_9">Return codes</h4>
+<h5 id="200_6">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">ID=${1:-0}
 PORT=${2:-8888}
@@ -1031,15 +1014,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-knowledgebase">POST /knowledgebase</h2>
+<h3 id="post">POST /<QAPath></h3>
 <p>Insert a new document</p>
-<h3 id="requirements_18">Requirements</h3>
+<h4 id="requirements_18">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_10">Return codes</h3>
-<h4 id="201_3">201</h4>
+<h4 id="return-codes_10">Return codes</h4>
+<h5 id="201_3">201</h5>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
@@ -1098,16 +1081,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="delete-knowledgebase">DELETE /knowledgebase</h2>
+<h3 id="delete">DELETE /<QAPath></h3>
 <p>Delete a document by ID</p>
 <p>Output JSON</p>
-<h3 id="requirements_19">Requirements</h3>
+<h4 id="requirements_19">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_11">Return codes</h3>
-<h4 id="200_7">200</h4>
+<h4 id="return-codes_11">Return codes</h4>
+<h5 id="200_7">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1139,16 +1122,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="put-knowledgebase">PUT /knowledgebase</h2>
+<h3 id="put">PUT /<QAPath></h3>
 <p>Update an existing document</p>
 <p>Output JSON</p>
-<h3 id="requirements_20">Requirements</h3>
+<h4 id="requirements_20">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_12">Return codes</h3>
-<h4 id="200_8">200</h4>
+<h4 id="return-codes_12">Return codes</h4>
+<h5 id="200_8">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1175,15 +1158,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-knowledgebase_search">POST /knowledgebase_search</h2>
+<h3 id="post-_search">POST /<QAPath>_search</h3>
 <p>Output JSON</p>
-<h3 id="requirements_21">Requirements</h3>
+<h4 id="requirements_21">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_13">Return codes</h3>
-<h4 id="200_9">200</h4>
+<h4 id="return-codes_13">Return codes</h4>
+<h5 id="200_9">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;how are you?&quot;}
 PORT=${2:-8888}
@@ -1254,15 +1237,898 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-language_guesser">POST /language_guesser</h2>
+<h3 id="get-term_count">GET /term_count/<QAPath></h3>
+<p>Count the occurrence of a term.</p>
+<p>The endpoint supports the following query arguments:
+<em> field: can be "answer" or "question" (optional, default question)
+</em> stale: represent the max stale time in millis ; 0 means no cache (Optional)
+* term: the term to count (mandatory)</p>
 <p>Output JSON</p>
-<h3 id="requirements_22">Requirements</h3>
+<h4 id="requirements_22">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_14">Return codes</h3>
-<h4 id="200_10">200</h4>
+<h4 id="return-codes_14">Return codes</h4>
+<h5 id="200_10">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">TERM=${1:-&quot;hello&quot;}
+ROUTE=${2:-knowledgebase}
+INDEX_NAME=${3:-index_english_0}
+FIELD=${4:-&quot;question&quot;}
+PORT=${5:-8888}
+curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/term_count/${ROUTE}?field=${FIELD}&amp;term=${TERM}&quot;
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{
+   &quot;numDocs&quot; : 994,
+   &quot;count&quot; : 1037
+}
+</code></pre>
+
+<h3 id="get-dict_size">GET /dict_size/<QAPath></h3>
+<p>Measure the dictionary size: number of unique terms on question and answer field</p>
+<p>The endpoint supports the following query arguments:
+* stale: represent the max stale time in millis ; 0 means no cache (Optional)</p>
+<p>Output JSON</p>
+<h4 id="requirements_23">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_15">Return codes</h4>
+<h5 id="200_11">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">PORT=${1:-8888}
+DATATYPE=${2:-knowledgebase}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/dict_size/${DATATYPE}&quot;
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{
+   &quot;numDocs&quot; : 135865,
+   &quot;answer&quot; : 9171,
+   &quot;question&quot; : 25200,
+   &quot;total&quot; : 29258
+}
+</code></pre>
+
+<h3 id="get-total_terms">GET /total_terms/<QAPath></h3>
+<p>calculate the total number of terms</p>
+<p>The endpoint supports the following query arguments:
+* stale: represent the max stale time in millis ; 0 means no cache (Optional)</p>
+<p>Output JSON</p>
+<h4 id="requirements_24">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_16">Return codes</h4>
+<h5 id="200_12">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+DATATYPE=${3:-knowledgebase}
+curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/total_terms/${DATATYPE}&quot;
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{
+   &quot;question&quot; : 821982,
+   &quot;numDocs&quot; : 135865,
+   &quot;answer&quot; : 1098490
+}
+</code></pre>
+
+<h3 id="get-cache">GET /cache/<QAPath></h3>
+<p>return the cache counter parameters and the number of elements in cache</p>
+<p>Output JSON</p>
+<h4 id="requirements_25">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_17">Return codes</h4>
+<h5 id="200_13">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">INDEX_NAME=${1:-index_english_0}
+PORT=${2:-8888}
+ROUTE=${3:-knowledgebase}
+curl -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET http://localhost:${PORT}/${INDEX_NAME}/cache/${ROUTE} 
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">[
+   {
+      &quot;totalTermsCacheMaxSize&quot; : 1000,
+      &quot;countTermCacheMaxSize&quot; : 100000,
+      &quot;dictSizeCacheMaxSize&quot; : 1000,
+      &quot;cacheStealTimeMillis&quot; : 43200000
+   },
+   {
+      &quot;countTermCacheSize&quot; : 0,
+      &quot;dictSizeCacheSize&quot; : 0,
+      &quot;totalTermsCacheSize&quot; : 0
+   }
+]
+</code></pre>
+
+<h3 id="post-cache">POST /cache/<QAPath></h3>
+<p>set the cache counter parameters</p>
+<p>Output JSON</p>
+<h4 id="requirements_26">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_18">Return codes</h4>
+<h5 id="200_14">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">INDEX_NAME=${1:-index_english_0}
+PORT=${2:-8888}
+ROUTE=${3:-knowledgebase}
+curl -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/cache/${ROUTE} -d'{ 
+    &quot;dictSizeCacheMaxSize&quot;: 1000,
+    &quot;totalTermsCacheMaxSize&quot;: 1000,
+    &quot;countTermCacheMaxSize&quot;: 100000,
+    &quot;cacheStealTimeMillis&quot;: 43200000
+}'
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{
+   &quot;totalTermsCacheMaxSize&quot; : 1000,
+   &quot;dictSizeCacheMaxSize&quot; : 1000,
+   &quot;countTermCacheMaxSize&quot; : 100000,
+   &quot;cacheStealTimeMillis&quot; : 43200000
+}
+</code></pre>
+
+<h3 id="delete-cache">DELETE /cache/<QAPath></h3>
+<p>reset the cache for counters</p>
+<p>Output JSON</p>
+<h4 id="requirements_27">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_19">Return codes</h4>
+<h5 id="200_15">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">INDEX_NAME=${1:-index_english_0}
+PORT=${2:-8888}
+ROUTE=${3:-knowledgebase}
+curl -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/cache/${ROUTE}
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">[
+   {
+      &quot;countTermCacheMaxSize&quot; : 100000,
+      &quot;totalTermsCacheMaxSize&quot; : 1000,
+      &quot;dictSizeCacheMaxSize&quot; : 1000,
+      &quot;cacheStealTimeMillis&quot; : 43200000
+   },
+   {
+      &quot;totalTermsCacheSize&quot; : 0,
+      &quot;dictSizeCacheSize&quot; : 0,
+      &quot;countTermCacheSize&quot; : 0
+   }
+]
+</code></pre>
+
+<h3 id="put-updateterms">PUT /updateTerms/<QAPath></h3>
+<p>update the manaus terms for a QuestionAnswer document</p>
+<p>Output JSON</p>
+<h4 id="requirements_28">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The document to update must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_20">Return codes</h4>
+<h5 id="200_16">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">DOCID=${1:-0}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+ROUTE=${4:-knowledgebase}
+curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/${INDEX_NAME}/updateTerms/${ROUTE} -d&quot;{
+        \&quot;id\&quot;: \&quot;${DOCID}\&quot;
+}&quot;
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">[
+   {
+      &quot;id&quot; : &quot;0&quot;,
+      &quot;created&quot; : false,
+      &quot;dtype&quot; : &quot;question_answer&quot;,
+      &quot;version&quot; : 2,
+      &quot;index&quot; : &quot;index_english_0.question_answer&quot;
+   }
+]
+
+</code></pre>
+
+<h3 id="get-updateterms">GET /updateTerms/<QAPath></h3>
+<p>update the manaus terms for all the QuestionAnswer documents</p>
+<p>Output JSON</p>
+<h4 id="requirements_29">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The user has stream permissions on the index</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_21">Return codes</h4>
+<h5 id="200_17">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+ROUTE=${3:-knowledgebase}
+curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X GET http://localhost:${PORT}/${INDEX_NAME}/updateTerms/${ROUTE} -d'{
+        &quot;id&quot;: &quot;&quot;
+}'
+</code></pre>
+
+<p>Sample response</p>
+<pre><code class="json">{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;3bcafc79400f201bcbb2e9290d60231fb096845d97cd3a83b032eab90a9b6f8f&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;f5239013416fc98c558560659b00ec96e694df243aace574e9dd32166e982ccd&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;23cb4dc14284b278867b743d6e7387a3ba20e96afb4a34ddf58a8397b173a24f&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;5f948728fbca7617907ab4ad031020f9da214926f2fbe272295c799d568a3491&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;cfb544023bcc1378a59695bc6135fb7b71bfcdaba6fb2429e151aba73b2774b8&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;cce15f6984f473fe7534f9e0f699e5e11a61e39cbe82989818a023d626ea5e1f&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;b37db2bef879f22d3792840efa1a41b1d46cdbee4af5ccb1b935b3c944732544&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
+</code></pre>
+
+<h2 id="termsextraction">TermsExtraction</h2>
+<h3 id="post-extractionfrequencies">POST /extraction/frequencies</h3>
+<p>Extract term frequencies from a sentence
+The fields of the data structure have the following meaning:</p>
+<ul>
+<li>commonOrSpecificSearchPrior: specify if the prior_data table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC</li>
+<li>commonOrSpecificSearchObserved: specify if the knowledgebase table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC</li>
+<li>observedDataSource: specify which table should be considered for observed data, values are KNOWLEDGEBASE or CONV_LOGS</li>
+<li>fieldsPrior: specify the fields which must be considered, values are question, answer, all</li>
+<li>fieldsObserved: specify the fields which must be considered, values are question, answer, all</li>
+</ul>
+<p>Output JSON</p>
+<h4 id="requirements_30">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_22">Return codes</h4>
+<h5 id="200_18">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">QUERY=${1:-&quot;good morning, may I ask you a question?&quot;}
+PORT=${2:-8888}
+INDEX_NAME=${4:-index_english_0}
+curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/extraction/frequencies&quot; -d&quot;
+{
+        \&quot;text\&quot;: \&quot;${QUERY}\&quot;,
+        \&quot;commonOrSpecificSearchPrior\&quot;: \&quot;COMMON\&quot;,
+        \&quot;commonOrSpecificSearchObserved\&quot;: \&quot;IDXSPECIFIC\&quot;,
+        \&quot;observedDataSource\&quot;: \&quot;KNOWLEDGEBASE\&quot;,
+        \&quot;fieldsPrior\&quot;: \&quot;all\&quot;,
+        \&quot;fieldsObserved\&quot;: \&quot;all\&quot;,
+        \&quot;tokenizer\&quot;: \&quot;space_punctuation\&quot;
+}&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;observedTotalTerms&quot; : 1920472,
+   &quot;priorTotalTerms&quot; : 2311033,
+   &quot;tokensFreq&quot; : [
+      {
+         &quot;observedFrequency&quot; : 1187,
+         &quot;token&quot; : &quot;good&quot;,
+         &quot;priorFrequency&quot; : 7024
+      },
+      {
+         &quot;priorFrequency&quot; : 1228,
+         &quot;token&quot; : &quot;morning&quot;,
+         &quot;observedFrequency&quot; : 246
+      },
+      {
+         &quot;priorFrequency&quot; : 1343,
+         &quot;observedFrequency&quot; : 4185,
+         &quot;token&quot; : &quot;may&quot;
+      },
+      {
+         &quot;observedFrequency&quot; : 68554,
+         &quot;token&quot; : &quot;i&quot;,
+         &quot;priorFrequency&quot; : 79384
+      },
+      {
+         &quot;priorFrequency&quot; : 1377,
+         &quot;observedFrequency&quot; : 471,
+         &quot;token&quot; : &quot;ask&quot;
+      },
+      {
+         &quot;priorFrequency&quot; : 93571,
+         &quot;observedFrequency&quot; : 79470,
+         &quot;token&quot; : &quot;you&quot;
+      },
+      {
+         &quot;priorFrequency&quot; : 47701,
+         &quot;token&quot; : &quot;a&quot;,
+         &quot;observedFrequency&quot; : 25688
+      },
+      {
+         &quot;observedFrequency&quot; : 539,
+         &quot;token&quot; : &quot;question&quot;,
+         &quot;priorFrequency&quot; : 525
+      }
+   ]
+}
+</code></pre>
+
+<h3 id="post-extractionfrequencies_1">POST /extraction/frequencies</h3>
+<p>Extract manaus terms from a sentence
+The fields of the data structure have the following meaning:</p>
+<ul>
+<li>commonOrSpecificSearchPrior: specify if the prior_data table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC</li>
+<li>commonOrSpecificSearchObserved: specify if the knowledgebase table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC</li>
+<li>observedDataSource: specify which table should be considered for observed data, values are KNOWLEDGEBASE or CONV_LOGS</li>
+<li>fieldsPrior: specify the fields which must be considered, values are question, answer, all</li>
+<li>fieldsObserved: specify the fields which must be considered, values are question, answer, all</li>
+</ul>
+<p>Output JSON</p>
+<h4 id="requirements_31">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_23">Return codes</h4>
+<h5 id="200_19">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">QUERY=${1:-&quot;good morning, may I ask you a question?&quot;}
+PORT=${2:-8888}
+INDEX_NAME=${4:-index_english_0}
+curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/extraction/keywords&quot; -d &quot;
+{
+        \&quot;text\&quot;: \&quot;${QUERY}\&quot;,
+        \&quot;commonOrSpecificSearchPrior\&quot;: \&quot;COMMON\&quot;,
+        \&quot;commonOrSpecificSearchObserved\&quot;: \&quot;IDXSPECIFIC\&quot;,
+        \&quot;observedDataSource\&quot;: \&quot;KNOWLEDGEBASE\&quot;,
+        \&quot;fieldsPrior\&quot;: \&quot;all\&quot;,
+        \&quot;fieldsObserved\&quot;: \&quot;all\&quot;,
+        \&quot;minWordsPerSentence\&quot;: 5,
+        \&quot;pruneTermsThreshold\&quot;: 100000,
+        \&quot;misspellMaxOccurrence\&quot;: 10,
+        \&quot;activePotentialDecay\&quot;: 1,
+        \&quot;activePotential\&quot;: true,
+        \&quot;totalInfo\&quot;: true
+}
+&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;question&quot; : 0.229660917208135
+}
+</code></pre>
+
+<h3 id="post-extractionsynonyms">POST /extraction/synonyms</h3>
+<p>Tokenize a sentence, extract terms and decorate each term with manaus informations and the possible synonyms using a vector model.
+The fields of the data structure have the following meaning:</p>
+<ul>
+<li>text: the text to analyze</li>
+<li>tokenizer: the tokenizer, default is "base"</li>
+<li>sentencesThreshold: discard sentences if the sentence with the synonym is below the threshold, default us 0.0</li>
+<li>synonymsThresholds: discard the synonyms if the distance is below the threshold, default is 0.0</li>
+<li>distance: a distance function values are SUMCOSINE (sum of word vectors) or EMDCOSINE (Earth movers distance)</li>
+<li>commonOrSpecificSearchTerms: specify if the terms table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC</li>
+<li>commonOrSpecificSearchPrior: specify if the prior_data table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC</li>
+<li>commonOrSpecificSearchObserved: specify if the knowledgebase table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC</li>
+<li>observedDataSource: specify which table should be considered for observed data, values are KNOWLEDGEBASE or CONV_LOGS</li>
+<li>fieldsPrior: specify the fields which must be considered, values are question, answer, all</li>
+<li>fieldsObserved: specify the fields which must be considered, values are question, answer, all</li>
+<li>minWordsPerSentence: manaus parameter, ignore sentences with less than N terms, default is 10</li>
+<li>pruneTermsThreshold: manaus parameter, discard terms whith a value above the threshold, default value is 100000</li>
+<li>misspellMaxOccurrence: manaus parameter, discard terms with a frequency below the threshold, default is 5</li>
+<li>activePotentialDecay: manaus parameter, a decay value for the active potential</li>
+<li>activePotential: manaus parameter, tell wether to calculate the active potential or not, default is true</li>
+<li>totalInfo: manaus parameter, tell wether to consider the total info or not, default is true</li>
+</ul>
+<p>Output JSON</p>
+<h4 id="requirements_32">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_24">Return codes</h4>
+<h5 id="200_20">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">QUERY=${1:-&quot;good morning, may I ask you a question?&quot;}
+PORT=${2:-8888}
+INDEX_NAME=${4:-index_english_0}
+
+curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/extraction/synonyms&quot; -d &quot;
+{
+        \&quot;text\&quot;: \&quot;${QUERY}\&quot;,
+        \&quot;tokenizer\&quot;: \&quot;base\&quot;,
+        \&quot;sentencesThreshold\&quot;: 0.9,
+        \&quot;synonymsThresholds\&quot;: 0.3,
+        \&quot;distance\&quot;: \&quot;EMDCOSINE\&quot;,
+        \&quot;commonOrSpecificSearchPrior\&quot;: \&quot;COMMON\&quot;,
+        \&quot;commonOrSpecificSearchObserved\&quot;: \&quot;IDXSPECIFIC\&quot;,
+        \&quot;observedDataSource\&quot;: \&quot;KNOWLEDGEBASE\&quot;,
+        \&quot;fieldsPrior\&quot;: \&quot;all\&quot;,
+        \&quot;fieldsObserved\&quot;: \&quot;all\&quot;,
+        \&quot;minWordsPerSentence\&quot;: 5,
+        \&quot;pruneTermsThreshold\&quot;: 100000,
+        \&quot;misspellMaxOccurrence\&quot;: 10,
+        \&quot;activePotentialDecay\&quot;: 1,
+        \&quot;activePotential\&quot;: true,
+        \&quot;totalInfo\&quot;: true
+}
+&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">[
+   {
+      &quot;synonymItem&quot; : [
+         {
+            &quot;termSimilarityScore&quot; : 0.303461623209445,
+            &quot;synonym&quot; : &quot;serious&quot;,
+            &quot;synonymScore&quot; : 0.988391942416316,
+            &quot;textDistanceWithSynonym&quot; : 0.988391942416316
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.98686397528116,
+            &quot;synonymScore&quot; : 0.98686397528116,
+            &quot;synonym&quot; : &quot;safe&quot;,
+            &quot;termSimilarityScore&quot; : 0.310671998517923
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.986168126185455,
+            &quot;synonymScore&quot; : 0.986168126185455,
+            &quot;synonym&quot; : &quot;effective&quot;,
+            &quot;termSimilarityScore&quot; : 0.337205437720856
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.985984970241292,
+            &quot;synonymScore&quot; : 0.985984970241292,
+            &quot;termSimilarityScore&quot; : 0.30013467985373,
+            &quot;synonym&quot; : &quot;salutary&quot;
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.985895039899644,
+            &quot;synonymScore&quot; : 0.985895039899644,
+            &quot;termSimilarityScore&quot; : 0.301306430755499,
+            &quot;synonym&quot; : &quot;dear&quot;
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.319592899798586,
+            &quot;synonym&quot; : &quot;estimable&quot;,
+            &quot;synonymScore&quot; : 0.985759252837724,
+            &quot;textDistanceWithSynonym&quot; : 0.985759252837724
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.985249380845675,
+            &quot;synonymScore&quot; : 0.985249380845675,
+            &quot;synonym&quot; : &quot;thoroughly&quot;,
+            &quot;termSimilarityScore&quot; : 0.337964488042003
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.360057098563907,
+            &quot;synonym&quot; : &quot;right&quot;,
+            &quot;synonymScore&quot; : 0.984778611750602,
+            &quot;textDistanceWithSynonym&quot; : 0.984778611750602
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.984227558357218,
+            &quot;synonymScore&quot; : 0.984227558357218,
+            &quot;synonym&quot; : &quot;adept&quot;,
+            &quot;termSimilarityScore&quot; : 0.330252861229703
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.360657543519664,
+            &quot;synonym&quot; : &quot;expert&quot;,
+            &quot;synonymScore&quot; : 0.984204967194361,
+            &quot;textDistanceWithSynonym&quot; : 0.984204967194361
+         },
+         {
+            &quot;synonymScore&quot; : 0.9839801846329,
+            &quot;textDistanceWithSynonym&quot; : 0.9839801846329,
+            &quot;termSimilarityScore&quot; : 0.387968844459879,
+            &quot;synonym&quot; : &quot;full&quot;
+         },
+         {
+            &quot;synonymScore&quot; : 0.983341764529566,
+            &quot;textDistanceWithSynonym&quot; : 0.983341764529566,
+            &quot;termSimilarityScore&quot; : 0.307056458999165,
+            &quot;synonym&quot; : &quot;skilful&quot;
+         },
+         {
+            &quot;synonym&quot; : &quot;secure&quot;,
+            &quot;termSimilarityScore&quot; : 0.386750372411043,
+            &quot;synonymScore&quot; : 0.9828697525105,
+            &quot;textDistanceWithSynonym&quot; : 0.9828697525105
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.436633496912848,
+            &quot;synonym&quot; : &quot;near&quot;,
+            &quot;textDistanceWithSynonym&quot; : 0.9823153867721,
+            &quot;synonymScore&quot; : 0.9823153867721
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.98229857645758,
+            &quot;synonymScore&quot; : 0.98229857645758,
+            &quot;termSimilarityScore&quot; : 0.387852275460498,
+            &quot;synonym&quot; : &quot;soundly&quot;
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.981854513089778,
+            &quot;synonymScore&quot; : 0.981854513089778,
+            &quot;termSimilarityScore&quot; : 0.375971735071977,
+            &quot;synonym&quot; : &quot;sound&quot;
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.981012225642823,
+            &quot;synonymScore&quot; : 0.981012225642823,
+            &quot;termSimilarityScore&quot; : 0.349548530861366,
+            &quot;synonym&quot; : &quot;unspoiled&quot;
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.980134947418645,
+            &quot;synonymScore&quot; : 0.980134947418645,
+            &quot;synonym&quot; : &quot;honorable&quot;,
+            &quot;termSimilarityScore&quot; : 0.36656103347195
+         },
+         {
+            &quot;synonym&quot; : &quot;ripe&quot;,
+            &quot;termSimilarityScore&quot; : 0.361927513363036,
+            &quot;synonymScore&quot; : 0.979828029318668,
+            &quot;textDistanceWithSynonym&quot; : 0.979828029318668
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.354594107764147,
+            &quot;synonym&quot; : &quot;proficient&quot;,
+            &quot;synonymScore&quot; : 0.97897497858666,
+            &quot;textDistanceWithSynonym&quot; : 0.97897497858666
+         },
+         {
+            &quot;synonym&quot; : &quot;commodity&quot;,
+            &quot;termSimilarityScore&quot; : 0.400576579081682,
+            &quot;synonymScore&quot; : 0.978353047238428,
+            &quot;textDistanceWithSynonym&quot; : 0.978353047238428
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.978097513490299,
+            &quot;synonymScore&quot; : 0.978097513490299,
+            &quot;synonym&quot; : &quot;practiced&quot;,
+            &quot;termSimilarityScore&quot; : 0.417713639606198
+         },
+         {
+            &quot;synonym&quot; : &quot;unspoilt&quot;,
+            &quot;termSimilarityScore&quot; : 0.344935826089365,
+            &quot;textDistanceWithSynonym&quot; : 0.977965860781802,
+            &quot;synonymScore&quot; : 0.977965860781802
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.977574200871494,
+            &quot;synonymScore&quot; : 0.977574200871494,
+            &quot;termSimilarityScore&quot; : 0.368691045104583,
+            &quot;synonym&quot; : &quot;upright&quot;
+         }
+      ],
+      &quot;isKeywordToken&quot; : false,
+      &quot;keywordExtractionScore&quot; : 0,
+      &quot;token&quot; : {
+         &quot;position&quot; : 0,
+         &quot;token&quot; : &quot;good&quot;,
+         &quot;token_type&quot; : &quot;&lt;ALPHANUM&gt;&quot;,
+         &quot;start_offset&quot; : 0,
+         &quot;end_offset&quot; : 4
+      }
+   },
+   {
+      &quot;keywordExtractionScore&quot; : 0,
+      &quot;token&quot; : {
+         &quot;position&quot; : 1,
+         &quot;end_offset&quot; : 12,
+         &quot;token&quot; : &quot;morning&quot;,
+         &quot;token_type&quot; : &quot;&lt;ALPHANUM&gt;&quot;,
+         &quot;start_offset&quot; : 5
+      },
+      &quot;synonymItem&quot; : [
+         {
+            &quot;synonymScore&quot; : 0.982435251017214,
+            &quot;textDistanceWithSynonym&quot; : 0.982435251017214,
+            &quot;termSimilarityScore&quot; : 0.328796456566772,
+            &quot;synonym&quot; : &quot;dawning&quot;
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.320363553861273,
+            &quot;synonym&quot; : &quot;sunup&quot;,
+            &quot;textDistanceWithSynonym&quot; : 0.981187446721127,
+            &quot;synonymScore&quot; : 0.981187446721127
+         },
+         {
+            &quot;synonymScore&quot; : 0.980827133578433,
+            &quot;textDistanceWithSynonym&quot; : 0.980827133578433,
+            &quot;termSimilarityScore&quot; : 0.351556981730201,
+            &quot;synonym&quot; : &quot;cockcrow&quot;
+         },
+         {
+            &quot;synonym&quot; : &quot;dayspring&quot;,
+            &quot;termSimilarityScore&quot; : 0.348148650582253,
+            &quot;textDistanceWithSynonym&quot; : 0.98000434808506,
+            &quot;synonymScore&quot; : 0.98000434808506
+         },
+         {
+            &quot;synonym&quot; : &quot;morn&quot;,
+            &quot;termSimilarityScore&quot; : 0.310762418953851,
+            &quot;textDistanceWithSynonym&quot; : 0.979694497080588,
+            &quot;synonymScore&quot; : 0.979694497080588
+         },
+         {
+            &quot;synonymScore&quot; : 0.975365086887233,
+            &quot;textDistanceWithSynonym&quot; : 0.975365086887233,
+            &quot;synonym&quot; : &quot;aurora&quot;,
+            &quot;termSimilarityScore&quot; : 0.403555992661807
+         },
+         {
+            &quot;synonym&quot; : &quot;first_light&quot;,
+            &quot;termSimilarityScore&quot; : 0.389117497640442,
+            &quot;synonymScore&quot; : 0.973279032352032,
+            &quot;textDistanceWithSynonym&quot; : 0.973279032352032
+         }
+      ],
+      &quot;isKeywordToken&quot; : false
+   },
+   {
+      &quot;keywordExtractionScore&quot; : 0,
+      &quot;token&quot; : {
+         &quot;position&quot; : 2,
+         &quot;end_offset&quot; : 17,
+         &quot;token&quot; : &quot;may&quot;,
+         &quot;token_type&quot; : &quot;&lt;ALPHANUM&gt;&quot;,
+         &quot;start_offset&quot; : 14
+      },
+      &quot;synonymItem&quot; : [
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.977735408571704,
+            &quot;synonymScore&quot; : 0.977735408571704,
+            &quot;termSimilarityScore&quot; : 0.430110506850729,
+            &quot;synonym&quot; : &quot;whitethorn&quot;
+         }
+      ],
+      &quot;isKeywordToken&quot; : false
+   },
+   {
+      &quot;keywordExtractionScore&quot; : 0,
+      &quot;token&quot; : {
+         &quot;position&quot; : 3,
+         &quot;end_offset&quot; : 19,
+         &quot;token_type&quot; : &quot;&lt;ALPHANUM&gt;&quot;,
+         &quot;start_offset&quot; : 18,
+         &quot;token&quot; : &quot;i&quot;
+      },
+      &quot;synonymItem&quot; : [
+         {
+            &quot;synonymScore&quot; : 0.990079660169983,
+            &quot;textDistanceWithSynonym&quot; : 0.990079660169983,
+            &quot;termSimilarityScore&quot; : 0.33685060765497,
+            &quot;synonym&quot; : &quot;one&quot;
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.402164830285073,
+            &quot;synonym&quot; : &quot;single&quot;,
+            &quot;textDistanceWithSynonym&quot; : 0.982443662914587,
+            &quot;synonymScore&quot; : 0.982443662914587
+         },
+         {
+            &quot;synonymScore&quot; : 0.978915403087889,
+            &quot;textDistanceWithSynonym&quot; : 0.978915403087889,
+            &quot;termSimilarityScore&quot; : 0.421938029658631,
+            &quot;synonym&quot; : &quot;unity&quot;
+         },
+         {
+            &quot;synonymScore&quot; : 0.976796274715053,
+            &quot;textDistanceWithSynonym&quot; : 0.976796274715053,
+            &quot;termSimilarityScore&quot; : 0.411104820586555,
+            &quot;synonym&quot; : &quot;ace&quot;
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.409793052227205,
+            &quot;synonym&quot; : &quot;iodine&quot;,
+            &quot;synonymScore&quot; : 0.971809310282386,
+            &quot;textDistanceWithSynonym&quot; : 0.971809310282386
+         },
+         {
+            &quot;synonymScore&quot; : 0.970492090788282,
+            &quot;textDistanceWithSynonym&quot; : 0.970492090788282,
+            &quot;synonym&quot; : &quot;ane&quot;,
+            &quot;termSimilarityScore&quot; : 0.426139287692068
+         }
+      ],
+      &quot;isKeywordToken&quot; : false
+   },
+   {
+      &quot;isKeywordToken&quot; : false,
+      &quot;synonymItem&quot; : [
+         {
+            &quot;termSimilarityScore&quot; : 0.344875478792656,
+            &quot;synonym&quot; : &quot;involve&quot;,
+            &quot;synonymScore&quot; : 0.985084402822893,
+            &quot;textDistanceWithSynonym&quot; : 0.985084402822893
+         },
+         {
+            &quot;synonym&quot; : &quot;require&quot;,
+            &quot;termSimilarityScore&quot; : 0.313982723187962,
+            &quot;synonymScore&quot; : 0.985048997600635,
+            &quot;textDistanceWithSynonym&quot; : 0.985048997600635
+         },
+         {
+            &quot;synonym&quot; : &quot;demand&quot;,
+            &quot;termSimilarityScore&quot; : 0.340885896054422,
+            &quot;textDistanceWithSynonym&quot; : 0.984973652020142,
+            &quot;synonymScore&quot; : 0.984973652020142
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.984179229975704,
+            &quot;synonymScore&quot; : 0.984179229975704,
+            &quot;termSimilarityScore&quot; : 0.348080045767017,
+            &quot;synonym&quot; : &quot;necessitate&quot;
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.363270794438576,
+            &quot;synonym&quot; : &quot;postulate&quot;,
+            &quot;synonymScore&quot; : 0.980113837090212,
+            &quot;textDistanceWithSynonym&quot; : 0.980113837090212
+         }
+      ],
+      &quot;keywordExtractionScore&quot; : 0,
+      &quot;token&quot; : {
+         &quot;position&quot; : 4,
+         &quot;end_offset&quot; : 23,
+         &quot;token&quot; : &quot;ask&quot;,
+         &quot;start_offset&quot; : 20,
+         &quot;token_type&quot; : &quot;&lt;ALPHANUM&gt;&quot;
+      }
+   },
+   {
+      &quot;token&quot; : {
+         &quot;position&quot; : 5,
+         &quot;end_offset&quot; : 27,
+         &quot;token&quot; : &quot;you&quot;,
+         &quot;token_type&quot; : &quot;&lt;ALPHANUM&gt;&quot;,
+         &quot;start_offset&quot; : 24
+      },
+      &quot;keywordExtractionScore&quot; : 0,
+      &quot;synonymItem&quot; : [],
+      &quot;isKeywordToken&quot; : false
+   },
+   {
+      &quot;isKeywordToken&quot; : false,
+      &quot;synonymItem&quot; : [
+         {
+            &quot;synonym&quot; : &quot;angstrom&quot;,
+            &quot;termSimilarityScore&quot; : 0.389515130731534,
+            &quot;synonymScore&quot; : 0.981827876880409,
+            &quot;textDistanceWithSynonym&quot; : 0.981827876880409
+         },
+         {
+            &quot;synonym&quot; : &quot;amp&quot;,
+            &quot;termSimilarityScore&quot; : 0.410951525810052,
+            &quot;synonymScore&quot; : 0.978805416352854,
+            &quot;textDistanceWithSynonym&quot; : 0.978805416352854
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.399132821680172,
+            &quot;synonym&quot; : &quot;ampere&quot;,
+            &quot;synonymScore&quot; : 0.978184525582464,
+            &quot;textDistanceWithSynonym&quot; : 0.978184525582464
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.970833723014969,
+            &quot;synonymScore&quot; : 0.970833723014969,
+            &quot;synonym&quot; : &quot;adenine&quot;,
+            &quot;termSimilarityScore&quot; : 0.417303913993053
+         }
+      ],
+      &quot;keywordExtractionScore&quot; : 0,
+      &quot;token&quot; : {
+         &quot;end_offset&quot; : 29,
+         &quot;start_offset&quot; : 28,
+         &quot;token_type&quot; : &quot;&lt;ALPHANUM&gt;&quot;,
+         &quot;token&quot; : &quot;a&quot;,
+         &quot;position&quot; : 6
+      }
+   },
+   {
+      &quot;token&quot; : {
+         &quot;token_type&quot; : &quot;&lt;ALPHANUM&gt;&quot;,
+         &quot;start_offset&quot; : 30,
+         &quot;token&quot; : &quot;question&quot;,
+         &quot;end_offset&quot; : 38,
+         &quot;position&quot; : 7
+      },
+      &quot;keywordExtractionScore&quot; : 0,
+      &quot;isKeywordToken&quot; : false,
+      &quot;synonymItem&quot; : [
+         {
+            &quot;termSimilarityScore&quot; : 0.302928140147459,
+            &quot;synonym&quot; : &quot;doubtfulness&quot;,
+            &quot;textDistanceWithSynonym&quot; : 0.986332041308894,
+            &quot;synonymScore&quot; : 0.986332041308894
+         },
+         {
+            &quot;textDistanceWithSynonym&quot; : 0.984752050785226,
+            &quot;synonymScore&quot; : 0.984752050785226,
+            &quot;synonym&quot; : &quot;interview&quot;,
+            &quot;termSimilarityScore&quot; : 0.337223120697986
+         },
+         {
+            &quot;synonym&quot; : &quot;enquiry&quot;,
+            &quot;termSimilarityScore&quot; : 0.30268890030876,
+            &quot;textDistanceWithSynonym&quot; : 0.983960314458422,
+            &quot;synonymScore&quot; : 0.983960314458422
+         },
+         {
+            &quot;synonym&quot; : &quot;interrogate&quot;,
+            &quot;termSimilarityScore&quot; : 0.347190376576428,
+            &quot;synonymScore&quot; : 0.982717754194259,
+            &quot;textDistanceWithSynonym&quot; : 0.982717754194259
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.402127027019405,
+            &quot;synonym&quot; : &quot;head&quot;,
+            &quot;textDistanceWithSynonym&quot; : 0.981584262241235,
+            &quot;synonymScore&quot; : 0.981584262241235
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.353450470156032,
+            &quot;synonym&quot; : &quot;interrogation&quot;,
+            &quot;textDistanceWithSynonym&quot; : 0.980529096104673,
+            &quot;synonymScore&quot; : 0.980529096104673
+         },
+         {
+            &quot;termSimilarityScore&quot; : 0.386000200471808,
+            &quot;synonym&quot; : &quot;motion&quot;,
+            &quot;textDistanceWithSynonym&quot; : 0.978495629389701,
+            &quot;synonymScore&quot; : 0.978495629389701
+         },
+         {
+            &quot;synonym&quot; : &quot;inquiry&quot;,
+            &quot;termSimilarityScore&quot; : 0.314067668506634,
+            &quot;textDistanceWithSynonym&quot; : 0.977996268442931,
+            &quot;synonymScore&quot; : 0.977996268442931
+         }
+      ]
+   }
+]
+</code></pre>
+
+<h2 id="languageguesser">LanguageGuesser</h2>
+<h3 id="post-language_guesser">POST /language_guesser</h3>
+<p>Output JSON</p>
+<h4 id="requirements_33">Requirements</h4>
+<ul>
+<li>Index must exists</li>
+<li>The function requires user credentials with read permissions on the index</li>
+</ul>
+<h4 id="return-codes_25">Return codes</h4>
+<h5 id="200_21">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;good morning, may I ask you a question?&quot;}
 PORT=${2:-8888}
@@ -1283,16 +2149,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-language_guesser">GET /language_guesser</h2>
+<h3 id="get-language_guesser">GET /language_guesser</h3>
 <p>Check if a language is recognizable by the guesser</p>
 <p>Output JSON</p>
-<h3 id="requirements_23">Requirements</h3>
+<h4 id="requirements_34">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_15">Return codes</h3>
-<h4 id="200_11">200</h4>
+<h4 id="return-codes_26">Return codes</h4>
+<h5 id="200_22">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">LANG=${1:-en} 
 PORT=${2:-8888}
@@ -1311,15 +2177,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-index_managementcreate">POST /index_management/create</h2>
+<h2 id="indexmanagement">IndexManagement</h2>
+<h3 id="post-index_managementcreate">POST /index_management/create</h3>
 <p>Output JSON</p>
-<h3 id="requirements_24">Requirements</h3>
+<h4 id="requirements_35">Requirements</h4>
 <ul>
 <li>Index name must start with the "index_" prefix followed by a language, and a sequence of alphanumeric characters separated by underscore e.g. index_<LANG>_<SUFFIX></li>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="return-codes_16">Return codes</h3>
-<h4 id="200_12">200</h4>
+<h4 id="return-codes_27">Return codes</h4>
+<h5 id="200_23">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1333,15 +2200,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-index_managementrefresh">POST /index_management/refresh</h2>
+<h3 id="post-index_managementrefresh">POST /index_management/refresh</h3>
 <p>Output JSON</p>
-<h3 id="requirements_25">Requirements</h3>
+<h4 id="requirements_36">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_17">Return codes</h3>
-<h4 id="200_13">200</h4>
+<h4 id="return-codes_28">Return codes</h4>
+<h5 id="200_24">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1377,15 +2244,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-index_management">GET /index_management</h2>
+<h3 id="get-index_management">GET /index_management</h3>
 <p>Output JSON</p>
-<h3 id="requirements_26">Requirements</h3>
+<h4 id="requirements_37">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_18">Return codes</h3>
-<h4 id="200_14">200</h4>
+<h4 id="return-codes_29">Return codes</h4>
+<h5 id="200_25">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1399,15 +2266,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="put-index_management">PUT /index_management</h2>
+<h3 id="put-index_management">PUT /index_management</h3>
 <p>Output JSON</p>
-<h3 id="requirements_27">Requirements</h3>
+<h4 id="requirements_38">Requirements</h4>
 <ul>
 <li>Index must exists</li>
 <li>The function requires "admin" credentials</li>
 </ul>
-<h3 id="return-codes_19">Return codes</h3>
-<h4 id="200_15">200</h4>
+<h4 id="return-codes_30">Return codes</h4>
+<h5 id="200_26">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1422,15 +2289,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="delete-index_management">DELETE /index_management</h2>
+<h3 id="delete-index_management">DELETE /index_management</h3>
 <p>Output JSON</p>
-<h3 id="requirements_28">Requirements</h3>
+<h4 id="requirements_39">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires admin credentials</li>
 </ul>
-<h3 id="return-codes_20">Return codes</h3>
-<h4 id="200_16">200</h4>
+<h4 id="return-codes_31">Return codes</h4>
+<h5 id="200_27">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1444,15 +2311,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 }
 </code></pre>
 
-<h2 id="post-termindex">POST /term/index</h2>
+<h2 id="term">Term</h2>
+<h3 id="post-termindex">POST /term/index</h3>
 <p>Index the term as indicated in the JSON. </p>
-<h3 id="requirements_29">Requirements</h3>
+<h4 id="requirements_40">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_21">Return codes</h3>
-<h4 id="200_17">200</h4>
+<h4 id="return-codes_32">Return codes</h4>
+<h5 id="200_28">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1528,15 +2396,39 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-termget">POST /term/get</h2>
+<h3 id="post-termindex_default_synonyms">POST /term/index_default_synonyms</h3>
+<p>Index a set of default synonyms provided with starchat.</p>
+<h4 id="requirements_41">Requirements</h4>
+<ul>
+<li>The index must exists</li>
+<li>The function requires user credentials with write permissions on the index</li>
+</ul>
+<h4 id="return-codes_33">Return codes</h4>
+<h5 id="200_29">200</h5>
+<p>Sample call</p>
+<pre><code class="bash">PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+GROUP_SIZE=${3:-1000}
+curl --max-time 600 -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&quot; \
+  -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/term/index_default_synonyms?groupsize=${GROUP_SIZE}&quot;
+</code></pre>
+
+<p>Sample output</p>
+<pre><code class="json">{
+   &quot;message&quot; : &quot;Indexed synonyms, blocks of 1000 items =&gt; success(124) failures(0)&quot;,
+   &quot;code&quot; : 100
+}
+</code></pre>
+
+<h3 id="post-termget">POST /term/get</h3>
 <p>Get one or more terms entry.</p>
-<h3 id="requirements_30">Requirements</h3>
+<h4 id="requirements_42">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_22">Return codes</h3>
-<h4 id="200_18">200</h4>
+<h4 id="return-codes_34">Return codes</h4>
+<h5 id="200_30">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;\&quot;term\&quot;&quot;}
 PORT=${2:-8888}
@@ -1601,15 +2493,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 </code></pre>
 
-<h2 id="delete-term">DELETE /term</h2>
+<h3 id="delete-term">DELETE /term</h3>
 <p>Delete the term.</p>
-<h3 id="requirements_31">Requirements</h3>
+<h4 id="requirements_43">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_23">Return codes</h3>
-<h4 id="200_19">200</h4>
+<h4 id="return-codes_35">Return codes</h4>
+<h5 id="200_31">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1657,15 +2549,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="put-term">PUT /term</h2>
+<h3 id="put-term">PUT /term</h3>
 <p>Update the entry.</p>
-<h3 id="requirements_32">Requirements</h3>
+<h4 id="requirements_44">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with write permissions on the index</li>
 </ul>
-<h3 id="return-codes_24">Return codes</h3>
-<h4 id="200_20">200</h4>
+<h4 id="return-codes_36">Return codes</h4>
+<h5 id="200_32">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1742,15 +2634,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 </code></pre>
 
-<h2 id="get-termterm">GET /term/term</h2>
+<h3 id="get-termterm">GET /term/term</h3>
 <p>Search for term (using Elasticsearch).</p>
-<h3 id="requirements_33">Requirements</h3>
+<h4 id="requirements_45">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_25">Return codes</h3>
-<h4 id="200_21">200</h4>
+<h4 id="return-codes_37">Return codes</h4>
+<h5 id="200_33">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;term2&quot;}
 PORT=${2:-8888}
@@ -1797,15 +2689,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-termtext">GET /term/text</h2>
+<h3 id="get-termtext">GET /term/text</h3>
 <p>Search for all the terms in the text and return the entries.</p>
-<h3 id="requirements_34">Requirements</h3>
+<h4 id="requirements_46">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_26">Return codes</h3>
-<h4 id="200_22">200</h4>
+<h4 id="return-codes_38">Return codes</h4>
+<h5 id="200_34">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1874,15 +2766,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="get-tokenizers">GET /tokenizers</h2>
+<h2 id="tokenizers">Tokenizers</h2>
+<h3 id="get-tokenizers">GET /tokenizers</h3>
 <p>Show a list of supported methods for tokenization and stemming</p>
-<h3 id="requirements_35">Requirements</h3>
+<h4 id="requirements_47">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_27">Return codes</h3>
-<h4 id="200_23">200</h4>
+<h4 id="return-codes_39">Return codes</h4>
+<h5 id="200_35">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 INDEX_NAME=${2:-index_english_0}
@@ -1903,15 +2796,15 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-tokenizers">POST /tokenizers</h2>
+<h3 id="post-tokenizers">POST /tokenizers</h3>
 <p>get a list of token using the selected analyzer</p>
-<h3 id="requirements_36">Requirements</h3>
+<h4 id="requirements_48">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_28">Return codes</h3>
-<h4 id="200_24">200</h4>
+<h4 id="return-codes_40">Return codes</h4>
+<h5 id="200_36">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">ANALYZER=${1:-&quot;stop&quot;}
 QUERY=${2:-&quot;good morning, may I ask you a question?&quot;}
@@ -1981,15 +2874,16 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 }
 </code></pre>
 
-<h2 id="post-analyzers_playground">POST /analyzers_playground</h2>
+<h2 id="analyzersplayground">AnalyzersPlayground</h2>
+<h3 id="post-analyzers_playground">POST /analyzers_playground</h3>
 <p>used to test analyzers on the fly</p>
-<h3 id="requirements_37">Requirements</h3>
+<h4 id="requirements_49">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 </ul>
-<h3 id="return-codes_29">Return codes</h3>
-<h4 id="200_25">200</h4>
+<h4 id="return-codes_41">Return codes</h4>
+<h5 id="200_37">200</h5>
 <p>Sample call keyword</p>
 <pre><code class="bash">ANALYZER=${1:-&quot;keyword(\\\&quot;test\\\&quot;)&quot;}
 QUERY=${2:-&quot;this is a test&quot;}
@@ -2057,16 +2951,17 @@ curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot;
 }
 </code></pre>
 
-<h2 id="post-spellcheckterms">POST /spellcheck/terms</h2>
+<h2 id="spellcheck">SpellCheck</h2>
+<h3 id="post-spellcheckterms">POST /spellcheck/terms</h3>
 <p>terms spellchecker based on knowledgebase text </p>
-<h3 id="requirements_38">Requirements</h3>
+<h4 id="requirements_50">Requirements</h4>
 <ul>
 <li>The index must exists</li>
 <li>The function requires user credentials with read permissions on the index</li>
 <li>the knowledge base must contain data</li>
 </ul>
-<h3 id="return-codes_30">Return codes</h3>
-<h4 id="200_26">200</h4>
+<h4 id="return-codes_42">Return codes</h4>
+<h5 id="200_38">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;this is a tes for splellchecker&quot;}
 PORT=${2:-8888}

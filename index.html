@@ -321,19 +321,28 @@ you only have to configure a conversation flow and eventually a front-end client
 <pre><code>booleanAnd(keyword(&quot;password&quot;),booleanOr(keyword(&quot;reset&quot;),keyword(&quot;forgot&quot;)))
 </code></pre>
 
-<p>Another example. Imagine we have a state <code>send-updates</code>. In this state StarChat proposes the question "Where can we send you updates?". In the config file:</p>
+<p>The analyzer above says the state must be triggered if the term "password" is detected together with either "reset" or "forgot".</p>
+<p>Another example. Imagine we have a state called <code>send-updates</code>. In this state StarChat proposes the question "Where can we send you updates?". In the config file:</p>
 <pre><code>state           | ... | bubble                              | ...
 send-updates    | ... | &quot;Where can we send you updates?&quot;    |
 </code></pre>
 
-<p>In the state <code>send-email</code> we have the anlyzer field with:</p>
+<p>In another state, called <code>send-email</code>, we have the anlyzer field with:</p>
 <pre><code>booleanAnd(lastTravStateIs(&quot;send-updates&quot;), matchEmailAddress(&quot;verification_&quot;))
 </code></pre>
 
-<p>this means <code>send-email</code> will be triggered only after <code>send-updates</code> (because of <code>lastTravStateIs</code>) <em>and</em> if an email address is detected (because of <code>matchEmailAddress</code>). This will also set the variable <code>verification_email</code>.</p>
-<p>In addition to that, an <code>analayzer</code> could be developed (we haven't) which accepts others arguments, for example:</p>
-<p><code>sendVerificationEmail("verification_", "Email about Verification", "Here is your verification link {temp_verification_link})</code></p>
-<p>and retrieve the <code>temp_verification_link</code> from an API.</p>
+<p>this means <code>send-email</code> will be triggered only after <code>send-updates</code> (because of <code>lastTravStateIs</code>) <em>and</em> if an email address is detected (because of <code>matchEmailAddress</code>). This will also set the variable <code>verification_email</code> because the expression <code>matchEmailAddress</code> in case of success always sets such variable, with the expression's argument as prefix.</p>
+<p>In addition to that, the expression <code>sendVerificationEmail</code> could be developed (we haven't) which accepts others arguments, for example:</p>
+<p><code>sendVerificationEmail("verification_", "Email about Verification", "Here is your verification link %__temp__verification_link%)</code></p>
+<p>In this case, the expression would </p>
+<ul>
+<li>extract an email address from the user's query</li>
+<li>set a variable <code>verification_email</code> with such address</li>
+<li>retrieve a verification link from some API </li>
+<li>put that link into the temporary variable <code>__temp__verification_link</code>. </li>
+<li>send an email with subject "Email about Verification" and body "Here is your..."</li>
+<li>return 1 in case of success</li>
+</ul>
 <p><strong>TODO</strong> It is fundamental here to build a set of metadata which allows any other component to receive all needed information about the analyzer. For instance, the <code>sendVerificationEmail</code> could have something like:</p>
 <pre><code class="json">[
     &quot;documentation&quot;: &quot;Send an email with subject and body. If successful returns 1.0 and sets the variables. If not returns 0 and does not set the variables.&quot;
@@ -469,12 +478,40 @@ for any NLP task.</p>
 <p>StarChat uses Elasticsearch as NoSQL database and, as said above, NLP preprocessor, for
 indexing, sentence cleansing, and tokenization.</p>
 <h3 id="services">Services</h3>
-<p>StarChat consists of two different services: the "KnowledBase" and the "DecisionTable"</p>
+<p>StarChat consists of the following REST resources. </p>
+<h4 id="root">Root</h4>
+<p>The root endpoint provides just an health check endpoint</p>
+<h3 id="systemindexmanagement">SystemIndexManagement</h3>
+<p>The SystemIndexManagement set of endpoints provides a means to set 
+up and manage the system tables.</p>
+<h3 id="indexmanagement">IndexManagement</h3>
+<p>The IndexManagement REST endpoints allows to create new indexes for new instances (StarChat is multitenant).</p>
+<h3 id="languageguesser">LanguageGuesser</h3>
+<p>Offers endpoints to guess the language given a text.</p>
+<h3 id="questionanswer-type-same-api-syntax-and-semantic">QuestionAnswer type (same API syntax and semantic):</h3>
+<p>The following REST endpoints have the same syntax and semantic
+but they serve different needs.</p>
 <h4 id="knowledgebase">KnowledgeBase</h4>
 <p>For quick setup based on real Q&amp;A logs. It stores question and answers pairs. Given a text as input
  it proposes the pair with the closest match on the question field.
   At the moment the KnowledBase supports only Analyzers implemented on Elasticsearch.</p>
-<h4 id="decisiontable">DecisionTable</h4>
+<h4 id="priordata">PriorData</h4>
+<p>The prior data contains text to be used for extraction of statistics about terms and text.
+The data are used primarity for terms extraction (Manaus)</p>
+<h4 id="conversationlogs">ConversationLogs</h4>
+<p>Endpoint to collect and store the conversation logs.</p>
+<h3 id="tokenizer">Tokenizer</h3>
+<p>Endpoint which exposes text tokenization functionalities.</p>
+<h3 id="spellcheck">Spellcheck</h3>
+<p>Endpoint which exposes spellcheck functionalities, the terms statistics are taken from the KnowledgeBase.</p>
+<h3 id="term">Term</h3>
+<p>Endpoint to store informations about terms: synonyms, antonyms and vectorial representation.</p>
+<h3 id="termsextraction">TermsExtraction</h3>
+<p>Exposes Manaus functionalities to extract significant terms from the text.
+It need data from the PriorData and the domain specific dataset (KnowledgeBase).</p>
+<h3 id="analyzersplayground">AnalyzersPlayground</h3>
+<p>Exposes REST endpoints to test the analyzers on the fly.</p>
+<h3 id="decisiontable">DecisionTable</h3>
 <p>The conversational engine itself. For the usage, see below.</p>
 <h2 id="configuration-of-the-decisiontable">Configuration of the DecisionTable</h2>
 <p>You configure the DecisionTable through CSV file. Please have a look at the <a href="https://github.com/GetJenny/starchat/blob/master/doc/sample_state_machine_specification.csv">CSV provided in the doc/ directory</a>.</p>
@@ -691,5 +728,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2018-05-24 17:52:54
+Build Date UTC : 2018-06-15 17:54:13
 -->
