@@ -1,17 +1,19 @@
 # APIs
 
-## POST /system_index_management/create
+## SystemIndexManagement
+
+### POST /system_index_management/create
 
 Create a new system index, this operation init. a new system index and is required 
 to start using starchat.
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The function requires "admin" credentials
 
-### Sample call 
+#### Sample call 
 
 ```bash
 PORT="${1:-8888}"
@@ -27,17 +29,17 @@ Sample response:
 }
 ```
 
-## GET /system_index_management
+### GET /system_index_management
 
 Fetch and returns the informations about the system index
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The function requires "admin" credentials
 
-### Sample call 
+#### Sample call 
 
 ```bash
 PORT="${1:-8888}"
@@ -53,17 +55,17 @@ Sample response:
 }
 ```
 
-## DELETE /system_index_management
+### DELETE /system_index_management
 
 Delete a system index, this operation destroy any user created
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The function requires "admin" credentials
 
-### Sample call 
+#### Sample call 
 
 ```bash
 PORT="${1:-8888}"
@@ -79,18 +81,20 @@ Sample response:
 }
 ```
 
-## POST /user
+## User
+
+### POST /user
 
 Insert a new user to the system, the user record can be generated 
 using the '/user_gen/test_user' endpoint
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The function requires "admin" credentials
 
-### Sample call 
+#### Sample call 
 
 ```bash
 PORT="${1:-8888}"
@@ -117,17 +121,17 @@ Sample response:
 }
 ```
 
-## GET /user
+### GET /user
 
 Fetch the informations about a user
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The function requires "admin" credentials
 
-### Sample call 
+#### Sample call 
 
 ```bash
 PORT="${1:-8888}"
@@ -151,17 +155,17 @@ Sample response:
 }
 ```
 
-## PUT /user
+### PUT /user
 
 Update a user record
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The function requires "admin" credentials
 
-### Sample call 
+#### Sample call 
 
 ```bash
 PORT="${1:-8888}"
@@ -185,17 +189,17 @@ Sample response:
 }
 ```
 
-## DELETE /user/user_id
+### DELETE /user/user_id
 
 Delete an existing user
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The function requires "admin" credentials
 
-### Sample call 
+#### Sample call 
 
 ```bash
 PORT="${1:-8888}"
@@ -215,18 +219,18 @@ Sample response:
 }
 ```
 
-## POST /user_gen/test_user
+### POST /user_gen/test_user
 
 Generate the record for a user with hashed password and a randomly generated salt.
 The user must be then inserted into the system.
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The function requires "admin" credentials
 
-### Sample call 
+#### Sample call 
 
 ```bash
 PORT=${1:-8888}
@@ -260,7 +264,9 @@ Sample response:
 }
 ```
 
-## POST /get_next_response
+## DecisionTable
+
+### POST /get_next_response
 
 Tell StarChat about the user actions (wrote something, clicked a button etc) and receives instruction 
 about the next state.
@@ -281,18 +287,18 @@ Data to post:
 
 ```
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes
+#### Return codes
 
-####200
+##### 200
 
 Similar Json, see examples below
 
-##### Example 1
+###### Example 1
 
 User input is "how to install starchat":
 
@@ -340,7 +346,7 @@ returns:
 ]
 ```
 
-##### Example 2
+###### Example 2
 
 User input is: "how can I contribute to starchat?"
 
@@ -388,47 +394,47 @@ and gets:
 ]
 ```
 
-#### 204
+##### 204
 
 No response was found
 
-#### 500 (error)
+##### 500 (error)
 
 Internal server error
 
-#### 400 (error)
+##### 400 (error)
 
 Bad request: 
 
 * meaning: the input data structure is not valid
 * output data: no data returned
 
-#### 422 (error)
+##### 422 (error)
 
 * meaning: bad request data, the input data is formally valid but there is some issue with data interpretation
 * output data: the output data structure is a json dictionary with two fields: code and message. The following code are supported:
 * code: 100
 * message: "error evaluating the template strings, bad values"
 
-#### 404 (error)
+##### 404 (error)
 
 * meaning: not found
 * output data: no data returned
 
-## GET /decisiontable
+### GET /decisiontable
 
 Get a document by ID
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -479,18 +485,18 @@ Sample output
 }
 ```
 
-## PUT /decisiontable
+### PUT /decisiontable
  
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes
+#### Return codes
 
-#### 201
+##### 201
 
 Sample call
 
@@ -516,20 +522,20 @@ Sample output
 }
 ```
 
-## POST /decisiontable
+### POST /decisiontable
 
 Insert a new document.
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes
+#### Return codes
 
-#### 201
+##### 201
 
 Sample call
 
@@ -564,20 +570,20 @@ Sample output
 }
 ```
 
-## DELETE /decisiontable
+### DELETE /decisiontable
 
 Delete a document by ID
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 ```bash
@@ -618,20 +624,20 @@ Sample output: delete all
 ```
 
 
-## POST /decisiontable_upload_csv
+### POST /decisiontable_upload_csv
 
 upload load a csv file on decisiontable
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes
+#### Return codes
 
-#### 201
+##### 201
 
 Sample call
 
@@ -785,20 +791,20 @@ Sample output
 }
 ```
 
-## POST /decisiontable_search
+### POST /decisiontable_search
 
 Update a document
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 ```bash
@@ -855,20 +861,20 @@ Sample response
 }
 ```
 
-## GET /decisiontable_analyzer
+### GET /decisiontable_analyzer
 
 Get and return the map of analyzer for each state
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 ```bash
@@ -972,20 +978,20 @@ Sample response
 }
 ```
 
-## POST /decisiontable_analyzer
+### POST /decisiontable_analyzer
 
 Load/reload the map of analyzer from ES
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1004,20 +1010,32 @@ Sample response
 }
 ```
 
-## GET /knowledgebase
+## QuestionAnswer (KnowledgeBase, PriorData, ConversationLogs)
+
+The following REST endpoints have the same syntax and semantic
+for KnowledgeBase, PriorData, ConversationLogs.
+
+The only difference is the route path component:
+* KnowledgeBase: "knowledgebase"
+* Priodata: "prior_data"
+* ConversationLogs: "conversation_logs"
+
+In the API description we will refer to this path component as <QAPath>
+
+### GET /<QAPath>
 
 Return a document by ID
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 ```bash
@@ -1064,18 +1082,18 @@ Sample response
 }
 ```
 
-## POST /knowledgebase
+### POST /<QAPath>
 
 Insert a new document
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 201
+##### 201
 
 ```bash
 PORT=${1:-8888}
@@ -1138,20 +1156,20 @@ Sample response
 }
 ```
 
-## DELETE /knowledgebase
+### DELETE /<QAPath>
 
 Delete a document by ID
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1192,20 +1210,20 @@ Sample output: delete all
 }
 ```
 
-## PUT /knowledgebase
+### PUT /<QAPath>
 
 Update an existing document
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1237,18 +1255,18 @@ Sample response
 }
 ```
 
-## POST /knowledgebase_search
+### POST /<QAPath>_search
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1324,18 +1342,994 @@ Sample output
 }
 ```
 
-## POST /language_guesser
+### GET /term_count/<QAPath>
+
+Count the occurrence of a term.
+
+The endpoint supports the following query arguments:
+* field: can be "answer" or "question" (optional, default question)
+* stale: represent the max stale time in millis ; 0 means no cache (Optional)
+* term: the term to count (mandatory)
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
+
+Sample call
+```bash
+TERM=${1:-"hello"}
+ROUTE=${2:-knowledgebase}
+INDEX_NAME=${3:-index_english_0}
+FIELD=${4:-"question"}
+PORT=${5:-8888}
+curl -v -H "Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X GET "http://localhost:${PORT}/${INDEX_NAME}/term_count/${ROUTE}?field=${FIELD}&term=${TERM}"
+```
+
+Sample response
+
+```json
+{
+   "numDocs" : 994,
+   "count" : 1037
+}
+```
+
+### GET /dict_size/<QAPath>
+
+Measure the dictionary size: number of unique terms on question and answer field
+
+The endpoint supports the following query arguments:
+* stale: represent the max stale time in millis ; 0 means no cache (Optional)
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+```bash
+PORT=${1:-8888}
+DATATYPE=${2:-knowledgebase}
+INDEX_NAME=${3:-index_english_0}
+curl -v -H "Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X GET "http://localhost:${PORT}/${INDEX_NAME}/dict_size/${DATATYPE}"
+```
+
+Sample response
+
+```json
+{
+   "numDocs" : 135865,
+   "answer" : 9171,
+   "question" : 25200,
+   "total" : 29258
+}
+```
+
+### GET /total_terms/<QAPath>
+
+calculate the total number of terms
+
+The endpoint supports the following query arguments:
+* stale: represent the max stale time in millis ; 0 means no cache (Optional)
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+```bash
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+DATATYPE=${3:-knowledgebase}
+curl -v -H "Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X GET "http://localhost:${PORT}/${INDEX_NAME}/total_terms/${DATATYPE}"
+```
+
+Sample response
+
+```json
+{
+   "question" : 821982,
+   "numDocs" : 135865,
+   "answer" : 1098490
+}
+```
+
+### GET /cache/<QAPath>
+
+return the cache counter parameters and the number of elements in cache
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+```bash
+INDEX_NAME=${1:-index_english_0}
+PORT=${2:-8888}
+ROUTE=${3:-knowledgebase}
+curl -v -H "Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X GET http://localhost:${PORT}/${INDEX_NAME}/cache/${ROUTE} 
+```
+
+Sample response
+
+```json
+[
+   {
+      "totalTermsCacheMaxSize" : 1000,
+      "countTermCacheMaxSize" : 100000,
+      "dictSizeCacheMaxSize" : 1000,
+      "cacheStealTimeMillis" : 43200000
+   },
+   {
+      "countTermCacheSize" : 0,
+      "dictSizeCacheSize" : 0,
+      "totalTermsCacheSize" : 0
+   }
+]
+```
+
+### POST /cache/<QAPath>
+
+set the cache counter parameters
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+```bash
+INDEX_NAME=${1:-index_english_0}
+PORT=${2:-8888}
+ROUTE=${3:-knowledgebase}
+curl -v -H "Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/cache/${ROUTE} -d'{ 
+    "dictSizeCacheMaxSize": 1000,
+    "totalTermsCacheMaxSize": 1000,
+    "countTermCacheMaxSize": 100000,
+    "cacheStealTimeMillis": 43200000
+}'
+```
+
+Sample response
+
+```json
+{
+   "totalTermsCacheMaxSize" : 1000,
+   "dictSizeCacheMaxSize" : 1000,
+   "countTermCacheMaxSize" : 100000,
+   "cacheStealTimeMillis" : 43200000
+}
+```
+
+### DELETE /cache/<QAPath>
+
+reset the cache for counters
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+```bash
+INDEX_NAME=${1:-index_english_0}
+PORT=${2:-8888}
+ROUTE=${3:-knowledgebase}
+curl -v -H "Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/cache/${ROUTE}
+```
+
+Sample response
+
+```json
+[
+   {
+      "countTermCacheMaxSize" : 100000,
+      "totalTermsCacheMaxSize" : 1000,
+      "dictSizeCacheMaxSize" : 1000,
+      "cacheStealTimeMillis" : 43200000
+   },
+   {
+      "totalTermsCacheSize" : 0,
+      "dictSizeCacheSize" : 0,
+      "countTermCacheSize" : 0
+   }
+]
+```
+
+### PUT /updateTerms/<QAPath>
+
+update the manaus terms for a QuestionAnswer document
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The document to update must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+```bash
+DOCID=${1:-0}
+PORT=${2:-8888}
+INDEX_NAME=${3:-index_english_0}
+ROUTE=${4:-knowledgebase}
+curl -v -H "Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X PUT http://localhost:${PORT}/${INDEX_NAME}/updateTerms/${ROUTE} -d"{
+        \"id\": \"${DOCID}\"
+}"
+```
+
+Sample response
+
+```json
+[
+   {
+      "id" : "0",
+      "created" : false,
+      "dtype" : "question_answer",
+      "version" : 2,
+      "index" : "index_english_0.question_answer"
+   }
+]
+
+```
+
+### GET /updateTerms/<QAPath>
+
+update the manaus terms for all the QuestionAnswer documents
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The user has stream permissions on the index
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+```bash
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+ROUTE=${3:-knowledgebase}
+curl -v -H "Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X GET http://localhost:${PORT}/${INDEX_NAME}/updateTerms/${ROUTE} -d'{
+        "id": ""
+}'
+```
+
+Sample response
+
+```json
+{"dtype":"question_answer","version":2,"id":"3bcafc79400f201bcbb2e9290d60231fb096845d97cd3a83b032eab90a9b6f8f","index":"index_english_0.question_answer","created":false}
+{"dtype":"question_answer","version":2,"id":"f5239013416fc98c558560659b00ec96e694df243aace574e9dd32166e982ccd","index":"index_english_0.question_answer","created":false}
+{"dtype":"question_answer","version":2,"id":"23cb4dc14284b278867b743d6e7387a3ba20e96afb4a34ddf58a8397b173a24f","index":"index_english_0.question_answer","created":false}
+{"dtype":"question_answer","version":2,"id":"5f948728fbca7617907ab4ad031020f9da214926f2fbe272295c799d568a3491","index":"index_english_0.question_answer","created":false}
+{"dtype":"question_answer","version":2,"id":"cfb544023bcc1378a59695bc6135fb7b71bfcdaba6fb2429e151aba73b2774b8","index":"index_english_0.question_answer","created":false}
+{"dtype":"question_answer","version":2,"id":"cce15f6984f473fe7534f9e0f699e5e11a61e39cbe82989818a023d626ea5e1f","index":"index_english_0.question_answer","created":false}
+{"dtype":"question_answer","version":2,"id":"b37db2bef879f22d3792840efa1a41b1d46cdbee4af5ccb1b935b3c944732544","index":"index_english_0.question_answer","created":false}
+```
+
+## TermsExtraction
+
+### POST /extraction/frequencies
+
+Extract term frequencies from a sentence
+The fields of the data structure have the following meaning:
+
+* commonOrSpecificSearchPrior: specify if the prior_data table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
+* commonOrSpecificSearchObserved: specify if the knowledgebase table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
+* observedDataSource: specify which table should be considered for observed data, values are KNOWLEDGEBASE or CONV_LOGS
+* fieldsPrior: specify the fields which must be considered, values are question, answer, all
+* fieldsObserved: specify the fields which must be considered, values are question, answer, all
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+
+```bash
+QUERY=${1:-"good morning, may I ask you a question?"}
+PORT=${2:-8888}
+INDEX_NAME=${4:-index_english_0}
+curl -v -H "Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/extraction/frequencies" -d"
+{
+        \"text\": \"${QUERY}\",
+        \"commonOrSpecificSearchPrior\": \"COMMON\",
+        \"commonOrSpecificSearchObserved\": \"IDXSPECIFIC\",
+        \"observedDataSource\": \"KNOWLEDGEBASE\",
+        \"fieldsPrior\": \"all\",
+        \"fieldsObserved\": \"all\",
+        \"tokenizer\": \"space_punctuation\"
+}"
+```
+
+Sample output
+
+```json
+{
+   "observedTotalTerms" : 1920472,
+   "priorTotalTerms" : 2311033,
+   "tokensFreq" : [
+      {
+         "observedFrequency" : 1187,
+         "token" : "good",
+         "priorFrequency" : 7024
+      },
+      {
+         "priorFrequency" : 1228,
+         "token" : "morning",
+         "observedFrequency" : 246
+      },
+      {
+         "priorFrequency" : 1343,
+         "observedFrequency" : 4185,
+         "token" : "may"
+      },
+      {
+         "observedFrequency" : 68554,
+         "token" : "i",
+         "priorFrequency" : 79384
+      },
+      {
+         "priorFrequency" : 1377,
+         "observedFrequency" : 471,
+         "token" : "ask"
+      },
+      {
+         "priorFrequency" : 93571,
+         "observedFrequency" : 79470,
+         "token" : "you"
+      },
+      {
+         "priorFrequency" : 47701,
+         "token" : "a",
+         "observedFrequency" : 25688
+      },
+      {
+         "observedFrequency" : 539,
+         "token" : "question",
+         "priorFrequency" : 525
+      }
+   ]
+}
+```
+
+### POST /extraction/frequencies
+
+Extract manaus terms from a sentence
+The fields of the data structure have the following meaning:
+
+* commonOrSpecificSearchPrior: specify if the prior_data table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
+* commonOrSpecificSearchObserved: specify if the knowledgebase table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
+* observedDataSource: specify which table should be considered for observed data, values are KNOWLEDGEBASE or CONV_LOGS
+* fieldsPrior: specify the fields which must be considered, values are question, answer, all
+* fieldsObserved: specify the fields which must be considered, values are question, answer, all
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+
+```bash
+QUERY=${1:-"good morning, may I ask you a question?"}
+PORT=${2:-8888}
+INDEX_NAME=${4:-index_english_0}
+curl -v -H "Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/extraction/keywords" -d "
+{
+        \"text\": \"${QUERY}\",
+        \"commonOrSpecificSearchPrior\": \"COMMON\",
+        \"commonOrSpecificSearchObserved\": \"IDXSPECIFIC\",
+        \"observedDataSource\": \"KNOWLEDGEBASE\",
+        \"fieldsPrior\": \"all\",
+        \"fieldsObserved\": \"all\",
+        \"minWordsPerSentence\": 5,
+        \"pruneTermsThreshold\": 100000,
+        \"misspellMaxOccurrence\": 10,
+        \"activePotentialDecay\": 1,
+        \"activePotential\": true,
+        \"totalInfo\": true
+}
+"
+```
+
+Sample output
+
+```json
+{
+   "question" : 0.229660917208135
+}
+```
+
+### POST /extraction/synonyms
+
+Tokenize a sentence, extract terms and decorate each term with manaus informations and the possible synonyms using a vector model.
+The fields of the data structure have the following meaning:
+
+* text: the text to analyze
+* tokenizer: the tokenizer, default is "base"
+* sentencesThreshold: discard sentences if the sentence with the synonym is below the threshold, default us 0.0
+* synonymsThresholds: discard the synonyms if the distance is below the threshold, default is 0.0
+* distance: a distance function values are SUMCOSINE (sum of word vectors) or EMDCOSINE (Earth movers distance)
+* commonOrSpecificSearchTerms: specify if the terms table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
+* commonOrSpecificSearchPrior: specify if the prior_data table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
+* commonOrSpecificSearchObserved: specify if the knowledgebase table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
+* observedDataSource: specify which table should be considered for observed data, values are KNOWLEDGEBASE or CONV_LOGS
+* fieldsPrior: specify the fields which must be considered, values are question, answer, all
+* fieldsObserved: specify the fields which must be considered, values are question, answer, all
+* minWordsPerSentence: manaus parameter, ignore sentences with less than N terms, default is 10
+* pruneTermsThreshold: manaus parameter, discard terms whith a value above the threshold, default value is 100000
+* misspellMaxOccurrence: manaus parameter, discard terms with a frequency below the threshold, default is 5
+* activePotentialDecay: manaus parameter, a decay value for the active potential
+* activePotential: manaus parameter, tell wether to calculate the active potential or not, default is true
+* totalInfo: manaus parameter, tell wether to consider the total info or not, default is true
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+
+```bash
+QUERY=${1:-"good morning, may I ask you a question?"}
+PORT=${2:-8888}
+INDEX_NAME=${4:-index_english_0}
+
+curl -v -H "Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/extraction/synonyms" -d "
+{
+        \"text\": \"${QUERY}\",
+        \"tokenizer\": \"base\",
+        \"sentencesThreshold\": 0.9,
+        \"synonymsThresholds\": 0.3,
+        \"distance\": \"EMDCOSINE\",
+        \"commonOrSpecificSearchPrior\": \"COMMON\",
+        \"commonOrSpecificSearchObserved\": \"IDXSPECIFIC\",
+        \"observedDataSource\": \"KNOWLEDGEBASE\",
+        \"fieldsPrior\": \"all\",
+        \"fieldsObserved\": \"all\",
+        \"minWordsPerSentence\": 5,
+        \"pruneTermsThreshold\": 100000,
+        \"misspellMaxOccurrence\": 10,
+        \"activePotentialDecay\": 1,
+        \"activePotential\": true,
+        \"totalInfo\": true
+}
+"
+```
+
+Sample output
+
+```json
+[
+   {
+      "synonymItem" : [
+         {
+            "termSimilarityScore" : 0.303461623209445,
+            "synonym" : "serious",
+            "synonymScore" : 0.988391942416316,
+            "textDistanceWithSynonym" : 0.988391942416316
+         },
+         {
+            "textDistanceWithSynonym" : 0.98686397528116,
+            "synonymScore" : 0.98686397528116,
+            "synonym" : "safe",
+            "termSimilarityScore" : 0.310671998517923
+         },
+         {
+            "textDistanceWithSynonym" : 0.986168126185455,
+            "synonymScore" : 0.986168126185455,
+            "synonym" : "effective",
+            "termSimilarityScore" : 0.337205437720856
+         },
+         {
+            "textDistanceWithSynonym" : 0.985984970241292,
+            "synonymScore" : 0.985984970241292,
+            "termSimilarityScore" : 0.30013467985373,
+            "synonym" : "salutary"
+         },
+         {
+            "textDistanceWithSynonym" : 0.985895039899644,
+            "synonymScore" : 0.985895039899644,
+            "termSimilarityScore" : 0.301306430755499,
+            "synonym" : "dear"
+         },
+         {
+            "termSimilarityScore" : 0.319592899798586,
+            "synonym" : "estimable",
+            "synonymScore" : 0.985759252837724,
+            "textDistanceWithSynonym" : 0.985759252837724
+         },
+         {
+            "textDistanceWithSynonym" : 0.985249380845675,
+            "synonymScore" : 0.985249380845675,
+            "synonym" : "thoroughly",
+            "termSimilarityScore" : 0.337964488042003
+         },
+         {
+            "termSimilarityScore" : 0.360057098563907,
+            "synonym" : "right",
+            "synonymScore" : 0.984778611750602,
+            "textDistanceWithSynonym" : 0.984778611750602
+         },
+         {
+            "textDistanceWithSynonym" : 0.984227558357218,
+            "synonymScore" : 0.984227558357218,
+            "synonym" : "adept",
+            "termSimilarityScore" : 0.330252861229703
+         },
+         {
+            "termSimilarityScore" : 0.360657543519664,
+            "synonym" : "expert",
+            "synonymScore" : 0.984204967194361,
+            "textDistanceWithSynonym" : 0.984204967194361
+         },
+         {
+            "synonymScore" : 0.9839801846329,
+            "textDistanceWithSynonym" : 0.9839801846329,
+            "termSimilarityScore" : 0.387968844459879,
+            "synonym" : "full"
+         },
+         {
+            "synonymScore" : 0.983341764529566,
+            "textDistanceWithSynonym" : 0.983341764529566,
+            "termSimilarityScore" : 0.307056458999165,
+            "synonym" : "skilful"
+         },
+         {
+            "synonym" : "secure",
+            "termSimilarityScore" : 0.386750372411043,
+            "synonymScore" : 0.9828697525105,
+            "textDistanceWithSynonym" : 0.9828697525105
+         },
+         {
+            "termSimilarityScore" : 0.436633496912848,
+            "synonym" : "near",
+            "textDistanceWithSynonym" : 0.9823153867721,
+            "synonymScore" : 0.9823153867721
+         },
+         {
+            "textDistanceWithSynonym" : 0.98229857645758,
+            "synonymScore" : 0.98229857645758,
+            "termSimilarityScore" : 0.387852275460498,
+            "synonym" : "soundly"
+         },
+         {
+            "textDistanceWithSynonym" : 0.981854513089778,
+            "synonymScore" : 0.981854513089778,
+            "termSimilarityScore" : 0.375971735071977,
+            "synonym" : "sound"
+         },
+         {
+            "textDistanceWithSynonym" : 0.981012225642823,
+            "synonymScore" : 0.981012225642823,
+            "termSimilarityScore" : 0.349548530861366,
+            "synonym" : "unspoiled"
+         },
+         {
+            "textDistanceWithSynonym" : 0.980134947418645,
+            "synonymScore" : 0.980134947418645,
+            "synonym" : "honorable",
+            "termSimilarityScore" : 0.36656103347195
+         },
+         {
+            "synonym" : "ripe",
+            "termSimilarityScore" : 0.361927513363036,
+            "synonymScore" : 0.979828029318668,
+            "textDistanceWithSynonym" : 0.979828029318668
+         },
+         {
+            "termSimilarityScore" : 0.354594107764147,
+            "synonym" : "proficient",
+            "synonymScore" : 0.97897497858666,
+            "textDistanceWithSynonym" : 0.97897497858666
+         },
+         {
+            "synonym" : "commodity",
+            "termSimilarityScore" : 0.400576579081682,
+            "synonymScore" : 0.978353047238428,
+            "textDistanceWithSynonym" : 0.978353047238428
+         },
+         {
+            "textDistanceWithSynonym" : 0.978097513490299,
+            "synonymScore" : 0.978097513490299,
+            "synonym" : "practiced",
+            "termSimilarityScore" : 0.417713639606198
+         },
+         {
+            "synonym" : "unspoilt",
+            "termSimilarityScore" : 0.344935826089365,
+            "textDistanceWithSynonym" : 0.977965860781802,
+            "synonymScore" : 0.977965860781802
+         },
+         {
+            "textDistanceWithSynonym" : 0.977574200871494,
+            "synonymScore" : 0.977574200871494,
+            "termSimilarityScore" : 0.368691045104583,
+            "synonym" : "upright"
+         }
+      ],
+      "isKeywordToken" : false,
+      "keywordExtractionScore" : 0,
+      "token" : {
+         "position" : 0,
+         "token" : "good",
+         "token_type" : "<ALPHANUM>",
+         "start_offset" : 0,
+         "end_offset" : 4
+      }
+   },
+   {
+      "keywordExtractionScore" : 0,
+      "token" : {
+         "position" : 1,
+         "end_offset" : 12,
+         "token" : "morning",
+         "token_type" : "<ALPHANUM>",
+         "start_offset" : 5
+      },
+      "synonymItem" : [
+         {
+            "synonymScore" : 0.982435251017214,
+            "textDistanceWithSynonym" : 0.982435251017214,
+            "termSimilarityScore" : 0.328796456566772,
+            "synonym" : "dawning"
+         },
+         {
+            "termSimilarityScore" : 0.320363553861273,
+            "synonym" : "sunup",
+            "textDistanceWithSynonym" : 0.981187446721127,
+            "synonymScore" : 0.981187446721127
+         },
+         {
+            "synonymScore" : 0.980827133578433,
+            "textDistanceWithSynonym" : 0.980827133578433,
+            "termSimilarityScore" : 0.351556981730201,
+            "synonym" : "cockcrow"
+         },
+         {
+            "synonym" : "dayspring",
+            "termSimilarityScore" : 0.348148650582253,
+            "textDistanceWithSynonym" : 0.98000434808506,
+            "synonymScore" : 0.98000434808506
+         },
+         {
+            "synonym" : "morn",
+            "termSimilarityScore" : 0.310762418953851,
+            "textDistanceWithSynonym" : 0.979694497080588,
+            "synonymScore" : 0.979694497080588
+         },
+         {
+            "synonymScore" : 0.975365086887233,
+            "textDistanceWithSynonym" : 0.975365086887233,
+            "synonym" : "aurora",
+            "termSimilarityScore" : 0.403555992661807
+         },
+         {
+            "synonym" : "first_light",
+            "termSimilarityScore" : 0.389117497640442,
+            "synonymScore" : 0.973279032352032,
+            "textDistanceWithSynonym" : 0.973279032352032
+         }
+      ],
+      "isKeywordToken" : false
+   },
+   {
+      "keywordExtractionScore" : 0,
+      "token" : {
+         "position" : 2,
+         "end_offset" : 17,
+         "token" : "may",
+         "token_type" : "<ALPHANUM>",
+         "start_offset" : 14
+      },
+      "synonymItem" : [
+         {
+            "textDistanceWithSynonym" : 0.977735408571704,
+            "synonymScore" : 0.977735408571704,
+            "termSimilarityScore" : 0.430110506850729,
+            "synonym" : "whitethorn"
+         }
+      ],
+      "isKeywordToken" : false
+   },
+   {
+      "keywordExtractionScore" : 0,
+      "token" : {
+         "position" : 3,
+         "end_offset" : 19,
+         "token_type" : "<ALPHANUM>",
+         "start_offset" : 18,
+         "token" : "i"
+      },
+      "synonymItem" : [
+         {
+            "synonymScore" : 0.990079660169983,
+            "textDistanceWithSynonym" : 0.990079660169983,
+            "termSimilarityScore" : 0.33685060765497,
+            "synonym" : "one"
+         },
+         {
+            "termSimilarityScore" : 0.402164830285073,
+            "synonym" : "single",
+            "textDistanceWithSynonym" : 0.982443662914587,
+            "synonymScore" : 0.982443662914587
+         },
+         {
+            "synonymScore" : 0.978915403087889,
+            "textDistanceWithSynonym" : 0.978915403087889,
+            "termSimilarityScore" : 0.421938029658631,
+            "synonym" : "unity"
+         },
+         {
+            "synonymScore" : 0.976796274715053,
+            "textDistanceWithSynonym" : 0.976796274715053,
+            "termSimilarityScore" : 0.411104820586555,
+            "synonym" : "ace"
+         },
+         {
+            "termSimilarityScore" : 0.409793052227205,
+            "synonym" : "iodine",
+            "synonymScore" : 0.971809310282386,
+            "textDistanceWithSynonym" : 0.971809310282386
+         },
+         {
+            "synonymScore" : 0.970492090788282,
+            "textDistanceWithSynonym" : 0.970492090788282,
+            "synonym" : "ane",
+            "termSimilarityScore" : 0.426139287692068
+         }
+      ],
+      "isKeywordToken" : false
+   },
+   {
+      "isKeywordToken" : false,
+      "synonymItem" : [
+         {
+            "termSimilarityScore" : 0.344875478792656,
+            "synonym" : "involve",
+            "synonymScore" : 0.985084402822893,
+            "textDistanceWithSynonym" : 0.985084402822893
+         },
+         {
+            "synonym" : "require",
+            "termSimilarityScore" : 0.313982723187962,
+            "synonymScore" : 0.985048997600635,
+            "textDistanceWithSynonym" : 0.985048997600635
+         },
+         {
+            "synonym" : "demand",
+            "termSimilarityScore" : 0.340885896054422,
+            "textDistanceWithSynonym" : 0.984973652020142,
+            "synonymScore" : 0.984973652020142
+         },
+         {
+            "textDistanceWithSynonym" : 0.984179229975704,
+            "synonymScore" : 0.984179229975704,
+            "termSimilarityScore" : 0.348080045767017,
+            "synonym" : "necessitate"
+         },
+         {
+            "termSimilarityScore" : 0.363270794438576,
+            "synonym" : "postulate",
+            "synonymScore" : 0.980113837090212,
+            "textDistanceWithSynonym" : 0.980113837090212
+         }
+      ],
+      "keywordExtractionScore" : 0,
+      "token" : {
+         "position" : 4,
+         "end_offset" : 23,
+         "token" : "ask",
+         "start_offset" : 20,
+         "token_type" : "<ALPHANUM>"
+      }
+   },
+   {
+      "token" : {
+         "position" : 5,
+         "end_offset" : 27,
+         "token" : "you",
+         "token_type" : "<ALPHANUM>",
+         "start_offset" : 24
+      },
+      "keywordExtractionScore" : 0,
+      "synonymItem" : [],
+      "isKeywordToken" : false
+   },
+   {
+      "isKeywordToken" : false,
+      "synonymItem" : [
+         {
+            "synonym" : "angstrom",
+            "termSimilarityScore" : 0.389515130731534,
+            "synonymScore" : 0.981827876880409,
+            "textDistanceWithSynonym" : 0.981827876880409
+         },
+         {
+            "synonym" : "amp",
+            "termSimilarityScore" : 0.410951525810052,
+            "synonymScore" : 0.978805416352854,
+            "textDistanceWithSynonym" : 0.978805416352854
+         },
+         {
+            "termSimilarityScore" : 0.399132821680172,
+            "synonym" : "ampere",
+            "synonymScore" : 0.978184525582464,
+            "textDistanceWithSynonym" : 0.978184525582464
+         },
+         {
+            "textDistanceWithSynonym" : 0.970833723014969,
+            "synonymScore" : 0.970833723014969,
+            "synonym" : "adenine",
+            "termSimilarityScore" : 0.417303913993053
+         }
+      ],
+      "keywordExtractionScore" : 0,
+      "token" : {
+         "end_offset" : 29,
+         "start_offset" : 28,
+         "token_type" : "<ALPHANUM>",
+         "token" : "a",
+         "position" : 6
+      }
+   },
+   {
+      "token" : {
+         "token_type" : "<ALPHANUM>",
+         "start_offset" : 30,
+         "token" : "question",
+         "end_offset" : 38,
+         "position" : 7
+      },
+      "keywordExtractionScore" : 0,
+      "isKeywordToken" : false,
+      "synonymItem" : [
+         {
+            "termSimilarityScore" : 0.302928140147459,
+            "synonym" : "doubtfulness",
+            "textDistanceWithSynonym" : 0.986332041308894,
+            "synonymScore" : 0.986332041308894
+         },
+         {
+            "textDistanceWithSynonym" : 0.984752050785226,
+            "synonymScore" : 0.984752050785226,
+            "synonym" : "interview",
+            "termSimilarityScore" : 0.337223120697986
+         },
+         {
+            "synonym" : "enquiry",
+            "termSimilarityScore" : 0.30268890030876,
+            "textDistanceWithSynonym" : 0.983960314458422,
+            "synonymScore" : 0.983960314458422
+         },
+         {
+            "synonym" : "interrogate",
+            "termSimilarityScore" : 0.347190376576428,
+            "synonymScore" : 0.982717754194259,
+            "textDistanceWithSynonym" : 0.982717754194259
+         },
+         {
+            "termSimilarityScore" : 0.402127027019405,
+            "synonym" : "head",
+            "textDistanceWithSynonym" : 0.981584262241235,
+            "synonymScore" : 0.981584262241235
+         },
+         {
+            "termSimilarityScore" : 0.353450470156032,
+            "synonym" : "interrogation",
+            "textDistanceWithSynonym" : 0.980529096104673,
+            "synonymScore" : 0.980529096104673
+         },
+         {
+            "termSimilarityScore" : 0.386000200471808,
+            "synonym" : "motion",
+            "textDistanceWithSynonym" : 0.978495629389701,
+            "synonymScore" : 0.978495629389701
+         },
+         {
+            "synonym" : "inquiry",
+            "termSimilarityScore" : 0.314067668506634,
+            "textDistanceWithSynonym" : 0.977996268442931,
+            "synonymScore" : 0.977996268442931
+         }
+      ]
+   }
+]
+```
+
+## LanguageGuesser
+
+### POST /language_guesser
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with read permissions on the index
+
+#### Return codes 
+
+##### 200
 
 Sample call
 
@@ -1361,20 +2355,20 @@ Sample output
 }
 ```
 
-## GET /language_guesser
+### GET /language_guesser
 
 Check if a language is recognizable by the guesser
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1398,18 +2392,20 @@ Sample output
 }
 ```
 
-## POST /index_management/create
+## IndexManagement
+
+### POST /index_management/create
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index name must start with the "index_" prefix followed by a language, and a sequence of alphanumeric characters separated by underscore e.g. index_<LANG>_<SUFFIX>
 * The function requires "admin" credentials
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1428,18 +2424,18 @@ Sample output
 }
 ```
 
-## POST /index_management/refresh
+### POST /index_management/refresh
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1480,18 +2476,18 @@ Sample output
 }
 ```
 
-## GET /index_management
+### GET /index_management
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1510,18 +2506,18 @@ Sample output
 }
 ```
 
-## PUT /index_management
+### PUT /index_management
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * Index must exists
 * The function requires "admin" credentials
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1541,18 +2537,18 @@ Sample output
 }
 ```
 
-## DELETE /index_management
+### DELETE /index_management
 
 Output JSON
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires admin credentials
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1571,18 +2567,20 @@ Sample output
 }
 ```
 
-## POST /term/index
+## Term
+
+### POST /term/index
 
 Index the term as indicated in the JSON. 
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1663,18 +2661,49 @@ Sample output
 }
 ```
 
-## POST /term/get
+### POST /term/index_default_synonyms
+
+Index a set of default synonyms provided with starchat.
+
+#### Requirements
+
+* The index must exists
+* The function requires user credentials with write permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+
+```bash
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_english_0}
+GROUP_SIZE=${3:-1000}
+curl --max-time 600 -v -H "Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)" \
+  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/term/index_default_synonyms?groupsize=${GROUP_SIZE}"
+```
+
+Sample output
+
+```json
+{
+   "message" : "Indexed synonyms, blocks of 1000 items => success(124) failures(0)",
+   "code" : 100
+}
+```
+### POST /term/get
 
 Get one or more terms entry.
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1744,18 +2773,18 @@ Sample output
 
 ```
 
-## DELETE /term
+### DELETE /term
 
 Delete the term.
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1811,18 +2840,18 @@ Sample call: delete all
 }
 ```
 
-## PUT /term
+### PUT /term
 
 Update the entry.
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with write permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1904,18 +2933,18 @@ Sample output
 
 ```
 
-## GET /term/term
+### GET /term/term
 
 Search for term (using Elasticsearch).
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -1967,18 +2996,18 @@ Sample output
 }
 ```
 
-## GET /term/text
+### GET /term/text
 
 Search for all the terms in the text and return the entries.
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -2052,19 +3081,20 @@ Sample output
 }
 ```
 
+## Tokenizers
 
-## GET /tokenizers
+### GET /tokenizers
 
 Show a list of supported methods for tokenization and stemming
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -2090,18 +3120,18 @@ Sample output
 }
 ```
 
-## POST /tokenizers
+### POST /tokenizers
 
 get a list of token using the selected analyzer
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call
 
@@ -2176,18 +3206,20 @@ Sample output
 }
 ```
 
-## POST /analyzers_playground
+## AnalyzersPlayground
+
+### POST /analyzers_playground
 
 used to test analyzers on the fly
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with read permissions on the index
 
-### Return codes 
+#### Return codes 
 
-#### 200
+##### 200
 
 Sample call keyword
 
@@ -2268,19 +3300,21 @@ Sample output
 }
 ```
 
-## POST /spellcheck/terms
+## SpellCheck
+
+### POST /spellcheck/terms
 
 terms spellchecker based on knowledgebase text 
 
-### Requirements
+#### Requirements
 
 * The index must exists
 * The function requires user credentials with read permissions on the index
 * the knowledge base must contain data
 
-### Return codes
+#### Return codes
 
-#### 200
+##### 200
 
 Sample call
 

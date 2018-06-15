@@ -411,7 +411,29 @@ indexing, sentence cleansing, and tokenization.
 
 ### Services
 
-StarChat consists of two different services: the "KnowledBase" and the "DecisionTable"
+StarChat consists of the following REST resources. 
+
+#### Root
+
+The root endpoint provides just an health check endpoint
+
+### SystemIndexManagement
+
+The SystemIndexManagement set of endpoints provides a means to set 
+up and manage the system tables.
+
+### IndexManagement
+
+The IndexManagement REST endpoints allows to create new indexes for new instances (StarChat is multitenant).
+
+### LanguageGuesser
+
+Offers endpoints to guess the language given a text.
+
+### QuestionAnswer type (same API syntax and semantic):
+
+The following REST endpoints have the same syntax and semantic
+but they serve different needs.
 
 #### KnowledgeBase
 
@@ -419,7 +441,37 @@ For quick setup based on real Q&A logs. It stores question and answers pairs. Gi
  it proposes the pair with the closest match on the question field.
   At the moment the KnowledBase supports only Analyzers implemented on Elasticsearch.
 
-#### DecisionTable
+#### PriorData
+
+The prior data contains text to be used for extraction of statistics about terms and text.
+The data are used primarity for terms extraction (Manaus)
+
+#### ConversationLogs
+
+Endpoint to collect and store the conversation logs.
+
+### Tokenizer
+
+Endpoint which exposes text tokenization functionalities.
+
+### Spellcheck
+
+Endpoint which exposes spellcheck functionalities, the terms statistics are taken from the KnowledgeBase.
+
+### Term
+
+Endpoint to store informations about terms: synonyms, antonyms and vectorial representation.
+
+### TermsExtraction
+
+Exposes Manaus functionalities to extract significant terms from the text.
+It need data from the PriorData and the domain specific dataset (KnowledgeBase).
+
+### AnalyzersPlayground
+
+Exposes REST endpoints to test the analyzers on the fly.
+
+### DecisionTable
 
 The conversational engine itself. For the usage, see below.
 
