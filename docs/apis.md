@@ -1829,7 +1829,7 @@ The fields of the data structure have the following meaning:
 * fieldsPrior: specify the fields which must be considered, values are question, answer, all
 * fieldsObserved: specify the fields which must be considered, values are question, answer, all
 * minWordsPerSentence: manaus parameter, ignore sentences with less than N terms, default is 10
-* pruneTermsThreshold: manaus parameter, discard terms whith a value above the threshold, default value is 100000
+* pruneTermsThreshold: manaus parameter, a threshold on the number of terms for trigger pruning, default value is 100000
 * misspellMaxOccurrence: manaus parameter, discard terms with a frequency below the threshold, default is 5
 * activePotentialDecay: manaus parameter, a decay value for the active potential
 * activePotential: manaus parameter, tell wether to calculate the active potential or not, default is true
