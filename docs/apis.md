@@ -1833,6 +1833,8 @@ The fields of the data structure have the following meaning:
 * misspellMaxOccurrence: manaus parameter, discard terms with a frequency below the threshold, default is 5
 * activePotentialDecay: manaus parameter, a decay value for the active potential
 * activePotential: manaus parameter, tell wether to calculate the active potential or not, default is true
+* minSentenceInfoBit: min number of information bits for the sentence
+* minKeywordInfo: min number of information bits for a word
 * totalInfo: manaus parameter, tell wether to consider the total info or not, default is true
 
 Output JSON
