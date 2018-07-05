@@ -376,6 +376,29 @@ send-updates    | ... | &quot;Where can we send you updates?&quot;    |
 <li><em>lastTravStateIs(state-name)</em>: check if the last traversed state is state_name</li>
 <li><em>prevTravStateIs(state-name)</em>: check if the last but one traversed state is state_name</li>
 <li><em>distance("forget.<em>", ..., "pass.</em>")</em>: score based on the (cosine) distance between the query and the list of words in the argument. </li>
+<li><em>checkDayOfMonth</em>: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument which  is an integer between 1 and 31</li>
+<li>first argument is the day of the month: a number between 1 and 31</li>
+<li>second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual</li>
+<li>third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET</li>
+<li><em>checkDayOfWeek</em>: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument which is an integer between 1 (MONDAY) and 7 (SUNDAY)</li>
+<li>first argument is the day of the week: a number between 1 and 7</li>
+<li>second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual</li>
+<li>third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET</li>
+<li><em>checkHour</em>: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument time in EPOC</li>
+<li>first argument is the hour: a number between 0 and 23</li>
+<li>second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual</li>
+<li>third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET</li>
+<li><em>checkMinute</em>: Check if the current minutes are Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the first argument</li>
+<li>first argument is the minute: a number between 0 and 59</li>
+<li>second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual</li>
+<li>third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET</li>
+<li><em>checkMonth</em>: Check if the current month is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument which is an integer between 1 (JANUARY) and 12 (DECEMBER)</li>
+<li>first argument is the month's number: an integer between 1 and 12</li>
+<li>second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual</li>
+<li>third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET</li>
+<li><em>checkTimestamp</em>: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument time in EPOC</li>
+<li>first argument is the timestamp: a timestamp in EPOC (in seconds)</li>
+<li>second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual</li>
 </ul>
 <!--Only if you have loaded a Word2Vec model:
 
@@ -398,6 +421,7 @@ send-updates    | ... | &quot;Where can we send you updates?&quot;    |
 <li><em>conjunction</em>:  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true (<code>P(A)*P(B)</code>)</li>
 <li><em>disjunction</em>:  as above, the probability that at least one is true (<code>1-(1-P(A))*(1-P(B))</code>)</li>
 <li><em>max</em>: takes the max score of returned by the expression arguments</li>
+<li><em>reinfConjunction</em>: conjuction which uses a 1.1 value instead of 1 as boolean true</li>
 </ul>
 <h3 id="technical-corner-expressions">Technical corner: <code>expressions</code></h3>
 <p><a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/expressions/Expression.scala">Expressions</a>, like <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/KeywordAtomic.scala#L18">keywords</a> in the example, are called <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/AbstractAtomic.scala">atoms</a>, and have the following methods/members:</p>
@@ -728,5 +752,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2018-06-18 14:49:26
+Build Date UTC : 2018-07-05 13:23:39
 -->
