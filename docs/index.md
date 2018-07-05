@@ -352,6 +352,29 @@ These are currently the expression you can use to evaluate the goodness of a que
 * _lastTravStateIs(state-name)_: check if the last traversed state is state_name
 * _prevTravStateIs(state-name)_: check if the last but one traversed state is state_name
 * _distance("forget.*", ..., "pass.*")_: score based on the (cosine) distance between the query and the list of words in the argument. 
+* _checkDayOfMonth_: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument which  is an integer between 1 and 31
+  * first argument is the day of the month: a number between 1 and 31
+  * second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual
+  * third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET
+* _checkDayOfWeek_: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument which is an integer between 1 (MONDAY) and 7 (SUNDAY)
+  * first argument is the day of the week: a number between 1 and 7
+  * second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual
+  * third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET
+* _checkHour_: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument time in EPOC
+  * first argument is the hour: a number between 0 and 23
+  * second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual
+  * third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET
+* _checkMinute_: Check if the current minutes are Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the first argument
+  * first argument is the minute: a number between 0 and 59
+  * second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual
+  * third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET
+* _checkMonth_: Check if the current month is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument which is an integer between 1 (JANUARY) and 12 (DECEMBER)
+  * first argument is the month's number: an integer between 1 and 12
+  * second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual
+  * third argument is the timezone: UTC, GMT, UT, CET, UTC+<N>, UTC-<N>, GMT+<N>, GMT-<N>, UT+<N> or UT-<N> where N is a number between -18 and +18. Default is CET
+* _checkTimestamp_: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument time in EPOC
+  * first argument is the timestamp: a timestamp in EPOC (in seconds)
+  * second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual
 
 
 <!--Only if you have loaded a Word2Vec model:
@@ -376,6 +399,7 @@ Operators evaluate the output of one or more expression and return a value. Curr
 * _conjunction_:  if the evaluation of the expressions it contains is normalized, and they can be seen as probabilities of them being true, this is the probability that all the expressions are all true (`P(A)*P(B)`)
 * _disjunction_:  as above, the probability that at least one is true (`1-(1-P(A))*(1-P(B))`)
 * _max_: takes the max score of returned by the expression arguments
+* _reinfConjunction_: conjuction which uses a 1.1 value instead of 1 as boolean true
 
 ### Technical corner: `expressions`
 
