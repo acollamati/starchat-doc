@@ -173,7 +173,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
         &quot;password&quot;: &quot;3c98bf19cb962ac4cd0227142b3495ab1be46534061919f792254b80c0f3e566f7819cae73bdc616af0ff555f7460ac96d88d56338d659ebd93e2be858ce1cf9&quot;, 
         &quot;salt&quot;: &quot;salt&quot;,
         &quot;permissions&quot;: {
-                &quot;index_english_0&quot;: [&quot;read&quot;, &quot;write&quot;]
+                &quot;index_getjenny_english_0&quot;: [&quot;read&quot;, &quot;write&quot;]
         }
 }'
 </code></pre>
@@ -227,7 +227,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
  -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/user/test_user -d '{
         &quot;permissions&quot;: {
-                &quot;index_english_0&quot;: [&quot;read&quot;]
+                &quot;index_getjenny_english_0&quot;: [&quot;read&quot;]
         }
 }'
 </code></pre>
@@ -280,7 +280,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
   -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/user_gen/test_user -d '{
         &quot;password&quot;: &quot;plain text password&quot;,
         &quot;permissions&quot;: {
-                &quot;index_english_0&quot;: [&quot;read&quot;],
+                &quot;index_getjenny_english_0&quot;: [&quot;read&quot;],
                 &quot;index_finnish_1&quot;: [&quot;read&quot;, &quot;write&quot;]
         }
 }'
@@ -296,7 +296,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
          &quot;read&quot;,
          &quot;write&quot;
       ],
-      &quot;index_english_0&quot; : [
+      &quot;index_getjenny_english_0&quot; : [
          &quot;read&quot;
       ]
    }
@@ -333,7 +333,7 @@ about the next state.</p>
 <p>User input is "how to install starchat":</p>
 <pre><code class="bash">QUERY=${1:-&quot;how to install starchat&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d &quot;{
         \&quot;conversation_id\&quot;: \&quot;1234\&quot;,
@@ -376,7 +376,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>User input is: "how can I contribute to starchat?"</p>
 <pre><code class="bash">QUERY=${1:-&quot;how can I contribute to starchat?&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
  -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d &quot;{
         \&quot;conversation_id\&quot;: \&quot;1234\&quot;,
@@ -450,7 +450,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>Sample call</p>
 <pre><code class="bash"># retrieve one or more entries with given ids; ids can be specified multiple times
 PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 # retrieve one or more entries with given ids; ids can be specified multiple times
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; &quot;http://localhost:${PORT}/${INDEX_NAME}/decisiontable?ids=further_details_access_question&quot;
@@ -504,7 +504,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>Sample call</p>
 <pre><code class="bash"># update the &quot;further_details_access_question&quot; entry in the DT
 PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 # update the &quot;further_details_access_question&quot; entry in the DT
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/${INDEX_NAME}/decisiontable/further_details_access_question -d '{
@@ -516,7 +516,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <pre><code class="json">{
    &quot;dtype&quot; : &quot;state&quot;,
    &quot;created&quot; : false,
-   &quot;index&quot; : &quot;index_english_0.state&quot;,
+   &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
    &quot;version&quot; : 2,
    &quot;id&quot; : &quot;further_details_access_question&quot;
 }
@@ -534,7 +534,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="201_1">201</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/decisiontable -d '{
         &quot;state&quot;: &quot;further_details_access_question&quot;,
@@ -556,7 +556,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
     &quot;created&quot;: true,
     &quot;dtype&quot;: &quot;state&quot;,
     &quot;id&quot;: &quot;further_details_access_question&quot;,
-    &quot;index&quot;: &quot;index_english_0.state&quot;,
+    &quot;index&quot;: &quot;index_getjenny_english_0.state&quot;,
     &quot;version&quot;: 1
 }
 </code></pre>
@@ -573,7 +573,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_2">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
  -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable/further_details_access_question
 </code></pre>
@@ -584,13 +584,13 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
   &quot;version&quot;: 7,
   &quot;found&quot;: true,
   &quot;id&quot;: &quot;further_details_access_question&quot;,
-  &quot;index&quot;:&quot;index_english_0.state&quot;
+  &quot;index&quot;:&quot;index_getjenny_english_0.state&quot;
 }
 </code></pre>
 
 <p>Sample call: delete all</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
  -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable
 </code></pre>
@@ -614,7 +614,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="201_2">201</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-'index_english_0'}
+INDEX_NAME=${2:-'index_getjenny_english_0'}
 FILENAME=${3:-&quot;`readlink -e ../../doc/decision_table_starchat_doc.csv`&quot;}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
  -X POST --form &quot;csv=@${FILENAME}&quot; http://localhost:8888/${INDEX_NAME}/decisiontable_upload_csv
@@ -624,7 +624,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <pre><code class="json">{
    &quot;data&quot; : [
       {
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;id&quot; : &quot;help&quot;,
          &quot;created&quot; : true,
          &quot;dtype&quot; : &quot;state&quot;,
@@ -635,33 +635,33 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
          &quot;version&quot; : 1,
          &quot;created&quot; : true,
          &quot;id&quot; : &quot;further_details_access_question&quot;,
-         &quot;index&quot; : &quot;index_english_0.state&quot;
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;
       },
       {
          &quot;id&quot; : &quot;contribute&quot;,
          &quot;created&quot; : true,
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;dtype&quot; : &quot;state&quot;,
          &quot;version&quot; : 1
       },
       {
          &quot;version&quot; : 1,
          &quot;dtype&quot; : &quot;state&quot;,
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;created&quot; : true,
          &quot;id&quot; : &quot;quickstart&quot;
       },
       {
          &quot;dtype&quot; : &quot;state&quot;,
          &quot;version&quot; : 1,
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;created&quot; : true,
          &quot;id&quot; : &quot;docker_install&quot;
       },
       {
          &quot;dtype&quot; : &quot;state&quot;,
          &quot;version&quot; : 1,
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;id&quot; : &quot;create_es_indices&quot;,
          &quot;created&quot; : true
       },
@@ -670,19 +670,19 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
          &quot;version&quot; : 1,
          &quot;id&quot; : &quot;delete_es_indexes&quot;,
          &quot;created&quot; : true,
-         &quot;index&quot; : &quot;index_english_0.state&quot;
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;
       },
       {
          &quot;version&quot; : 1,
          &quot;dtype&quot; : &quot;state&quot;,
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;created&quot; : true,
          &quot;id&quot; : &quot;create_es_indexes&quot;
       },
       {
          &quot;created&quot; : true,
          &quot;id&quot; : &quot;index_data&quot;,
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;dtype&quot; : &quot;state&quot;,
          &quot;version&quot; : 1
       },
@@ -691,10 +691,10 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
          &quot;dtype&quot; : &quot;state&quot;,
          &quot;id&quot; : &quot;index_analyzer&quot;,
          &quot;created&quot; : true,
-         &quot;index&quot; : &quot;index_english_0.state&quot;
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;
       },
       {
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;id&quot; : &quot;load_conf_file&quot;,
          &quot;created&quot; : true,
          &quot;dtype&quot; : &quot;state&quot;,
@@ -705,10 +705,10 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
          &quot;version&quot; : 1,
          &quot;created&quot; : true,
          &quot;id&quot; : &quot;install&quot;,
-         &quot;index&quot; : &quot;index_english_0.state&quot;
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;
       },
       {
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;id&quot; : &quot;standalone_install&quot;,
          &quot;created&quot; : true,
          &quot;dtype&quot; : &quot;state&quot;,
@@ -717,19 +717,19 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
       {
          &quot;dtype&quot; : &quot;state&quot;,
          &quot;version&quot; : 1,
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;id&quot; : &quot;code_78&quot;,
          &quot;created&quot; : true
       },
       {
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;id&quot; : &quot;licence&quot;,
          &quot;created&quot; : true,
          &quot;dtype&quot; : &quot;state&quot;,
          &quot;version&quot; : 1
       },
       {
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;created&quot; : true,
          &quot;id&quot; : &quot;terrible_feedback&quot;,
          &quot;version&quot; : 1,
@@ -738,7 +738,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
       {
          &quot;id&quot; : &quot;call_operator&quot;,
          &quot;created&quot; : true,
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;dtype&quot; : &quot;state&quot;,
          &quot;version&quot; : 1
       },
@@ -747,10 +747,10 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
          &quot;dtype&quot; : &quot;state&quot;,
          &quot;id&quot; : &quot;any_further&quot;,
          &quot;created&quot; : true,
-         &quot;index&quot; : &quot;index_english_0.state&quot;
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;
       },
       {
-         &quot;index&quot; : &quot;index_english_0.state&quot;,
+         &quot;index&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;id&quot; : &quot;dont_understand&quot;,
          &quot;created&quot; : true,
          &quot;version&quot; : 1,
@@ -775,7 +775,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 S=&quot;${2:-0.0}&quot;
 B=&quot;${3:-100.0}&quot;
 PORT=${4:-8888}
-INDEX_NAME=${5:-index_english_0}
+INDEX_NAME=${5:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/decisiontable_search -d &quot;{
         \&quot;queries\&quot;: \&quot;${Q}\&quot;,
@@ -834,7 +834,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_4">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer&quot;
 </code></pre>
@@ -943,7 +943,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_5">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer&quot;
 </code></pre>
@@ -975,7 +975,7 @@ for KnowledgeBase, PriorData, ConversationLogs.</p>
 <p>Sample call</p>
 <pre><code class="bash">ID=${1:-0}
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 # retrieve one or more entries with given ids; ids can be specified multiple times
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; &quot;http://localhost:${PORT}/${INDEX_NAME}/knowledgebase?ids=${ID}&quot;
@@ -1024,7 +1024,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h4 id="return-codes_10">Return codes</h4>
 <h5 id="201_3">201</h5>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/knowledgebase -d '{
     &quot;id&quot;: &quot;0&quot;,
@@ -1076,7 +1076,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
    &quot;created&quot; : true,
    &quot;dtype&quot; : &quot;question&quot;,
    &quot;version&quot; : 1,
-   &quot;index&quot; : &quot;index_english_0.question&quot;,
+   &quot;index&quot; : &quot;index_getjenny_english_0.question&quot;,
    &quot;id&quot; : &quot;0&quot;
 }
 </code></pre>
@@ -1093,7 +1093,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_7">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/knowledgebase/0
 </code></pre>
@@ -1104,13 +1104,13 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
     &quot;version&quot; : 5,
     &quot;found&quot; : false,
     &quot;id&quot; : &quot;0&quot;,
-    &quot;index&quot; : &quot;index_english_0.question&quot;
+    &quot;index&quot; : &quot;index_getjenny_english_0.question&quot;
 }
 </code></pre>
 
 <p>Sample call: delete all</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
  -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/knowledgebase
 </code></pre>
@@ -1134,7 +1134,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_8">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/${INDEX_NAME}/knowledgebase/0 -d '{
         &quot;conversation&quot;: &quot;id:1001&quot;,
@@ -1151,7 +1151,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>Sample response</p>
 <pre><code class="json">{
    &quot;dtype&quot; : &quot;question&quot;,
-   &quot;index&quot; : &quot;index_english_0.question&quot;,
+   &quot;index&quot; : &quot;index_getjenny_english_0.question&quot;,
    &quot;id&quot; : &quot;0&quot;,
    &quot;version&quot; : 4,
    &quot;created&quot; : false
@@ -1170,7 +1170,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;how are you?&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/knowledgebase_search -d &quot;{
         \&quot;question\&quot;: \&quot;${QUERY}\&quot;,
@@ -1254,7 +1254,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>Sample call</p>
 <pre><code class="bash">TERM=${1:-&quot;hello&quot;}
 ROUTE=${2:-knowledgebase}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 FIELD=${4:-&quot;question&quot;}
 PORT=${5:-8888}
 curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
@@ -1283,7 +1283,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&q
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
 DATATYPE=${2:-knowledgebase}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/dict_size/${DATATYPE}&quot;
 </code></pre>
@@ -1311,7 +1311,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&q
 <h5 id="200_12">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 DATATYPE=${3:-knowledgebase}
 curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/total_terms/${DATATYPE}&quot;
@@ -1336,7 +1336,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&q
 <h4 id="return-codes_17">Return codes</h4>
 <h5 id="200_13">200</h5>
 <p>Sample call</p>
-<pre><code class="bash">INDEX_NAME=${1:-index_english_0}
+<pre><code class="bash">INDEX_NAME=${1:-index_getjenny_english_0}
 PORT=${2:-8888}
 ROUTE=${3:-knowledgebase}
 curl -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&quot; \
@@ -1370,7 +1370,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&
 <h4 id="return-codes_18">Return codes</h4>
 <h5 id="200_14">200</h5>
 <p>Sample call</p>
-<pre><code class="bash">INDEX_NAME=${1:-index_english_0}
+<pre><code class="bash">INDEX_NAME=${1:-index_getjenny_english_0}
 PORT=${2:-8888}
 ROUTE=${3:-knowledgebase}
 curl -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&quot; \
@@ -1402,7 +1402,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&
 <h4 id="return-codes_19">Return codes</h4>
 <h5 id="200_15">200</h5>
 <p>Sample call</p>
-<pre><code class="bash">INDEX_NAME=${1:-index_english_0}
+<pre><code class="bash">INDEX_NAME=${1:-index_getjenny_english_0}
 PORT=${2:-8888}
 ROUTE=${3:-knowledgebase}
 curl -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&quot; \
@@ -1439,7 +1439,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&
 <p>Sample call</p>
 <pre><code class="bash">DOCID=${1:-0}
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 ROUTE=${4:-knowledgebase}
 curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
   -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/${INDEX_NAME}/updateTerms/${ROUTE} -d&quot;{
@@ -1454,7 +1454,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&q
       &quot;created&quot; : false,
       &quot;dtype&quot; : &quot;question_answer&quot;,
       &quot;version&quot; : 2,
-      &quot;index&quot; : &quot;index_english_0.question_answer&quot;
+      &quot;index&quot; : &quot;index_getjenny_english_0.question_answer&quot;
    }
 ]
 
@@ -1473,7 +1473,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&q
 <h5 id="200_17">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 ROUTE=${3:-knowledgebase}
 curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET http://localhost:${PORT}/${INDEX_NAME}/updateTerms/${ROUTE} -d'{
@@ -1482,13 +1482,13 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&q
 </code></pre>
 
 <p>Sample response</p>
-<pre><code class="json">{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;3bcafc79400f201bcbb2e9290d60231fb096845d97cd3a83b032eab90a9b6f8f&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
-{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;f5239013416fc98c558560659b00ec96e694df243aace574e9dd32166e982ccd&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
-{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;23cb4dc14284b278867b743d6e7387a3ba20e96afb4a34ddf58a8397b173a24f&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
-{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;5f948728fbca7617907ab4ad031020f9da214926f2fbe272295c799d568a3491&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
-{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;cfb544023bcc1378a59695bc6135fb7b71bfcdaba6fb2429e151aba73b2774b8&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
-{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;cce15f6984f473fe7534f9e0f699e5e11a61e39cbe82989818a023d626ea5e1f&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
-{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;b37db2bef879f22d3792840efa1a41b1d46cdbee4af5ccb1b935b3c944732544&quot;,&quot;index&quot;:&quot;index_english_0.question_answer&quot;,&quot;created&quot;:false}
+<pre><code class="json">{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;3bcafc79400f201bcbb2e9290d60231fb096845d97cd3a83b032eab90a9b6f8f&quot;,&quot;index&quot;:&quot;index_getjenny_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;f5239013416fc98c558560659b00ec96e694df243aace574e9dd32166e982ccd&quot;,&quot;index&quot;:&quot;index_getjenny_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;23cb4dc14284b278867b743d6e7387a3ba20e96afb4a34ddf58a8397b173a24f&quot;,&quot;index&quot;:&quot;index_getjenny_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;5f948728fbca7617907ab4ad031020f9da214926f2fbe272295c799d568a3491&quot;,&quot;index&quot;:&quot;index_getjenny_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;cfb544023bcc1378a59695bc6135fb7b71bfcdaba6fb2429e151aba73b2774b8&quot;,&quot;index&quot;:&quot;index_getjenny_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;cce15f6984f473fe7534f9e0f699e5e11a61e39cbe82989818a023d626ea5e1f&quot;,&quot;index&quot;:&quot;index_getjenny_english_0.question_answer&quot;,&quot;created&quot;:false}
+{&quot;dtype&quot;:&quot;question_answer&quot;,&quot;version&quot;:2,&quot;id&quot;:&quot;b37db2bef879f22d3792840efa1a41b1d46cdbee4af5ccb1b935b3c944732544&quot;,&quot;index&quot;:&quot;index_getjenny_english_0.question_answer&quot;,&quot;created&quot;:false}
 </code></pre>
 
 <h2 id="termsextraction">TermsExtraction</h2>
@@ -1513,7 +1513,7 @@ The fields of the data structure have the following meaning:</p>
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;good morning, may I ask you a question?&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${4:-index_english_0}
+INDEX_NAME=${4:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/extraction/frequencies&quot; -d&quot;
 {
@@ -1597,7 +1597,7 @@ The fields of the data structure have the following meaning:</p>
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;good morning, may I ask you a question?&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${4:-index_english_0}
+INDEX_NAME=${4:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/extraction/keywords&quot; -d &quot;
 {
@@ -1658,7 +1658,7 @@ The fields of the data structure have the following meaning:</p>
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;good morning, may I ask you a question?&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${4:-index_english_0}
+INDEX_NAME=${4:-index_getjenny_english_0}
 
 curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/extraction/synonyms&quot; -d &quot;
@@ -2134,7 +2134,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&q
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;good morning, may I ask you a question?&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/language_guesser&quot; -d &quot;
 {
@@ -2164,7 +2164,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>Sample call</p>
 <pre><code class="bash">LANG=${1:-en} 
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/language_guesser/${LANG}&quot;
 </code></pre>
@@ -2191,14 +2191,14 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_23">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/index_management/create&quot;
 </code></pre>
 
 <p>Sample output</p>
 <pre><code class="json">{
-   &quot;message&quot; : &quot;IndexCreation: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)&quot;
+   &quot;message&quot; : &quot;IndexCreation: state(index_getjenny_english_0.state, true) question(index_getjenny_english_0.question, true) term(index_getjenny_english_0.term, true)&quot;
 }
 </code></pre>
 
@@ -2213,7 +2213,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 <h5 id="200_24">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/index_management/refresh&quot;
 </code></pre>
@@ -2225,20 +2225,20 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
          &quot;failed_shards&quot; : [],
          &quot;successful_shards_n&quot; : 5,
          &quot;failed_shards_n&quot; : 0,
-         &quot;index_name&quot; : &quot;index_english_0.state&quot;,
+         &quot;index_name&quot; : &quot;index_getjenny_english_0.state&quot;,
          &quot;total_shards_n&quot; : 10
       },
       {
          &quot;failed_shards&quot; : [],
          &quot;total_shards_n&quot; : 10,
-         &quot;index_name&quot; : &quot;index_english_0.question&quot;,
+         &quot;index_name&quot; : &quot;index_getjenny_english_0.question&quot;,
          &quot;failed_shards_n&quot; : 0,
          &quot;successful_shards_n&quot; : 5
       },
       {
          &quot;failed_shards&quot; : [],
          &quot;successful_shards_n&quot; : 5,
-         &quot;index_name&quot; : &quot;index_english_0.term&quot;,
+         &quot;index_name&quot; : &quot;index_getjenny_english_0.term&quot;,
          &quot;failed_shards_n&quot; : 0,
          &quot;total_shards_n&quot; : 10
       }
@@ -2257,14 +2257,14 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_25">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/index_management&quot;
 </code></pre>
 
 <p>Sample output</p>
 <pre><code class="json">{
-   &quot;message&quot; : &quot;IndexCheck: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)&quot;
+   &quot;message&quot; : &quot;IndexCheck: state(index_getjenny_english_0.state, true) question(index_getjenny_english_0.question, true) term(index_getjenny_english_0.term, true)&quot;
 }
 </code></pre>
 
@@ -2279,7 +2279,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_26">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 LANGUAGE=${3:-english}
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
  -H &quot;Content-Type: application/json&quot; -X PUT &quot;http://localhost:${PORT}/${INDEX_NAME}/${LANGUAGE}/index_management&quot;
@@ -2287,7 +2287,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 
 <p>Sample output</p>
 <pre><code class="json">{
-   &quot;message&quot; : &quot;IndexCheck: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)&quot;
+   &quot;message&quot; : &quot;IndexCheck: state(index_getjenny_english_0.state, true) question(index_getjenny_english_0.question, true) term(index_getjenny_english_0.term, true)&quot;
 }
 </code></pre>
 
@@ -2302,14 +2302,14 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 <h5 id="200_27">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X DELETE &quot;http://localhost:${PORT}/${INDEX_NAME}/index_management&quot;
 </code></pre>
 
 <p>Sample output</p>
 <pre><code class="json">{
-   &quot;message&quot; : &quot;IndexDeletion: state(index_english_0.state, true) question(index_english_0.question, true) term(index_english_0.term, true)&quot;
+   &quot;message&quot; : &quot;IndexDeletion: state(index_getjenny_english_0.state, true) question(index_getjenny_english_0.question, true) term(index_getjenny_english_0.term, true)&quot;
 }
 </code></pre>
 
@@ -2325,7 +2325,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`&q
 <h5 id="200_28">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/term/index -d '{
     &quot;terms&quot;: [
@@ -2409,7 +2409,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_29">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 GROUP_SIZE=${3:-1000}
 curl --max-time 600 -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw0rd' | base64)&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/term/index_default_synonyms?groupsize=${GROUP_SIZE}&quot;
@@ -2434,7 +2434,7 @@ curl --max-time 600 -v -H &quot;Authorization: Basic $(echo -n 'admin:adminp4ssw
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;\&quot;term\&quot;&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/term/get -d &quot;{
         \&quot;ids\&quot;: [${QUERY}]
@@ -2506,7 +2506,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_31">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/term -d '{
         &quot;ids&quot;: [&quot;मराठी&quot;, &quot;term2&quot;]
@@ -2537,7 +2537,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 
 <p>Sample call: delete all</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X DELETE http://localhost:${PORT}/${INDEX_NAME}/term -d'{
         &quot;ids&quot;: []
@@ -2562,7 +2562,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_32">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X PUT http://localhost:${PORT}/${INDEX_NAME}/term -d '{
     &quot;terms&quot;: [
@@ -2648,7 +2648,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;term2&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET http://localhost:${PORT}/${INDEX_NAME}/term/term -d &quot;{
     \&quot;term\&quot;: \&quot;${QUERY}\&quot;
@@ -2702,7 +2702,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_34">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET http://localhost:${PORT}/${INDEX_NAME}/term/text -d 'term2 मराठी'
 </code></pre>
@@ -2780,7 +2780,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <h5 id="200_35">200</h5>
 <p>Sample call</p>
 <pre><code class="bash">PORT=${1:-8888}
-INDEX_NAME=${2:-index_english_0}
+INDEX_NAME=${2:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X GET &quot;http://localhost:${PORT}/${INDEX_NAME}/tokenizers&quot;
 </code></pre>
@@ -2811,7 +2811,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <pre><code class="bash">ANALYZER=${1:-&quot;stop&quot;}
 QUERY=${2:-&quot;good morning, may I ask you a question?&quot;}
 PORT=${3:-8888}
-INDEX_NAME=${4:-index_english_0}
+INDEX_NAME=${4:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/tokenizers&quot; -d &quot;
 {
@@ -2891,7 +2891,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 QUERY=${2:-&quot;this is a test&quot;}
 DATA=${3:-&quot;{\&quot;item_list\&quot;: [], \&quot;extracted_variables\&quot;:{}}&quot;}
 PORT=${4:-8888}
-INDEX_NAME=${5:-index_english_0}
+INDEX_NAME=${5:-index_getjenny_english_0}
 curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST &quot;http://localhost:${PORT}/${INDEX_NAME}/analyzers_playground&quot; -d &quot;
 {
@@ -2967,7 +2967,7 @@ curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot;
 <p>Sample call</p>
 <pre><code class="bash">QUERY=${1:-&quot;this is a tes for splellchecker&quot;}
 PORT=${2:-8888}
-INDEX_NAME=${3:-index_english_0}
+INDEX_NAME=${3:-index_getjenny_english_0}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
   -H &quot;Content-Type: application/json&quot; -X POST http://localhost:${PORT}/${INDEX_NAME}/spellcheck/terms -d &quot;{
   \&quot;text\&quot;: \&quot;${QUERY}\&quot;,
