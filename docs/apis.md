@@ -1821,7 +1821,7 @@ The fields of the data structure have the following meaning:
 * tokenizer: the tokenizer, default is "base"
 * sentencesThreshold: discard sentences if the sentence with the synonym is below the threshold, default us 0.0
 * synonymsThresholds: discard the synonyms if the distance is below the threshold, default is 0.0
-* distance: a distance function values are SUMCOSINE (sum of word vectors) or EMDCOSINE (Earth movers distance)
+* distanceFunction: a distance function values are SUMCOSINE (sum of word vectors) or EMDCOSINE (Earth movers distance)
 * commonOrSpecificSearchTerms: specify if the terms table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
 * commonOrSpecificSearchPrior: specify if the prior_data table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
 * commonOrSpecificSearchObserved: specify if the knowledgebase table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC
@@ -1862,7 +1862,7 @@ curl -v -H "Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)" \
         \"tokenizer\": \"base\",
         \"sentencesThreshold\": 0.9,
         \"synonymsThresholds\": 0.3,
-        \"distance\": \"EMDCOSINE\",
+        \"distanceFunction\": \"EMDCOSINE\",
         \"commonOrSpecificSearchPrior\": \"COMMON\",
         \"commonOrSpecificSearchObserved\": \"IDXSPECIFIC\",
         \"observedDataSource\": \"KNOWLEDGEBASE\",
