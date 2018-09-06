@@ -1630,7 +1630,7 @@ The fields of the data structure have the following meaning:</p>
 <li>text: the text to analyze</li>
 <li>tokenizer: the tokenizer, default is "base"</li>
 <li>sentencesThreshold: discard sentences if the sentence with the synonym is below the threshold, default us 0.0</li>
-<li>synonymsThresholds: discard the synonyms if the distance is below the threshold, default is 0.0</li>
+<li>synonymsThreshold: discard the synonyms if the distance is below the threshold, default is 0.0</li>
 <li>distanceFunction: a distance function values are SUMCOSINE (sum of word vectors) or EMDCOSINE (Earth movers distance)</li>
 <li>commonOrSpecificSearchTerms: specify if the terms table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC</li>
 <li>commonOrSpecificSearchPrior: specify if the prior_data table is from the common index or is index specific. Values are COMMON or IDXSPECIFIC</li>
@@ -1666,7 +1666,7 @@ curl -v -H &quot;Authorization: Basic $(echo -n 'test_user:p4ssw0rd' | base64)&q
         \&quot;text\&quot;: \&quot;${QUERY}\&quot;,
         \&quot;tokenizer\&quot;: \&quot;base\&quot;,
         \&quot;sentencesThreshold\&quot;: 0.9,
-        \&quot;synonymsThresholds\&quot;: 0.3,
+        \&quot;synonymsThreshold\&quot;: 0.3,
         \&quot;distanceFunction\&quot;: \&quot;EMDCOSINE\&quot;,
         \&quot;commonOrSpecificSearchPrior\&quot;: \&quot;COMMON\&quot;,
         \&quot;commonOrSpecificSearchObserved\&quot;: \&quot;IDXSPECIFIC\&quot;,
