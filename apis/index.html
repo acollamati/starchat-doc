@@ -2889,7 +2889,7 @@ curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&qu
 <p>Sample call keyword</p>
 <pre><code class="bash">ANALYZER=${1:-&quot;keyword(\\\&quot;test\\\&quot;)&quot;}
 QUERY=${2:-&quot;this is a test&quot;}
-DATA=${3:-&quot;{\&quot;item_list\&quot;: [], \&quot;extracted_variables\&quot;:{}}&quot;}
+DATA=${3:-&quot;{\&quot;traversed_states\&quot;: [], \&quot;extracted_variables\&quot;:{}}&quot;}
 PORT=${4:-8888}
 INDEX_NAME=${5:-index_getjenny_english_0}
 curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
@@ -2915,7 +2915,7 @@ curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot;
 {
         &quot;analyzer&quot;: &quot;hasTravState(\&quot;one\&quot;)&quot;,
         &quot;query&quot;: &quot;query&quot;,
-        &quot;data&quot;: {&quot;item_list&quot;: [&quot;one&quot;, &quot;two&quot;], &quot;extracted_variables&quot;:{}}
+        &quot;data&quot;: {&quot;traversed_states&quot;: [&quot;one&quot;, &quot;two&quot;], &quot;extracted_variables&quot;:{}}
 }
 '
 </code></pre>
@@ -2941,7 +2941,7 @@ curl -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot;
 <pre><code class="json">{
    &quot;build_message&quot; : &quot;success&quot;,
    &quot;data&quot; : {
-      &quot;item_list&quot; : [],
+      &quot;traversed_states&quot; : [],
       &quot;extracted_variables&quot; : {
          &quot;month.0&quot; : &quot;11&quot;,
          &quot;year.0&quot; : &quot;1900&quot;,
