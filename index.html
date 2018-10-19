@@ -399,6 +399,7 @@ send-updates    | ... | &quot;Where can we send you updates?&quot;    |
 <li><em>checkTimestamp</em>: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument time in EPOC</li>
 <li>first argument is the timestamp: a timestamp in EPOC (in seconds)</li>
 <li>second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual</li>
+<li><em>double</em>: transform a string into a double, useful for score comparison (see, eq, lt, gt, lte, gte operators)</li>
 </ul>
 <!--Only if you have loaded a Word2Vec model:
 
@@ -422,6 +423,12 @@ send-updates    | ... | &quot;Where can we send you updates?&quot;    |
 <li><em>disjunction</em>:  as above, the probability that at least one is true (<code>1-(1-P(A))*(1-P(B))</code>)</li>
 <li><em>max</em>: takes the max score of returned by the expression arguments</li>
 <li><em>reinfConjunction</em>: conjuction which uses a 1.1 value instead of 1 as boolean true</li>
+<li><em>binarize</em>: take the result of an expression output 1.0 if the score is &gt; 0, 0.0 otherwise </li>
+<li><em>eq</em> compare the score of two expression, output 1.0 if they are the same, 0.0 otherwise</li>
+<li><em>lt</em> compare the score of two expression, output 1.0 if the first arg is less than the second, 0.0 otherwise</li>
+<li><em>gt</em> compare the score of two expression, output 1.0 if the first arg is greater than the second, 0.0 otherwise</li>
+<li><em>lte</em> compare the score of two expression, output 1.0 if the first arg is less or equal than the second, 0.0 otherwise</li>
+<li><em>gte</em> compare the score of two expression, output 1.0 if the first arg is greater or equal than the second, 0.0 otherwise</li>
 </ul>
 <h3 id="technical-corner-expressions">Technical corner: <code>expressions</code></h3>
 <p><a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/expressions/Expression.scala">Expressions</a>, like <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/KeywordAtomic.scala#L18">keywords</a> in the example, are called <a href="https://github.com/GetJenny/starchat/blob/master/src/main/scala/com/getjenny/analyzer/atoms/AbstractAtomic.scala">atoms</a>, and have the following methods/members:</p>
@@ -752,5 +759,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2018-09-10 22:09:33
+Build Date UTC : 2018-10-19 14:30:08
 -->
