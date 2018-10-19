@@ -375,7 +375,7 @@ These are currently the expression you can use to evaluate the goodness of a que
 * _checkTimestamp_: Check if the current time is Equal, LessOrEqual, Less, Greater, GreaterOrEqual to the argument time in EPOC
   * first argument is the timestamp: a timestamp in EPOC (in seconds)
   * second argument is the operator: any of Equal, LessOrEqual, Less, Greater, GreaterOrEqual
-
+* _double_: transform a string into a double, useful for score comparison (see, eq, lt, gt, lte, gte operators)
 
 <!--Only if you have loaded a Word2Vec model:
 
@@ -400,6 +400,12 @@ Operators evaluate the output of one or more expression and return a value. Curr
 * _disjunction_:  as above, the probability that at least one is true (`1-(1-P(A))*(1-P(B))`)
 * _max_: takes the max score of returned by the expression arguments
 * _reinfConjunction_: conjuction which uses a 1.1 value instead of 1 as boolean true
+* _binarize_: take the result of an expression output 1.0 if the score is > 0, 0.0 otherwise 
+* _eq_ compare the score of two expression, output 1.0 if they are the same, 0.0 otherwise
+* _lt_ compare the score of two expression, output 1.0 if the first arg is less than the second, 0.0 otherwise
+* _gt_ compare the score of two expression, output 1.0 if the first arg is greater than the second, 0.0 otherwise
+* _lte_ compare the score of two expression, output 1.0 if the first arg is less or equal than the second, 0.0 otherwise
+* _gte_ compare the score of two expression, output 1.0 if the first arg is greater or equal than the second, 0.0 otherwise
 
 ### Technical corner: `expressions`
 
