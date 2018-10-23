@@ -980,7 +980,7 @@ Sample response
 
 ### POST /decisiontable_analyzer
 
-Load/reload the map of analyzer from ES
+trigger a syncronous load/reload the analyzers map from ES
 
 Output JSON
 
@@ -1007,6 +1007,39 @@ Sample response
 ```json
 {
    "num_of_entries" : 17
+}
+```
+
+### POST /decisiontable_async_reload
+
+trigger an asyncronous load/reload the analyzers map from ES
+
+Output JSON
+
+#### Requirements
+
+* Index must exists
+* The function requires user credentials with write permissions on the index
+
+#### Return codes 
+
+##### 200
+
+Sample call
+
+```bash
+PORT=${1:-8888}
+INDEX_NAME=${2:-index_getjenny_english_0}
+curl -v -H "Authorization: Basic `echo -n 'admin:lDPEb9muTNTWaX5zTNTWaX5z' | base64`" \
+  -H "Content-Type: application/json" -X POST "https://starchat-cluster-0.getjenny.com/${INDEX_NAME}/decisiontable_async_reload"
+```
+
+Sample response
+
+```json
+{
+   "timestamp" : 1540281692630,
+   "indexName" : "index_getjenny_english_0"
 }
 ```
 
