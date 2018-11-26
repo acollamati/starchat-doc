@@ -1,5 +1,7 @@
 # APIs
 
+the api's are [now documented using swagger](https://app.swaggerhub.com/apis/angleto/StarChat/v5.0), the documentation below is obsolete and will be deleted after the release of the version v5.0.0
+
 ## SystemIndexManagement
 
 ### POST /system_index_management/create
