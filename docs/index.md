@@ -36,14 +36,7 @@ We have made available all the containers needed for having StarChat up and runn
 To use them, you need to download [Starchat Docker](https://github.com/GetJenny/starchat-docker) or simply type:
 
 ```bash
-git clone git@github.com:GetJenny/starchat-docker.git
-```
-
-or
-
-```bash
-wget https://github.com/GetJenny/starchat-docker/archive/master.zip
-unzip master.zip
+git clone  https://github.com/GetJenny/starchat-docker.git
 ```
 
 Get into the `starchat-docker` directory and:
