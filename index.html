@@ -151,7 +151,7 @@ unzip master.zip
 </code></pre>
 
 <p>If you get an  <code>ERROR: Version in "./docker-compose.yml" is unsupported.</code> you need to update docker-compose to the version indicated in the <code>docker-compose.yml</code> file. Note that it might not be available on ubuntu (we need to use a very recent one). If that's the case see eg <a href="https://stackoverflow.com/questions/49839028/how-to-upgrade-docker-compose-to-latest-version">stackoverflow</a>.</p>
-<p>Now you should have a running instance on port 8888. (If you want to change ports, go to <code>starchat-docker/starchat/config/application.conf</code>)</p>
+<p>Now you should have a running instance on port 8888. (If you want to change ports, eg because you have other services on 8888/9200/9300, change the values in docker-compose.yml)</p>
 <p>(Problems like <code>elastisearch exited with code 78</code>? have a look at <a href="#troubleshooting">troubleshooting</a>!)</p>
 <h4 id="change-manaus-language">Change Manaus Language</h4>
 <p>In the file <code>docker-compose.yml</code> change:</p>
@@ -810,5 +810,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 1.0.2
-Build Date UTC : 2019-02-14 10:35:52
+Build Date UTC : 2019-02-14 10:37:46
 -->
