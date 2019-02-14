@@ -1,5 +1,5 @@
 site_name: StarChat Documentation
-pages:
+nav:
     - Home: index.md
     - APIs: apis.md
     - About: about.md
