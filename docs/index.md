@@ -54,7 +54,7 @@ docker-compose up -d
 
 If you get an  `ERROR: Version in "./docker-compose.yml" is unsupported.` you need to update docker-compose to the version indicated in the `docker-compose.yml` file. Note that it might not be available on ubuntu (we need to use a very recent one). If that's the case see eg [stackoverflow](https://stackoverflow.com/questions/49839028/how-to-upgrade-docker-compose-to-latest-version).
 
-Now you should have a running instance on port 8888. (If you want to change ports, go to `starchat-docker/starchat/config/application.conf`)
+Now you should have a running instance on port 8888. (If you want to change ports, eg because you have other services on 8888/9200/9300, change the values in docker-compose.yml)
 
 
 (Problems like `elastisearch exited with code 78`? have a look at [troubleshooting](#troubleshooting)!)
