@@ -206,7 +206,7 @@ PORT=${1:-8888}
 INDEX_NAME=${2:-'index_getjenny_english_0'}
 FILENAME=${3:-&quot;`readlink -e doc/decision_table_starchat_doc.csv`&quot;}
 curl -v -H &quot;Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`&quot; \
-  --form &quot;csv=@${FILENAME}&quot; http://localhost:${PORT}/${INDEX_NAME}/decisiontable_upload_csv
+  --form &quot;csv=@${FILENAME}&quot; http://localhost:${PORT}/${INDEX_NAME}/decisiontable/upload_csv
 </code></pre>
 
 <p>and then you need to index the analyzer:</p>
@@ -805,5 +805,5 @@ elastisearch exited with code 78
 
 <!--
 MkDocs version : 1.0.2
-Build Date UTC : 2019-04-07 16:39:24
+Build Date UTC : 2019-04-24 14:29:30
 -->
