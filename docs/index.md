@@ -21,8 +21,10 @@ The easiest way is to install StarChat using two docker images. You only need:
 * [docker compose](https://docs.docker.com/compose/install/)
 
 In this way, you will put all the indices in the Elasticsearch (version 6.1) image, and StarChat itself in the Java (8) image.
+For instruction about docker installation on  Ubuntu platform refer to [docker for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
-_If you do not use docker_ you therefore need on your machine:
+
+_If you do not use docker_(not recommended) you therefore need on your machine:
 
 1. [Scala 12.2](http://scala-lang.org)
 2. [Elasticsearch 5.4](http://elastic.co)
@@ -45,13 +47,22 @@ Get into the `starchat-docker` directory and:
 docker-compose up -d
 ```
 
-If you get an  `ERROR: Version in "./docker-compose.yml" is unsupported.` you need to update docker-compose to the version indicated in the `docker-compose.yml` file. Note that it might not be available on ubuntu (we need to use a very recent one). If that's the case see eg [stackoverflow](https://stackoverflow.com/questions/49839028/how-to-upgrade-docker-compose-to-latest-version).
+If you get an  `ERROR: Version in "./docker-compose.yml" is unsupported.` you need to update docker-compose to the version indicated in the `docker-compose.yml` file. Note that it might not be available on old version of ubuntu (we need to use a very recent one). If that's the case see eg [stackoverflow](https://stackoverflow.com/questions/49839028/how-to-upgrade-docker-compose-to-latest-version).
+If you want to change default ports, eg because you have other services on 8888/9200/9300, change the values in docker-compose.yml.
 
-Now you should have a running instance on port 8888. (If you want to change ports, eg because you have other services on 8888/9200/9300, change the values in docker-compose.yml)
-
-
-(Problems like `elastisearch exited with code 78`? have a look at [troubleshooting](#troubleshooting)!)
-
+To test elasticsearch and starchat started correctly  you can send the following command
+```bash
+curl -X GET localhost:8888
+```
+If you don't get OK replay you can check the output logs of elasticsearch and start-chat  starting the containers without detached mode option.
+```bash
+docker-compose up
+```
+Elasticsearch makes some boostrap check. If they failed elasiticsearch quits with message `elastisearch exited with code 78`
+Possible fails reason are:
+[1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
+[2]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+ have a look at [troubleshooting](#troubleshooting) in order to solve them.
 
 #### Change Manaus Language
 
@@ -79,70 +90,46 @@ to
     "--cluster_name", "starchat", "--index_name",  "***jenny-it-0***"]
 ```
 
-### 2. Create Elasticsearch indices
+### 2. Elasticsearch Configuration
 
-Run from a terminal:
+Now you need to configure Elastic search performing the following operations:
 
+ 1. Creating the system indices
+ 2. Creating the application indices
+ 3. Creating a new user associated with read/write privileges on the application indices
+
+The three steps can be accomplished by running some scripts that can be found in the `starchat-docker/scripts` directory.
+The scripts assume you are using the default port 8888 and the index based on english language. If you need to change these parameters edit accordingly the variabile PORT and INDEX_NAME you can find in the scripts
 ```bash
-# create the system indices in Elasticsearch
-PORT=${1:-8888}
-curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
-  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/system_index_management/create"
+cd starchat-docker/scripts
+#System Indices creation (admin privileged execution)
+./postSystemIndexManagementCreate.sh
+#Application Indices creation (admin privileged execution)
+./postIndexManagementCreate.sh
+#User with creation (admin privileged execution)
+./insertUser.sh
 ```
+Scripts are based on RESTful API documented [here](https://app.swaggerhub.com/apis/angleto/StarChat/v5.0).
 
-If you are using another language than English, replace english in the name of the index:
 
-```bash
-# create the application indices on Elasticsearch
-PORT=${1:-8888}
-INDEX_NAME=${2:-index_getjenny_english_0}
-curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
-  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/index_management/create"
-```
+### 3. Chat Decision Table Configuration
+
+Now you have to load the configuration file for the actual chat, aka [decision table](#services). We have provided the example configuration file `starchat-docker/scripts/decision_table_starchat_doc.csv`  running the script
 
 ```bash
-# add a user to the system associated to the application index index_getjenny_english_0 previously created
-PORT=${1:-8888}
-curl -v -H "Authorization: Basic `echo -n 'admin:adminp4ssw0rd' | base64`" \
-  -H "Content-Type: application/json" -X POST http://localhost:${PORT}/user -d '{
-        "id": "test_user",
-        "password": "3c98bf19cb962ac4cd0227142b3495ab1be46534061919f792254b80c0f3e566f7819cae73bdc616af0ff555f7460ac96d88d56338d659ebd93e2be858ce1cf9", 
-        "salt": "salt",
-        "permissions": {
-                "index_getjenny_english_0": ["read", "write"]
-        }
-}'
-```
-
-### 3. Load the configuration file
-
-Now you have to load the configuration file for the actual chat, aka [decision table](#services). We have provided an [example configuration file in English](https://github.com/GetJenny/starchat/tree/master/doc), therefore:
-
-```bash
-cd $STARCHAT  # so we have doc/decision_table_starchat_doc.csv
-PORT=${1:-8888}
-INDEX_NAME=${2:-'index_getjenny_english_0'}
-FILENAME=${3:-"`readlink -e doc/decision_table_starchat_doc.csv`"}
-curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
-  --form "csv=@${FILENAME}" http://localhost:${PORT}/${INDEX_NAME}/decisiontable/upload_csv
+./loadDecisionTableFile.sh
 ```
 
 and then you need to index the analyzer:
 
 ```bash
-PORT=${1:-8888}
-INDEX_NAME=${2:-index_getjenny_english_0}
-curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
-  -H "Content-Type: application/json" -X POST "http://localhost:${PORT}/${INDEX_NAME}/decisiontable_analyzer"
+./postIndexAnalyzer.sh
 ```
 
-In case you want to delete all states previously loaded, this endpoint deletes all the states:
+In case you want to delete all states previously loaded you need to delete the decision table previously loaded running the script
 
 ```bash
-PORT=${1:-8888}
-INDEX_NAME=${2:-index_getjenny_english_0}
-curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
-  -H "Content-Type: application/json" -X DELETE http://localhost:${PORT}/${INDEX_NAME}/decisiontable
+./postDeleteAllDecisionTables.sh
 ```
 
 ### 4. Load external corpus (optional)
@@ -210,22 +197,11 @@ docker-compose up -d
 
 Is the service working? But first: *did you load a configuration file*? If yes, try:
 
-`curl -X GET localhost:8888 | python -mjson.tool`
+`curl -X GET localhost:8888`
 
-Get the `test_state`
-
-```bash
-PORT=${2:-8888}
-INDEX_NAME=${3:-index_getjenny_english_0}
-curl -v -H "Authorization: Basic `echo -n 'test_user:p4ssw0rd' | base64`" \
- -H "Content-Type: application/json" -X POST http://localhost:${PORT}/${INDEX_NAME}/get_next_response -d '{
- "conversation_id": "1234",
-  "user_input": { "text": "install starchat" },
-  "values": {
-      "return_value": "",
-      "data": {}
-       }
-  }'
+Now try to ask question to the bot running the script:
+``` bash
+./getNextResponseSearch.sh "contribute"
 ```
 
 You should get:
@@ -233,28 +209,31 @@ You should get:
 ```json
 [
    {
-      "state" : "install",
-      "data" : {},
-      "action" : "",
-      "success_value" : "",
-      "state_data" : {},
-      "score" : 1,
-      "conversation_id" : "1234",
-      "traversed_states" : [
-         "install"
-      ],
-      "max_state_count" : 0,
-      "action_input" : {},
-      "analyzer" : "band(bor(keyword(\"setup\"), keyword(\"install.*\")), bnot(bor(keyword(\"standalone\"), keyword(\"docker\"))))",
-      "bubble" : "Just choose one of the two:\n<ul>\n<li>docker install (recommended)</li>\n<li>standalone install</li>\n</ul>",
-      "failure_value" : ""
+      "action":"",
+      "actionInput":{},
+      "analyzer":"bor(keyword(\"contribute\"))",
+      "bubble":"To contribute to <a href=\"http://git.io/*chat\">StarChat</a>, please send us a pull request from your fork of this repository.\n<br>Our concise contribution guideline contains the bare minimum requirements of the code contributions.\n<br>Before contributing (or opening issues), you might want to email us at starchat@getjenny.com.",
+      "conversationId":"1234",
+      "data":{
+
+      },
+      "failureValue":"",
+      "maxStateCount":0,
+      "score":1.0,
+      "state":"contribute",
+      "stateData":{
+
+      },
+      "successValue":"",
+      "traversedStates":[
+         "contribute"
+      ]
    }
 ]
 ```
 
 If you look at the `"analyzer"` field, you'll see that this state is triggered when
-the user types the *test* and either *get* or *send*. Try with `"text": "Please dont send me the test state"`
- and StarChat will send an empty message.
+the user types the *contribute*.  The `"bubble"` field contains the response.
 
 ## Configuration of the chatbot (Decision Table)
 
@@ -784,9 +763,9 @@ In alternative is possible to call the command to load/refresh the Analyzers aft
 curl -v -H "Content-Type: application/json" -X POST "http://localhost:8888/decisiontable_analyzer"
 ```
 
-## Docker: Size of virtual memory
+## Docker: Elasticsearch required size of virtual memory
 
-If elasticsearch complain about the size of the virtual memory:
+If elasticsearch complains about the size of the virtual memory:
 
 ```
 max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
@@ -798,3 +777,19 @@ run:
 ```bash
 sysctl -w vm.max_map_count=262144
 ```
+## Docker: Elasticsearch required open files limit
+If elasticsearch complains about the limit of the open files:
+```
+max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
+```
+you should increase the limit of max open files.
+[Here](https://askubuntu.com/questions/1049058/how-to-increase-max-open-files-limit-on-ubuntu-18-04?r=SearchResults) you can find instruction for Ubuntu 18.04 
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMjM2NzE3ODk2LC0xMjYyMjg1OTkwLC01Nz
+k5MjkzMzAsNTIxOTI1NDU1LC04NjQ0NDI0NTksMTUzOTg2MjM2
+NCwtMTk3NTYxODE1MSwxMjc0MzQzMDE1LC0xNjM2MDU4NzIyLC
+0zOTQ1NDk2MTMsMTgyMDQzODk5NCwtMTI1NjU1NDg2MCwxMTkz
+NDUwNjc4LDIwMzgzNTY1ODAsMTQ2MTUyMjY1OCwxODYxNTY3ND
+MwLC0xNDk3MTY1MTQ3LC01ODY0MzQyNjIsLTEwNjc5Njg5NTdd
+fQ==
+-->
