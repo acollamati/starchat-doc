@@ -64,32 +64,6 @@ Possible fails reason are:
 [2]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
  have a look at [troubleshooting](#troubleshooting) in order to solve them.
 
-#### Change Manaus Language
-
-In the file `docker-compose.yml` change:
-
-```json
-    command: ["/manaus/scripts/wait-for-it.sh", 
-    "getjenny-es", "9200", "5", 
-    "/manaus/bin/continuous-keywords-update", "--temp_data_folder", 
-    "/manaus/data", 
-    "--host_map", "getjenny-es=9300", "--interval_sec", "14400", 
-    "--word_frequencies", 
-    "/manaus/statistics_data/english/word_frequency.tsv", 
-    "--cluster_name", "starchat", "--index_name", "jenny-en-0"]
-```
-to
-
-```json
-    command: ["/manaus/scripts/wait-for-it.sh", 
-    "getjenny-es", "9200", "5", 
-    "/manaus/bin/continuous-keywords-update", "--temp_data_folder", 
-    "/manaus/data", 
-    "--host_map", "getjenny-es=9300", "--interval_sec", "14400", 
-    "--word_frequencies", "/manaus/statistics_data/***italian***/word_frequency.tsv", 
-    "--cluster_name", "starchat", "--index_name",  "***jenny-it-0***"]
-```
-
 ### 2. Elasticsearch Configuration
 
 Now you need to configure Elastic search performing the following operations:
