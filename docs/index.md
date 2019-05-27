@@ -58,10 +58,10 @@ If you don't get OK replay you can check the output logs of elasticsearch and st
 ```bash
 docker-compose up
 ```
-Elasticsearch makes some boostrap check. If they failed elasiticsearch quits with message `elastisearch exited with code 78`
+Elasticsearch makes some boostrap check. If they failed elasiticsearch quits with message `elastisearch exited with code 78`.
 Possible fails reason are:
-[1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
-[2]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+1. max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
+2. max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
  have a look at [troubleshooting](#troubleshooting) in order to solve them.
 
 ### 2. Elasticsearch Configuration
