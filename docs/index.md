@@ -12,28 +12,18 @@ Before contributing (or opening issues), you might want send us an email at star
 
 # Quick Start
 
-## Requirements
-
-The easiest way is to install StarChat using two docker images. You only need:
-
-* [sbt](http://www.scala-sbt.org)
+## 1. Installation
+The easiest way is to install StarChat using two docker images. 
+You only need:
 * [docker](https://docs.docker.com/engine/installation/)
 * [docker compose](https://docs.docker.com/compose/install/)
 
-In this way, you will put all the indices in the Elasticsearch (version 6.1) image, and StarChat itself in the Java (8) image.
+We have made available the containers needed for having StarChat up and running without local compiling:
+On container is for the Elasticsearch (version 7.0.0) image the other for the StarChat itself in the Java (8) image.
+
 For instruction about docker installation on  Ubuntu platform refer to [docker for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
-
-_If you do not use docker_(not recommended) you therefore need on your machine:
-
-1. [Scala 12.2](http://scala-lang.org)
-2. [Elasticsearch 5.4](http://elastic.co)
-
-## Setup with Docker (recommended)
-
-### 1. Launch Docker containers
-
-We have made available all the containers needed for having StarChat up and running without local compiling.
+### 1.1 Run Prebuilt Docker containers
 
 To use them, you need to download [Starchat Docker](https://github.com/GetJenny/starchat-docker) or simply type:
 
@@ -64,7 +54,7 @@ Possible fails reason are:
 2. max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
  have a look at [troubleshooting](#troubleshooting) in order to solve them.
 
-### 2. Elasticsearch Configuration
+### 1.2 Elasticsearch Configuration
 
 Now you need to configure Elastic search performing the following operations:
 
@@ -86,7 +76,7 @@ cd starchat-docker/scripts
 Scripts are based on RESTful API documented [here](https://app.swaggerhub.com/apis/angleto/StarChat/v5.0).
 
 
-### 3. Chat Decision Table Configuration
+### 1.3 Chat Decision Table Configuration
 
 Now you have to load the configuration file for the actual chat, aka [decision table](#services). We have provided the example configuration file `starchat-docker/scripts/decision_table_starchat_doc.csv`  running the script
 
@@ -106,16 +96,57 @@ In case you want to delete all states previously loaded you need to delete the d
 ./postDeleteAllDecisionTables.sh
 ```
 
-### 4. Load external corpus (optional)
-
-To have a good words' statistics, and consequent improved matching, you might want to index a corpus which is hidden from results. For instance, you can index various sentences as hidden using the [POST /knowledgebase](#post-knowledgebase) endpoint with `doctype: "hidden"`.
-
-### 5. Index the FAQs (optional)
+### 1.5 Index the FAQs (optional)
 
 TODO: You might want to activate the [knowledge base](#configuration-of-the-answer-recommender-knowledge-base) for simple Question and Anwer. 
 
+### 1.6 Installation Test
+
+Is the service working? But first: *did you load a configuration file*? If yes, try:
+
+`curl -X GET localhost:8888`
+
+Now try to ask question to the bot running the script:
+``` bash
+./getNextResponseSearch.sh "contribute"
+```
+
+You should get:
+
+```json
+[
+   {
+      "action":"",
+      "actionInput":{},
+      "analyzer":"bor(keyword(\"contribute\"))",
+      "bubble":"To contribute to <a href=\"http://git.io/*chat\">StarChat</a>, please send us a pull request from your fork of this repository.\n<br>Our concise contribution guideline contains the bare minimum requirements of the code contributions.\n<br>Before contributing (or opening issues), you might want to email us at starchat@getjenny.com.",
+      "conversationId":"1234",
+      "data":{
+
+      },
+      "failureValue":"",
+      "maxStateCount":0,
+      "score":1.0,
+      "state":"contribute",
+      "stateData":{
+
+      },
+      "successValue":"",
+      "traversedStates":[
+         "contribute"
+      ]
+   }
+]
+```
+
+If you look at the `"analyzer"` field, you'll see that this state is triggered when
+the user types the *contribute*.  The `"bubble"` field contains the response.
+
+
+
 ## Install without Docker
 
+* [sbt](http://www.scala-sbt.org)
 Note: we do not support this installation.
 
 * Clone the repository and enter the starchat directory.
@@ -167,47 +198,6 @@ docker-compose up -d
 
 (Problems like `elastisearch exited with code 78`? have a look at [troubleshooting](#troubleshooting)!)
 
-## Test the installation
-
-Is the service working? But first: *did you load a configuration file*? If yes, try:
-
-`curl -X GET localhost:8888`
-
-Now try to ask question to the bot running the script:
-``` bash
-./getNextResponseSearch.sh "contribute"
-```
-
-You should get:
-
-```json
-[
-   {
-      "action":"",
-      "actionInput":{},
-      "analyzer":"bor(keyword(\"contribute\"))",
-      "bubble":"To contribute to <a href=\"http://git.io/*chat\">StarChat</a>, please send us a pull request from your fork of this repository.\n<br>Our concise contribution guideline contains the bare minimum requirements of the code contributions.\n<br>Before contributing (or opening issues), you might want to email us at starchat@getjenny.com.",
-      "conversationId":"1234",
-      "data":{
-
-      },
-      "failureValue":"",
-      "maxStateCount":0,
-      "score":1.0,
-      "state":"contribute",
-      "stateData":{
-
-      },
-      "successValue":"",
-      "traversedStates":[
-         "contribute"
-      ]
-   }
-]
-```
-
-If you look at the `"analyzer"` field, you'll see that this state is triggered when
-the user types the *contribute*.  The `"bubble"` field contains the response.
 
 ## Configuration of the chatbot (Decision Table)
 
