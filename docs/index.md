@@ -144,16 +144,28 @@ the user types the *contribute*.  The `"bubble"` field contains the response.
 
 
 
-## Install without Docker
+## 2. Development Installation 
 
-* [sbt](http://www.scala-sbt.org)
-Note: we do not support this installation.
+The easiest way to modify the StarChat source code, recompile and test changes is to:
 
-* Clone the repository and enter the starchat directory.
-* Initialize the Elasticsearch instance (see above for Docker)
-* Run the service: `sbt compile run`
+1. Install [sbt](http://www.scala-sbt.org) 
+2. Clone [StarChat repository] (https://github.com/GetJenny/starchat)
+3. Clone [Starchat Docker](https://github.com/GetJenny/starchat-docker) as explained at 1.1
 
-The service binds on the port 8888 by default.
+and running the commands
+
+```bash
+## Start ElasticSearch
+cd starchat-docker/
+docker-compose up elasticsearch 
+```
+
+```bash
+## Compile and Run StarChar
+cd starchat/
+sbt compile run
+```
+
 
 ## Install local Docker (for testing branches)
 
