@@ -155,17 +155,18 @@ The easiest way to modify the StarChat source code, recompile and test changes i
 and running the commands
 
 ```bash
-## Start ElasticSearch
+## Start ElasticSearch from docker preconfigured container
 cd starchat-docker/
 docker-compose up elasticsearch 
 ```
 
 ```bash
-## Compile and Run StarChar
+## Compile and Run StarChat
 cd starchat/
 sbt compile run
 ```
 
+Now StarChat is running and you can configure and test the installation as defined (#1-installation)
 
 ## Install local Docker (for testing branches)
 
