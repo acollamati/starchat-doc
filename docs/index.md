@@ -166,7 +166,7 @@ cd starchat/
 sbt compile run
 ```
 
-Now StarChat is running and you can configure and test the installation as defined (#1-installation)
+Now StarChat is running and you can configure and test the installation as defined [Installation](#1-installation)
 
 ## Install local Docker (for testing branches)
 
