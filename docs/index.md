@@ -144,7 +144,7 @@ the user types the *contribute*.  The `"bubble"` field contains the response.
 
 
 
-## 2. Development Installation 
+## 2. Development Envinroment 
 
 The easiest way to modify the StarChat source code, recompile and test changes is to:
 
@@ -166,11 +166,11 @@ cd starchat/
 sbt compile run
 ```
 
-Now StarChat is running and you can configure and test the installation as defined [Installation](#1-installation)
+Now StarChat is running and you can configure and test the installation as explained in [Installation](#1-installation)
 
-## Install local Docker (for testing branches)
+## 3. Docker Image Creation for testing branches
 
-Generate a packet distribution. In StarChat directory:
+If you want to generate a new docker image to be distributed you need to run in StarChat directory:
 
 ```bash
 sbt dist
@@ -190,14 +190,13 @@ ln -s starchat-4ee..../  starchat
 
 The zip packet contains:
 
-* a set of scripts to test the endpoints and as a complement for the documentation: ```starchat/scripts/api_test/```
 * a set of command line programs ```starchat/bin``` to run starchat and other tools.
+* a set of scripts to test the endpoints and as a complement for the documentation: ```starchat/scripts/api_test/```
 * delete-decision-table: application to delete items from the decision table
 * index-corpus-on-knowledge-base: application to index a corpus on knowledge base as hidden (to improve the language model)
 * index-decision-table: application to index data on the decision table from a csv
 * index-knowledge-base: application to index data into the knowledge base
 * index-terms: application to index terms vectors
-* starchat: start starchat
 
 Review the configuration files `starchat/config/application.conf` and configure the language if needed (by default you have `index_language = "english"`)
 
@@ -208,8 +207,9 @@ Start both startchat and elasticsearch:
 ```bash
 docker-compose up -d
 ```
-
-(Problems like `elastisearch exited with code 78`? have a look at [troubleshooting](#troubleshooting)!)
+Now StarChat is running and you can configure and test the installation as explained in [Installation](#1-installation)
+If you get `org.elasticsearch.bootstrap.StartupException: ElasticsearchException[failed to bind service]; 
+nested: AccessDeniedException[/usr/share/elasticsearch/data/nodes` be sure that `docker-starchat/elasticsearch` is accessible to docker service.
 
 
 ## Configuration of the chatbot (Decision Table)
