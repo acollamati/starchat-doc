@@ -53,6 +53,12 @@ Possible fails reason are:
 1. max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
 2. max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
  have a look at [troubleshooting](#troubleshooting) in order to solve them.
+ 
+ StarChat supports the user authentication and the default Elasticsearch user used is the built-in user "elastic". The password can be changed using the following command from a running container:
+```bash
+docker exec -i -t docker-starchat_elasticsearch_1 /usr/share/elasticsearch/bin/elasticsearch-keystore add "bootstrap.password" 
+```
+When using this command the file elasticsearch.keystore is updated. The password can be set even up on ES using a native user.
 
 ### 1.2 Elasticsearch Configuration
 
@@ -761,12 +767,4 @@ max file descriptors [4096] for elasticsearch process is too low, increase to at
 ```
 you should increase the limit of max open files.
 [Here](https://askubuntu.com/questions/1049058/how-to-increase-max-open-files-limit-on-ubuntu-18-04?r=SearchResults) you can find instruction for Ubuntu 18.04 
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMjM2NzE3ODk2LC0xMjYyMjg1OTkwLC01Nz
-k5MjkzMzAsNTIxOTI1NDU1LC04NjQ0NDI0NTksMTUzOTg2MjM2
-NCwtMTk3NTYxODE1MSwxMjc0MzQzMDE1LC0xNjM2MDU4NzIyLC
-0zOTQ1NDk2MTMsMTgyMDQzODk5NCwtMTI1NjU1NDg2MCwxMTkz
-NDUwNjc4LDIwMzgzNTY1ODAsMTQ2MTUyMjY1OCwxODYxNTY3ND
-MwLC0xNDk3MTY1MTQ3LC01ODY0MzQyNjIsLTEwNjc5Njg5NTdd
-fQ==
--->
+
