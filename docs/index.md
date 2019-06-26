@@ -171,7 +171,7 @@ docker-compose up elasticsearch
 cd starchat/
 sbt compile run
 ```
-
+If starchat complains about cannot resolve host getjenny-es add the relative entry in you hosts file
 Now StarChat is running and you can configure and test the installation as explained in [Installation](#1-installation)
 
 ## 3. Docker Image Creation for testing branches
