@@ -766,5 +766,5 @@ If elasticsearch complains about the limit of the open files:
 max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]
 ```
 you should increase the limit of max open files.
-[Here](https://askubuntu.com/questions/1049058/how-to-increase-max-open-files-limit-on-ubuntu-18-04?r=SearchResults) you can find instruction for Ubuntu 18.04 
+[Here](https://www.elastic.co/guide/en/elasticsearch/reference/master/setting-system-settings.html) you can find instructions to change it 
 
